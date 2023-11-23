@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Pets
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <form method="get" action="{% url 'servicos:pesquisarpet' %}">
+            <label>
+                <input name="query" placeholder="Nome, Raça, Tutor" type="search" value="{{ request.GET.query }}">
+            </label>
+            <input type="submit" value="Pesquisar">
+        </form>
+        <ul>
+            <a href="{% url 'usuarios:dashboard' pk=usuario_pk %}">
+                <li>Dashboard</li>
+            </a>
+            <a href="{% url 'servicos:vinculartutor' %}">
+                <li>Adicionar Pet</li>
+            </a>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Pets</h1>
+        {% if object_list %}
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Nome</th>
+                    <th>Tutor</th>
+                    <th>Opções</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pet in object_list %}
+                    <tr>
+                        <td><img src="{{ pet.imagem.url }}" width="100px"></td>
+                        <td>{{ pet.nome }}</td>
+                        <td>{{ pet.tutor.nome_completo }}</td>
+                        <td>
+                            <a href="{% url 'servicos:verpet' pk=pet.pk %}">Mais informações</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                </tbody>
+            </table>
+            <p>Nenhum pet foi encontrado em nossa base de dados.</p>
+            <a href="{% url 'servicos:listapets' %}">Pets</a>
+        {% endif %}
+    </main>
+{% endblock %}

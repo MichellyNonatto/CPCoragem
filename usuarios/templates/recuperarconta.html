@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Recuperar Conta
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Recuperar Conta</legend>
+            {{ form.as_p }}
+        </fieldset>
+        <a href="{% url 'usuarios:login' %}">Fazer Login</a>
+        <button type="submit">Enviar</button>
+
+    </form>
+
+{% endblock %}

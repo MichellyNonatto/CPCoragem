@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Detalhes
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'servicos:listapets' %}">Pets</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div>
+            <h2>{{ object.nome }} {{ object.usuario.last_name }}</h2>
+            <h3>{{ object.tutor.get_categoria_display }}: {{ object.tutor.nome_completo }}</h3>
+            <h3>{{ object.tutor.get_documento_formatado.0 }}: {{ object.tutor.get_documento_formatado.1 }}</h3>
+        </div>
+        <section>
+            <ul>
+                <li><img src="{{ object.imagem.url }}" width="100px"></li>
+                <li>Data nascimento: {{ object.data_nascimento }}</li>
+                <li>Raça: {{ object.raca }}</li>
+                <li>Espécie: {{ object.raca.get_especie_display }}</li>
+                <li>Genêro: {{ object.get_genero_display }}</li>
+                <li>Castrado: {% if object.castrado %}Sim{% else %}Não{% endif %}</li>
+                <li>Descrição Médica {{ object.descricao_medica }}</li>
+                <li>
+                    Vaicnação
+                    <table border="1">
+                        <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Dose</th>
+                            <th>Data Vacinação</th>
+                            <th>Idade mínima</th>
+                            <th>Tempo de espera</th>
+                        </tr>
+                        </thead>
+                        {% for vacina in vacinacoes %}
+                            <tbody>
+                            <tr>
+                                <td>{{ vacina.vacina.nome }}</td>
+                                <td>{{ vacina.vacina.dose }}</td>
+                                <td>{{ vacina.data_vacinacao }}</td>
+                                <td>{{ vacina.vacina.idade_minima_em_semanas }} semanas de vida</td>
+                                <td>{{ vacina.vacina.tempo_de_espera_em_dias }} dias</td>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                    <a href="{% url 'servicos:adicionarvacina' pk=object.pk %}">
+                        <button type="button">Adicionar Vacina</button>
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h3>Endereço</h3>
+            <ul>
+                <li>CEP: {{ object.tutor.endereco.cep }}</li>
+                <li>Estado: {{ object.tutor.endereco.estado }}</li>
+                <li>Cidade: {{ object.tutor.endereco.cidade }}</li>
+                <li>Bairro: {{ object.tutor.endereco.bairro }}</li>
+                <li>Rua: {{ object.tutor.endereco.rua }}</li>
+                <li>Número: {{ object.tutor.endereco.numero }}</li>
+                <li>Complemento: {{ object.tutor.endereco.complemento }}</li>
+            </ul>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Login</legend>
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                {{ form.as_p }}
+            </fieldset>
+            <a href="{% url 'usuarios:recuperarconta' %}">Esqueci minha senha</a>
+            <button type="submit">Fazer Login</button>
+        </form>
+        <p>Em caso de primeiro login, acesse <b>esqueci minha senha</b> para alterar a mesma.</p>
+    </main>
+{% endblock %}

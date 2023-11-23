@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Autenticação
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+    <fieldset>
+        <legend>Recuperação de Conta</legend>
+        {{ form.as_p }}
+    </fieldset>
+        <a href="{% url 'usuarios:login' %}">Fazer Login</a>
+        {% if object.username %}
+            <button type="submit">Redefinir Senha</button>
+        {% else %}
+            <button type="submit">Verificar</button>
+        {% endif %}
+    </form>
+{% endblock %}

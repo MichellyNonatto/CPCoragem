@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ object.nome }}
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'servicos:listaservicos' %}">Serviços</a>
+            </li>
+            <li>
+                <a href="{% url 'servicos:adicionarservico' pk=servico.pk %}">Adicionar Pet ao Serviço</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{{ object.nome }}</h2>
+
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Espécie</th>
+                <th>Última Consulta</th>
+                <th>Observações</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            {% for grade in pets_cadastrado %}
+                <tbody>
+                <tr>
+                    <td>{{ grade.pet.nome }}</td>
+                    <td>{{ grade.pet.raca.get_especie_display }}</td>
+                    <td>{{ grade.ultima_visita }}</td>
+                    <td>{{ grade.observacao }}</td>
+                    <td>
+                        <ul>
+                            <li><a href="{% url 'servicos:editargrade' pk=grade.id %}">Editar</a></li>
+                            <li><a href="{% url 'servicos:verpet' pk=grade.pet_id %}">Informações do Pet</a></li>
+                            <li><a href="{% url 'servicos:deletarservico' servico_pk=grade.servico.pk pk=grade.id %}">Excluir Pet do Servico</a></li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </main>
+{% endblock %}

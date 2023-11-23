@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Excluir Pet do Servico
+{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>Você está prestes a excluir os dados do Pet referente a este serviço!</h2>
+        <p>Tenha certeza da ação que você está fazendo.</p>
+        <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div>
+                <button type="submit">Deletar</button>
+                <a href="{% url 'servicos:verservicos' pk=servico%}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Excluir Funcionário
+{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>Você está prestes a excluir os dados desse colaborador!</h2>
+        <p>Tenha certeza da ação que você está fazendo.</p>
+        <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div>
+                <button type="submit">Deletar</button>
+                <a href="{% url 'usuarios:verfuncionario' pk=funcionario_pk%}">Cancelar</a>
+            </div>
+        </form>
+    </main>
+{% endblock %}

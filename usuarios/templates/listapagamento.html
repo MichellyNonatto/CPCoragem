@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Financeiro
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <form method="get" action="{% url 'usuarios:pesquisarfinanceiro' %}">
+            <label>
+                <input name="query" placeholder="Nome, Documento, Endereco, Contato" type="search"
+                       value="{{ request.GET.query }}">
+            </label>
+            <input type="submit" value="Pesquisar">
+        </form>
+        <ul>
+            <a href="{% url 'usuarios:dashboard' pk=usuario_atual.pk %}">
+                <li>Dashboard</li>
+            </a>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Pagamentos</h1>
+        {% if object_list %}
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Débito</th>
+                    <th>Data Vencimento</th>
+                    <th>Dias corridos</th>
+                    <th>Opções</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pagamento in object_list %}
+                    {{ pagamento.cliente.pk }}
+                    <tr>
+                        <td>{{ pagamento.cliente.nome_completo }}</td>
+                        <td>R$ {{ pagamento.total_pagamento }}</td>
+                        <td>{{ pagamento.dia_vencimento }}</td>
+                        {% for dia_corrido in dias_corridos %}
+                            {% if dia_corrido.id == pagamento.pk %}
+                                <td>{{ dia_corrido.dias }} dias</td>
+                            {% endif %}
+                        {% endfor %}
+                        <th><a href="{% url 'usuarios:deletarcliente' pk=pagamento.cliente.pk %}">Desligar cliente do serviço</a></th>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nenhum pagamento foi encontrado em nossa base de dados.</p>
+            <a href="{% url 'usuarios:financeiro' %}">Financeiro</a>
+        {% endif %}
+    </main>
+
+{% endblock %}

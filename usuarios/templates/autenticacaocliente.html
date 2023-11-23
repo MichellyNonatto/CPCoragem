@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Autenticação para pagamento
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+    <fieldset>
+        <legend>Autenticação</legend>
+        {{ form.as_p }}
+    </fieldset>
+        {% if tipo == 'pagamento' %}
+            <button type="submit">Confirmar Pagamento</button>
+        {% else %}
+            <button type="submit">Verificar</button>
+        {% endif %}
+    </form>
+
+    <script>
+    const codigo = '{{ codigo }}'
+        console.log(codigo)
+    </script>
+{% endblock %}

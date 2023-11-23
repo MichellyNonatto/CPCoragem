@@ -1,0 +1,29 @@
+<html>
+<body>
+<main>
+    <h1>Detalhes Pagamento</h1>
+    <h2>Olá {{ nome_cliente }},</h2>
+    <section>
+        <p>Aqui estão os detalhes dos serviços prestados durande o mês de {{ data_validade }}:</p>
+
+        <ul>
+            {% for servico in servicos %}
+                <li>
+                    <b>{{ servico.0 }}</b> R$ {{ servico.1 }}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <section>
+        <h3>Valor total:</h3>
+        <p><b>R$ {{ valor_total }}</b> BRL</p>
+        <a href="#">Realizar Pagamento</a>
+        <p>Qualquer dúvida acesse nossos portais de comunicação.</p>
+    </section>
+    <footer>
+        <h5>Obrigado por escolher nosso serviços!</h5>
+        <p>Atenciosamente <b>&copy; Coragem</b></p>
+    </footer>
+</main>
+</body>
+</html>

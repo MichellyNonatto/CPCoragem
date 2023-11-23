@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {% if object.username %}
+        Editar Perfil
+    {% else %}
+        Editar Endereço
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <a href="{% url 'usuarios:dashboard' pk=usuario %}">
+                <li>Dashboard</li>
+            </a>
+            {% if object.username %}
+                <a href="{% url 'usuarios:editarendereco' pk=endereco %}">
+                    <li>Editar Endereço</li>
+                </a>
+            {% else %}
+                 <a href="{% url 'usuarios:editarperfil' pk=usuario %}">
+                    <li>Editar Perfil</li>
+                </a>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main>
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Editar {% if object.username %}Perfil{% else %}Endereço{% endif %}</legend>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </fieldset>
+            <div>
+                <button type="submit">Salvar</button>
+                <a href="{% url 'usuarios:dashboard' pk=request.user.pk %}">
+                    <button>Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </main>
+{% endblock %}
+
+
+

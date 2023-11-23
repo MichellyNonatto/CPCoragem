@@ -1,0 +1,24 @@
+{% load static %}
+{% load compress %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Serviços de creche e cuidados para animais de estimação.">
+    <meta name="keywords"
+          content="ccreche pet, cuidado de animais, hotel para cães, hospedagem para pets, daycare para animais, socialização de animais, pet-friendly, atividades ao ar livre, monitoramento 24 horas, pet sitter, banho e tosa">
+    <meta name="author" content="Equipe Coragem">
+
+    <title>Coragem | {% block title %}{% endblock %}</title>
+
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+<body>
+{% block content %}
+{% endblock %}
+</body>
+</html>

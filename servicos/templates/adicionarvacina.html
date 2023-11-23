@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Adicionar Vacina
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'servicos:listapets' %}">Pets</a>
+            </li>
+            <li>
+                <a href="{% url 'servicos:verpet' pk=pet %}">Ver Pet</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Editar {{ titulo }}</legend>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </fieldset>
+            <div>
+                <button type="submit">Salvar</button>
+                <a href="{% url 'servicos:verpet' pk=pet %}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </main>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Serviços
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <form method="get" action="{% url 'servicos:pesquisarservicos' %}">
+            <label>
+                <input name="query" placeholder="Nome do serviço" type="search"
+                       value="{{ request.GET.query }}">
+            </label>
+            <input type="submit" value="Pesquisar">
+        </form>
+        <ul>
+            <a href="{% url 'usuarios:dashboard' pk=usuario_pk %}">
+                <li>Dashboard</li>
+            </a>
+        </ul>
+    </nav>
+    <main>
+        {% if object_list %}
+            <h1>Serviços</h1>
+
+            <table border="1">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Serviço</th>
+                    <th>Valor</th>
+                    <th>Dia de Funcionamento</th>
+                    <th>Opções</th>
+                </tr>
+                </thead>
+                {% for servico in object_list %}
+                    <tbody>
+                    <tr>
+                        <td>
+                            {{ servico.nome }}
+                        </td>
+                        <td>
+                            {{ servico.funcionarios.first.funcao }}
+                        </td>
+                        <td>
+                            R${{ servico.valor }}
+                        </td>
+                        <td>
+                            {% for dia in servico.dias_da_semana.values %}
+                                <ul>
+                                    <li>{{ dia.dia }}</li>
+                                </ul>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="{% url 'servicos:verservicos' pk=servico.pk %}">Mais informações</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>Nenhum Serviço foi encontrado em nossa base de dados.</p>
+            <a href="{% url 'servicos:listaservicos' %}">Serviços</a>
+        {% endif %}
+    </main>
+
+{% endblock %}

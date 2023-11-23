@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Detalhes
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'usuarios:listafuncionarios' %}">Funcionários</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div>
+            <div>
+                <h2>{{ object.usuario.nome_completo }}</h2>
+                <img src="{{ object.imagem.url }}" width="100px">
+            </div>
+            <h3>{{ object.usuario.get_documento_formatado.0 }} {{ object.usuario.get_documento_formatado.1 }}</h3>
+        </div>
+        <section>
+            <ul>
+                <li>Data criação: {{ object.usuario.date_joined }}</li>
+                <li>E-mail: {{ object.usuario.email }}</li>
+                {% if form.as_p %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for="id_turno">Turno:</label>
+                        {{ form.turno }}
+                        <br>
+                        <label for="id_turno">Cargo:</label>
+                        {{ form.funcao }}
+                        <br>
+                        <button type="submit">Salvar</button>
+                        <a href="{% url 'usuarios:verfuncionario' pk=object.pk %}">
+                            <button type="button">Cancelar</button>
+                        </a>
+                    </form>
+                {% else %}
+                    <li>Turno: {{ object.get_turno_display }}</li>
+                    <li>Cargo: {{ object.funcao }}</li>
+                    <a href="{% url 'usuarios:editarfuncionario' pk=object.pk %}">Editar Funcionário</a>
+                    <a href="{% url 'usuarios:deletarfuncionario' pk=object.usuario_id %}">Excluir Funcionário</a>
+                {% endif %}
+            </ul>
+        </section>
+    </main>
+{% endblock %}
