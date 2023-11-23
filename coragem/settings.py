@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w&v5g!ag2wqvf7quuz41mr0i-)*5l5%)hj+1ab6e(daw7jr*3+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ['site em produção']
+CSRF_TRUSTED_ORIGINS = ['*']
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 # Application definition
