@@ -217,11 +217,6 @@ As classes informadas abaixo é referente a classe de vizualisação do Django, 
 
 <div align="center">
   <a href="https://github.com/MichellyNonatto">
-   <img height="200em" src="https://github.com/MichellyNonatto/CPCoragem/assets/101263547/6ae7fead-5d91-4f46-9e10-1e973e5095b9"/>
-  </a>
-</div>
-<div align="center">
-  <a href="https://github.com/MichellyNonatto">
    <img height="100em" src="https://github.com/MichellyNonatto/CPCoragem/assets/101263547/6ae7fead-5d91-4f46-9e10-1e973e5095b9"/>
   </a>
 </div>
