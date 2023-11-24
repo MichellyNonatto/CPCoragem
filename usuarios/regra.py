@@ -1,7 +1,6 @@
 from datetime import datetime, time, date
+from django.shortcuts import render
 from django.urls import reverse, resolve
-from django.http import HttpResponseServerError, HttpResponseForbidden
-
 import holidays
 from usuarios.models import Funcionario
 
@@ -20,7 +19,7 @@ class Funcionamento:
         if self._inicio <= now <= self._fim and day <= 4 and holiday:
             return True
         else:
-            return True  # Ao realizar o deploy torne esse return como False
+            return False  # Ao realizar o deploy torne esse return como False
 
     @staticmethod
     def mensagem(now=None):
@@ -37,12 +36,13 @@ class Funcionamento:
 
 class FuncionamentoMiddleware:
     def __init__(self, get_response):
+        self.request = None
         self.get_response = get_response
 
     def __call__(self, request):
         funcionamento = Funcionamento()
         if not funcionamento.get_funcionamento():
-            return HttpResponseServerError("<h1>Serviço não disponível (503)</h1")
+            return render(self.request, 'error/error_504.html')
 
         response = self.get_response(request)
         return response
@@ -81,12 +81,13 @@ class Urls:
 
 class UrlsMiddleware:
     def __init__(self, get_response):
+        self.request = None
         self.get_response = get_response
 
     def __call__(self, request):
         acesso = Urls()
         if not acesso.get_acesso_urls(request.user, request.path, resolve(request.path_info).app_name):
-            return HttpResponseForbidden("<h1>Acesso Proibido (403)</h1>")
+            return render(self.request, 'error/error_403.html')
 
         response = self.get_response(request)
         return response
