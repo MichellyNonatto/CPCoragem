@@ -48,7 +48,7 @@ O código abaixo quando executado irá baixar todas a dependências necessárias
 ```bash
  pip install -r requirements.txt
 ```
-* A base de dados já está funcionando com a conexão do Railwai, então não é necessario fazer o migrate.
+* A base de dados já está funcionando com a conexão do Railway, então não é necessário fazer o `python manage.py migrate`.
 * Pronto! Agora é só utilizar o projeto e explora-lo.
 ```bash
  python manage.py runserver
