@@ -6,7 +6,7 @@ from usuarios.models import Usuario, Funcionario
 
 #   Caso seja a primeira vez que executa o migration utilize o command  ``python manage.py diaDaSemana``
 class DiaDaSemana(models.Model):
-    dia = models.CharField(max_length=10)
+    dia = models.CharField(max_length=20)
 
     @staticmethod
     def create_dias_da_semana():
