@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView
@@ -147,7 +147,7 @@ class ListaFuncionarios(LoginRequiredMixin, ListView):
         funcionarios = Funcionario.objects.filter(usuario=self.request.user)
         for funcionario in funcionarios:
             if funcionario.funcao.descricao != 'Gerente':
-                return render(self.request, 'error/error_204.html')
+                return HttpResponse("<h1>Sem contexto (204)</h1>")
             return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -343,6 +343,5 @@ class PesquisarPagamento(ListaPagamentos):
 class DeletarCliente(LoginRequiredMixin, DeleteView):
     template_name = 'deletarcliente.html'
     model = Usuario
-
     def get_success_url(self):
         return reverse('usuarios:listafuncionarios')

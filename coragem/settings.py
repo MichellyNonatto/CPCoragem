@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w&v5g!ag2wqvf7quuz41mr0i-)*5l5%)hj+1ab6e(daw7jr*3+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-#CSRF_TRUSTED_ORIGINS = ['*']
+# CSRF_TRUSTED_ORIGINS = ['site em produção']
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 # Application definition
@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'usuarios.apps.UsuariosConfig',
     'servicos.apps.ServicosConfig',
-    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -130,10 +129,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-
-COMPRESS_ROOT = BASE_DIR / 'static'
-COMPRESS_ENABLED = True
-STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

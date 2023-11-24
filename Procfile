@@ -1,1 +1,1 @@
-web: gunicorn coragem.wsgi --log-file -
+web: gunicorn webfy.wsgi --log-file -

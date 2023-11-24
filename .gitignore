@@ -1,11 +1,5 @@
 /.idea
+venv
 db.sqlite3
 
-# dependencies
-node_modules
-venv
 
-
-# node
-package.json
-package-lock.json
