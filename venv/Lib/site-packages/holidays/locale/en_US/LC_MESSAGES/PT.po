@@ -1,0 +1,136 @@
+# Portugal holidays en_US localization.
+# Authors: PPsyrius <ppsyrius@ppsyrius.dev>, (c) 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Python Holidays 0.20\n"
+"POT-Creation-Date: 2023-03-07 19:38+0700\n"
+"PO-Revision-Date: 2023-02-20 19:10+0200\n"
+"Last-Translator: PPsyrius <ppsyrius@ppsyrius.dev>\n"
+"Language-Team: Python Holidays localization team\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.2.2\n"
+
+msgid "Ano Novo"
+msgstr "New Year's Day"
+
+#. Good Friday.
+msgid "Sexta-feira Santa"
+msgstr "Good Friday"
+
+#. Easter Sunday.
+msgid "Páscoa"
+msgstr "Easter Sunday"
+
+msgid "Corpo de Deus"
+msgstr "Corpus Christi"
+
+msgid "Implantação da República"
+msgstr "Republic Day"
+
+msgid "Dia de Todos os Santos"
+msgstr "All Saints Day"
+
+msgid "Restauração da Independência"
+msgstr "Restoration of Independence Day"
+
+msgid "Dia da Liberdade"
+msgstr "Freedom Day"
+
+msgid "Dia do Trabalhador"
+msgstr "Labour Day"
+
+msgid "Dia de Camões, de Portugal e da Raça"
+msgstr "Day of Camões, Portugal, and the Portuguese Race"
+
+msgid "Dia de Portugal, de Camões e das Comunidades Portuguesas"
+msgstr "Day of Portugal, Camões, and the Portuguese Communities"
+
+msgid "Dia de Portugal"
+msgstr "Portugal Day"
+
+msgid "Assunção de Nossa Senhora"
+msgstr "Assumption Day"
+
+msgid "Imaculada Conceição"
+msgstr "Immaculate Conception"
+
+msgid "Dia de Natal"
+msgstr "Christmas"
+
+msgid "Carnaval"
+msgstr "Carnival"
+
+msgid "Véspera de Natal"
+msgstr "Christmas Eve"
+
+msgid "26 de Dezembro"
+msgstr "Boxing Day"
+
+msgid "Véspera de Ano Novo"
+msgstr "New Year's Eve"
+
+msgid "Dia de Santo António"
+msgstr "St. Anthony's Day"
+
+msgid "Dia de Santa Joana"
+msgstr "St. Joanna's Day"
+
+msgid "Quinta-feira da Ascensão"
+msgstr "Ascension of Jesus"
+
+msgid "Dia de São João"
+msgstr "St. John's Day"
+
+msgid "Dia de Nossa Senhora das Graças"
+msgstr "Feast of Our Lady of Graces"
+
+msgid "Dia de Nossa Senhora de Mércoles"
+msgstr "Feast of Our Lady of Mércoles"
+
+msgid "Dia de Santa Isabel"
+msgstr "St. Elizabeth's Day"
+
+msgid "Dia de São Pedro"
+msgstr "St. Peter's Day"
+
+msgid "Dia do Município de Faro"
+msgstr "Municipal Holiday (Faro)"
+
+msgid "Dia do Município da Guarda"
+msgstr "Municipal Holiday (Guarda)"
+
+msgid "Dia do Município de Leiria"
+msgstr "Municipal Holiday (Leiria)"
+
+msgid "Dia do Município de Portalegre"
+msgstr "Municipal Holiday (Portalegre)"
+
+msgid "Dia de São José"
+msgstr "St. Joseph's Day"
+
+msgid "Dia de Bocage"
+msgstr "Bocage Day"
+
+msgid "Dia de Nossa Senhora da Agonia"
+msgstr "Feast of Our Lady of Sorrows"
+
+msgid "Dia de São Mateus"
+msgstr "St. Matthew's Day"
+
+msgid "Dia da Região Autónoma dos Açores"
+msgstr "Day of the Autonomous Region of the Azores"
+
+msgid "Dia da Região Autónoma da Madeira"
+msgstr "Day of the Autonomous Region of Madeira"
+
+msgid "Dia da Região Autónoma da Madeira e das Comunidades Madeirenses"
+msgstr "Day of the Autonomous Region of Madeira and the Madeiran Communities"
+
+msgid "Primeira Oitava"
+msgstr "1st Octave"
