@@ -3526,7 +3526,7 @@ jQuery.Callbacks = function( options ) {
 			locked = locked || options.once;
 
 			// Execute callbacks for all pending executions,
-			// respecting firingIndex overrides and runtime changes
+			// respecting firingIndex overrides and runtime.txt changes
 			fired = firing = true;
 			for ( ; queue.length; firingIndex = -1 ) {
 				memory = queue.shift();
