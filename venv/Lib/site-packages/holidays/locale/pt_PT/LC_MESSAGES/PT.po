@@ -1,0 +1,136 @@
+# Portugal holidays pt_PT localization.
+# Authors: PPsyrius <ppsyrius@ppsyrius.dev>, (c) 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Python Holidays 0.20\n"
+"POT-Creation-Date: 2023-03-07 19:38+0700\n"
+"PO-Revision-Date: 2023-02-20 19:10+0200\n"
+"Last-Translator: PPsyrius <ppsyrius@ppsyrius.dev>\n"
+"Language-Team: Python Holidays localization team\n"
+"Language: pt_PT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.2.2\n"
+
+msgid "Ano Novo"
+msgstr ""
+
+#. Good Friday.
+msgid "Sexta-feira Santa"
+msgstr ""
+
+#. Easter Sunday.
+msgid "Páscoa"
+msgstr ""
+
+msgid "Corpo de Deus"
+msgstr ""
+
+msgid "Implantação da República"
+msgstr ""
+
+msgid "Dia de Todos os Santos"
+msgstr ""
+
+msgid "Restauração da Independência"
+msgstr ""
+
+msgid "Dia da Liberdade"
+msgstr ""
+
+msgid "Dia do Trabalhador"
+msgstr ""
+
+msgid "Dia de Camões, de Portugal e da Raça"
+msgstr ""
+
+msgid "Dia de Portugal, de Camões e das Comunidades Portuguesas"
+msgstr ""
+
+msgid "Dia de Portugal"
+msgstr ""
+
+msgid "Assunção de Nossa Senhora"
+msgstr ""
+
+msgid "Imaculada Conceição"
+msgstr ""
+
+msgid "Dia de Natal"
+msgstr ""
+
+msgid "Carnaval"
+msgstr ""
+
+msgid "Véspera de Natal"
+msgstr ""
+
+msgid "26 de Dezembro"
+msgstr ""
+
+msgid "Véspera de Ano Novo"
+msgstr ""
+
+msgid "Dia de Santo António"
+msgstr ""
+
+msgid "Dia de Santa Joana"
+msgstr ""
+
+msgid "Quinta-feira da Ascensão"
+msgstr ""
+
+msgid "Dia de São João"
+msgstr ""
+
+msgid "Dia de Nossa Senhora das Graças"
+msgstr ""
+
+msgid "Dia de Nossa Senhora de Mércoles"
+msgstr ""
+
+msgid "Dia de Santa Isabel"
+msgstr ""
+
+msgid "Dia de São Pedro"
+msgstr ""
+
+msgid "Dia do Município de Faro"
+msgstr ""
+
+msgid "Dia do Município da Guarda"
+msgstr ""
+
+msgid "Dia do Município de Leiria"
+msgstr ""
+
+msgid "Dia do Município de Portalegre"
+msgstr ""
+
+msgid "Dia de São José"
+msgstr ""
+
+msgid "Dia de Bocage"
+msgstr ""
+
+msgid "Dia de Nossa Senhora da Agonia"
+msgstr ""
+
+msgid "Dia de São Mateus"
+msgstr ""
+
+msgid "Dia da Região Autónoma dos Açores"
+msgstr ""
+
+msgid "Dia da Região Autónoma da Madeira"
+msgstr ""
+
+msgid "Dia da Região Autónoma da Madeira e das Comunidades Madeirenses"
+msgstr ""
+
+msgid "Primeira Oitava"
+msgstr ""
