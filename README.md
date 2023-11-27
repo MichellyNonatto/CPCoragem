@@ -48,10 +48,7 @@ O código abaixo quando executado irá baixar todas a dependências necessárias
 ```bash
  pip install -r requirements.txt
 ```
-* Agora de inicio a construção da base de dados
-```bash
- python manage.py migrate
-```
+* A base de dados já está funcionando com a conexão do Railway, então não é necessário fazer o `python manage.py migrate`.
 * Pronto! Agora é só utilizar o projeto e explora-lo.
 ```bash
  python manage.py runserver
@@ -76,79 +73,51 @@ O código abaixo quando executado irá baixar todas a dependências necessárias
     python manage.py collectstatic # Atualizar a pasta responsável por realizar o POST em produção dos arquivos estáticos
 ```
 * Requirements
-  - amqp ``5.2.0``
-  - arrow ``1.3.0``
-  - asgiref ``3.7.2``
-  - async-timeout ``4.0.3``
-  - bcrypt ``4.0.1``
-  - billiard ``4.2.0``
-  - binaryornot ``0.4.4``
-  - celery ``5.3.5``
-  - certifi ``2023.7.22``
-  - chardet ``5.2.0``
-  - charset-normalizer ``3.3.2``
-  - click ``8.1.7``
-  - click-didyoumean ``0.3.0``
-  - click-plugins ``1.1.1``
-  - click-repl ``0.3.0``
-  - colorama ``0.4.6``
-  - cookiecutter ``2.4.0``
-  - django-appconf ``1.0.5``
-  - django-browser-reload ``1.12.1``
-  - django-compressor ``4.4``
-  - django-tailwind ``3.6.0``
-  - holidays ``0.35``
-  - idna ``3.4``
-  - Jinja2 ``3.1.2``
-  - kombu ``5.3.3``
-  - markdown-it-py ``3.0.0``
-  - MarkupSafe ``2.1.3``
-  - mdurl ``0.1.2``
-  - numpy ``1.26.1``
-  - Pillow ``10.1.0``
-  - prompt-toolkit ``3.0.40``
-  - Pygments ``2.16.1``
-  - python-dateutil ``2.8.2``
-  - python-slugify ``8.0.1``
-  - pytz ``2023.3.post1``
-  - pywin32 ``306``
-  - PyYAML ``6.0.1``
-  - rcssmin ``1.1.1``
-  - redis ``5.0.1``
-  - requests ``2.31.0``
-  - rich ``13.7.0``
-  - rjsmin ``1.2.1``
-  - six ``1.16.0``
-  - sqlparse ``0.4.4``
-  - text-unidecode ``1.3``
-  - types-python-dateutil ``2.8.19.14``
-  - typing_extensions ``4.8.0``
-  - tzdata ``2023.3``
-  - Unidecode ``1.3.7``
-  - urllib3 ``2.1.0``
-  - vine ``5.1.0``
-  - wcwidth ``0.2.9``
-  - whitenoise ``6.6.0``
+  - amqp '5.2.0'
+  - asgiref '3.7.2'
+  - billiard '4.2.0'
+  - celery '5.3.5'
+  - click '8.1.7'
+  - click-didyoumean '0.3.0'
+  - click-plugins '1.1.1'
+  - click-repl '0.3.0'
+  - colorama '0.4.6'
+  - Django '4.2.7'
+  - gunicorn '21.2.0'
+  - holidays '0.35'
+  - kombu '5.3.4'
+  - packaging '23.2'
+  - Pillow '10.1.0'
+  - prompt-toolkit '3.0.41'
+  - psycopg2 '2.9.9'
+  - python-dateutil '2.8.2'
+  - six '1.16.0'
+  - sqlparse '0.4.4'
+  - typing_extensions '4.8.0'
+  - tzdata '2023.3'
+  - Unidecode '1.3.7'
+  - vine '5.1.0'
+  - wcwidth '0.2.12'
+  - whitenoise '6.6.0'
+
 ***
 ### Estrutura de Pastas
 ```
 projeto/
-├── .idea/
-├── coragem/            # Aplicação principal
-│   ├── migrations/    # Migrações do banco de dados
-│   ├── static/        # Arquivos estáticos específicos do aplicativo
-│   ├── templates/     # Modelos HTML específicos do aplicativo
+├── coragem/                # Aplicação principal
+│   ├── migrations/        # Migrações do banco de dados
+│   ├── static/            # Arquivos estáticos específicos do aplicativo
+│   ├── templates/         # Modelos HTML específicos do aplicativo
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
 │   ├── models.py
 │   ├── tests.py
 │   └── views.py
-├── media/              # Uploads de mídia
-├── static/             # Arquivos estáticos comuns a várias aplicações
-├── servicos/           # Possíveis serviços do projeto
-├── theme/              # Arquivos relacionados ao tema do projeto
-├── usuarios/           # Aplicação de usuários
+├── media/                  # Uploads de mídia
+├── static/                 # Arquivos estáticos comuns a várias aplicações
+├── servicos/               # Possíveis serviços do projeto
+├── usuarios/               # Aplicação de usuários
 │   ├── migrations/
 │   ├── static/
 │   ├── templates/
@@ -158,13 +127,14 @@ projeto/
 │   ├── models.py
 │   ├── tests.py
 │   └── views.py
-├── manage.py           # Script de gerenciamento do Django
-├── celerybeat-schedule.bak  # Extensão para agendar tarefas periódicas em uma aplicação Django.
+├── celerybeat-schedule.bak # Extensão para agendar tarefas periódicas em uma aplicação Django.
 ├── celerybeat-schedule.dat
 ├── celerybeat-schedule.dir
-├── requirements.txt    # Dependências do projeto
-├── tailwind.config.js  # Configuração do Tailwind CSS
-
+├── manage.py               # Script de gerenciamento do Django
+├── Procfile                # Arquivo de configuração para ambientes de implantação
+├── README.md               # Documentação do projeto
+├── requirements.txt        # Dependências do projeto
+├── runtime.txt             # Especificação da versão do Python a ser usada
 ```
 ***
 ### Estrutura de Classes
