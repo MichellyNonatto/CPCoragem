@@ -8,18 +8,15 @@ from usuarios.models import Funcionario
 class Funcionamento:
     def __init__(self):
         self._inicio = time(8, 30)
-        self._fim = time(23, 00)
+        self._fim = time(18, 00)
 
     def get_funcionamento(self):
         br_holiday = holidays.country_holidays('BR')
-        holiday = date(datetime.now().year, datetime.now().month, datetime.now().day) in br_holiday
-        now = datetime.now().time()
-        day = datetime.now().weekday()
+        feriado = date(datetime.now().year, datetime.now().month, datetime.now().day) in br_holiday
+        hora = datetime.now().time()
+        semana = datetime.now().weekday()
 
-        if self._inicio <= now <= self._fim and day <= 4 and holiday:
-            return True
-        else:
-            return False  # Ao realizar o deploy torne esse return como False
+        return self._inicio <= hora <= self._fim and semana <= 4 and not feriado
 
     @staticmethod
     def mensagem(now=None):
