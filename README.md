@@ -53,10 +53,6 @@ O código abaixo quando executado irá baixar todas a dependências necessárias
 ```bash
  python manage.py runserver
 ```
-* Caso queira alterar algum estilo utilize esse comando para recarregamento das classes Tailwind do projeto.
-```bash
- npx tailwindcss -i ./static/src/input.css -o ./static/src/output.css --watch
-```
 
 ***
 
@@ -169,8 +165,7 @@ As classes informadas abaixo é referente a classe de vizualisação do Django, 
 |`AdicionarVacinaPet`|`servico`|Vincula uma vacina cadastrada no banco de dados ao pet.|
 |`VincularTutor`|`servico`|Retorna uma lista de tutores existentes na base de dados para vincular ao novo pet.|
 |`AdicionarPet`|`servico`|Cria uma nova instância pet.|
-|`PesquisarTutor`|`servico`||
-|``|`servico`|Retorna perfis de tutores com base na informação enviada pelo método GET.|
+|`PesquisarTutor`|`servico`|Retorna perfis de tutores com base na informação enviada pelo método GET.|
 |`AdicionarTutor`|`servico`|Cria uma nova instância para tutor|
 |`ListaServicos`|`servico`|Retorna uma lista de serviços dispoiníveis pelo comércio.|
 |`PesquisarServico`|`servico`|Retorna serviços com base na informação enviada pelo método GET.|
