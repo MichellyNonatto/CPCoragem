@@ -1,11 +1,7 @@
-# Creche Pet    |   Coragem
+# Creche Pet | Coragem
 
-> Desenvolvimento de um Sistema de Administração de Serviços especializado para atender às necessidades específicas da área de creche pet. 
-Este projeto visa otimizar a gestão operacional e administrativa de estabelecimentos dedicados ao cuidado de animais de estimação, proporcionando uma solução eficiente e personalizada. Com funcionalidades adaptadas às demandas únicas de uma creche pet, o sistema abrange desde o controle de agendamentos e registros de atividades diárias até a gestão financeira, garantindo uma operação organizada e centrada no bem-estar dos animais. Esta iniciativa busca melhorar a eficiência operacional e a experiência do cliente em estabelecimentos que oferecem serviços de creche para pets, elevando a qualidade dos cuidados prestados e impulsionando o sucesso do negócio.
-
-
-
-
+> Desenvolvimento de um Sistema de Administração de Serviços especializado para atender às necessidades específicas da área de creche pet.
+> Este projeto visa otimizar a gestão operacional e administrativa de estabelecimentos dedicados ao cuidado de animais de estimação, proporcionando uma solução eficiente e personalizada. Com funcionalidades adaptadas às demandas únicas de uma creche pet, o sistema abrange desde o controle de agendamentos e registros de atividades diárias até a gestão financeira, garantindo uma operação organizada e centrada no bem-estar dos animais. Esta iniciativa busca melhorar a eficiência operacional e a experiência do cliente em estabelecimentos que oferecem serviços de creche para pets, elevando a qualidade dos cuidados prestados e impulsionando o sucesso do negócio.
 
 ## Autores
 
@@ -13,62 +9,73 @@ Este projeto visa otimizar a gestão operacional e administrativa de estabelecim
 - [@paulaandrezza](https://github.com/paulaandrezza)
 - [@St4rThabs](https://github.com/St4rThabs)
 
-
 ### Contribuintes
 
 - [@MarceloHribeiro](https://github.com/MarceloHribeiro)
 - [@Bea-Querubim](https://github.com/Bea-Querubim)
 
-
 # Instalação
+
 > A instalação de dependências serão necessárias para o uso local do sistema;
 
 > Para acessar o projeto, é necessário ter o Python3 versão 3.9 ou superior instalado no computador.
 
-***
+---
 
 ### Instalação e Acesso Local
-* Inicie baixando o repositório através do terminal, seja utilizando o `git bash`, `cmd`, `conda` ou o de sua preferência
+
+- Inicie baixando o repositório através do terminal, seja utilizando o `git bash`, `cmd`, `conda` ou o de sua preferência
+
 ```bash
  git clone https://github.com/MichellyNonatto/Coragem.git
 ```
 
-* Com a utilização do Framework Django é necessário que criemos um novo ambiente virtual para não ocorrer conflito de versões
-```bash
- python -m venv env
-```
- `env` é nome do ambiente virtual, você pode modificar para qualquer outro nome.
+- Com a utilização do Framework Django é necessário que criemos um novo ambiente virtual para não ocorrer conflito de versões
 
-* Após a instalação abra o prompt de comando e ative o ambiente virtual criado no passo anterior.
+```bash
+ python -m venv venv
+```
+
+`env` é nome do ambiente virtual, você pode modificar para qualquer outro nome.
+
+- Após a instalação abra o prompt de comando e ative o ambiente virtual criado no passo anterior.
+
 ```bash
  ./venv/Scripts/Activate.ps1
 ```
-* O passo a seguir pode demorar um pouco para ser concluído, isso irá variar das configurações do computador.
-O código abaixo quando executado irá baixar todas a dependências necessárias para o funcionamento do projeto.
+
+- O passo a seguir pode demorar um pouco para ser concluído, isso irá variar das configurações do computador.
+  O código abaixo quando executado irá baixar todas a dependências necessárias para o funcionamento do projeto.
+
 ```bash
  pip install -r requirements.txt
 ```
-* A base de dados já está funcionando com a conexão do Railway, então não é necessário fazer o `python manage.py migrate`.
-* Pronto! Agora é só utilizar o projeto e explora-lo.
+
+- A base de dados já está funcionando com a conexão do Railway, então não é necessário fazer o `python manage.py migrate`.
+- Pronto! Agora é só utilizar o projeto e explora-lo.
+
 ```bash
  python manage.py runserver
 ```
 
-***
+---
 
-## Informações para Manutenção 
+## Informações para Manutenção
+
 #### Versões dos softwares dependentes
 
-* Python `v3.9.13`
-* Django `4.2.6`
+- Python `v3.9.13`
+- Django `4.2.6`
 
 ```bash
     pip freeze > requirements.txt #  Utilizar sempre antes de fazer o deploy do projeto
 ```
+
 ```
     python manage.py collectstatic # Atualizar a pasta responsável por realizar o POST em produção dos arquivos estáticos
 ```
-* Requirements
+
+- Requirements
   - amqp '5.2.0'
   - asgiref '3.7.2'
   - billiard '4.2.0'
@@ -96,8 +103,10 @@ O código abaixo quando executado irá baixar todas a dependências necessárias
   - wcwidth '0.2.12'
   - whitenoise '6.6.0'
 
-***
+---
+
 ### Estrutura de Pastas
+
 ```
 projeto/
 ├── coragem/                # Aplicação principal
@@ -132,49 +141,52 @@ projeto/
 ├── requirements.txt        # Dependências do projeto
 ├── runtime.txt             # Especificação da versão do Python a ser usada
 ```
-***
+
+---
+
 ### Estrutura de Classes
 
-Cada classe tem objetivo de realizar um método CRUD com base ao dados salvos no sistema. 
+Cada classe tem objetivo de realizar um método CRUD com base ao dados salvos no sistema.
 As classes informadas abaixo é referente a classe de vizualisação do Django, ou seja estão localizadas em `views.py` do app indicado.
 
+| Nome                      | App        | Descrição                                                                                                                                                                                                                                   |
+| :------------------------ | :--------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `CustomLoginView`         | `usuarios` | Retorna um formulário de autenticação de login. Classe principal de funcionamento do sistema, consistendo na regra de negócio `acesso em horários comerciais`.                                                                              |
+| `RecuperarConta`          | `usuarios` | Retorna um formulário de autenticação por e-mail.                                                                                                                                                                                           |
+| `Autenticacao`            | `usuarios` | Faz autenticação da validade do e-mail e usuário com base na regra de autenticação do arquivo `form` tenho a herança de `AutenticacaoContaForm`.                                                                                            |
+| `AtualizarSenha`          | `usuarios` | Retorna um formulário de update de senha, fazendo a criptográfia do mesmo antes de retornar a informação para o banco de dados.                                                                                                             |
+| `Dashboard`               | `usuarios` | Retorna informações básicas do usuário autenticado.                                                                                                                                                                                         |
+| `EditarPerfilUsuario`     | `usuarios` | Retorna um formulário de update de informações do usuário autenticado, podendo modificar dados que estão permitido na regra desenvolvida na classe.                                                                                         |
+| `EditarPerfilEndereco`    | `usuarios` | Retorna um formulário de update de informações do endereço do usuário autenticado, podendo quaisquer dado implantado na modelagem da tabela.                                                                                                |
+| `ListaFuncionarios`       | `usuarios` | Retorna informações permitidas pela classe de todos os usuários com vinculo a tabela funcionário existente no sistema                                                                                                                       |
+| `PesquisaFuncionario`     | `usuarios` | Retorna perfis com base na informação enviada pelo método GET.                                                                                                                                                                              |
+| `VerFuncionario`          | `usuarios` | Retorna informações encapsulada conforme a regra de privacidade de informações.                                                                                                                                                             |
+| `EditarFuncionario`       | `usuarios` | Retorna informações encapsulada e editáveis conforme a regra de privacidade de informações.                                                                                                                                                 |
+| `DeletarFuncionario`      | `usuarios` | Deleta um usuário com base em seu id e permissão de administrador, se concedida.                                                                                                                                                            |
+| `AdicionarFuncionario`    | `usuarios` | Adiciona um novo usuário vinculado há categoria `funcionário` e herda a classe do arquivo form `CriarContaForm`.                                                                                                                            |
+| `AutenticacaoClienteView` | `usuarios` | Verifica o e-mail e documento cadastrados do tutor, realizando a validade do uso para pagamento do mesmo.                                                                                                                                   |
+| `CriarNovoPagamento`      | `usuarios` | Formulário que retorna ao cliente qual tipo de pagamento quer realizar e cria uma nova instancia em pagamento\_\_cliente ao ser realizado com sucesso. Essa classe é puramento ilustrativa, não é realizado nenhum tipo de pagamaneto real. |
+| `ListaPagamentos`         | `usuarios` | Retorna os pagamento pendentes e a quantidade de dias que ele está vencido.                                                                                                                                                                 |
+| `PesquisarPagamento`      | `usuarios` | Retorna perfis de pagamento com base na informação enviada pelo método GET.                                                                                                                                                                 |
+| `DeletarCliente`          | `usuarios` | Realiza o delete do usuário com a categoria `Tutor`                                                                                                                                                                                         |
+| `ListaPets`               | `servicos` | Retorna informações permitidas pela classe de todos os pets cadastrado no banco de dados                                                                                                                                                    |
+| `PesquisaPet`             | `servicos` | Retorna perfis de pets com base na informação enviada pelo método GET.                                                                                                                                                                      |
+| `VerPet`                  | `servicos` | Retorna informações encapsulada conforme a regra de privacidade de informações.                                                                                                                                                             |
+| `AdicionarVacinaPet`      | `servico`  | Vincula uma vacina cadastrada no banco de dados ao pet.                                                                                                                                                                                     |
+| `VincularTutor`           | `servico`  | Retorna uma lista de tutores existentes na base de dados para vincular ao novo pet.                                                                                                                                                         |
+| `AdicionarPet`            | `servico`  | Cria uma nova instância pet.                                                                                                                                                                                                                |
+| `PesquisarTutor`          | `servico`  | Retorna perfis de tutores com base na informação enviada pelo método GET.                                                                                                                                                                   |
+| `AdicionarTutor`          | `servico`  | Cria uma nova instância para tutor                                                                                                                                                                                                          |
+| `ListaServicos`           | `servico`  | Retorna uma lista de serviços dispoiníveis pelo comércio.                                                                                                                                                                                   |
+| `PesquisarServico`        | `servico`  | Retorna serviços com base na informação enviada pelo método GET.                                                                                                                                                                            |
+| `VerServicos`             | `servico`  | Retorna uma lista de pets cadastrados no serviço                                                                                                                                                                                            |
+| `EditarGrade`             | `servico`  | Atualiza as informações do pet há grade, servindo como meio de presença do pet ao serviço.                                                                                                                                                  |
+| `AdicionarPetServico`     | `servico`  | Vincula um pet ao serviço.                                                                                                                                                                                                                  |
+| `DeletarPetServico`       | `servico`  | deleta a instancia pet\_\_servico da grade                                                                                                                                                                                                  |
 
-| Nome   | App       | Descrição                                   |
-| :---------- | :--------- | :------------------------------------------ |
-| `CustomLoginView`      | `usuarios` | Retorna um formulário de autenticação de login. Classe principal de funcionamento do sistema, consistendo na regra de negócio `acesso em horários comerciais`. |
-|`RecuperarConta`|`usuarios`| Retorna um formulário de autenticação por e-mail. |
-|`Autenticacao`|`usuarios`|Faz autenticação da validade do e-mail e usuário com base na regra de autenticação do arquivo `form` tenho a herança de `AutenticacaoContaForm`.|
-|`AtualizarSenha`|`usuarios`|Retorna um formulário de update de senha, fazendo a criptográfia do mesmo antes de retornar a informação para o banco de dados.|
-|`Dashboard`|`usuarios`|Retorna informações básicas do usuário autenticado.|
-|`EditarPerfilUsuario`|`usuarios`|Retorna um formulário de update de informações do usuário autenticado, podendo modificar dados que estão permitido na regra desenvolvida na classe.|
-|`EditarPerfilEndereco`|`usuarios`|Retorna um formulário de update de informações do endereço do usuário autenticado, podendo quaisquer dado implantado na modelagem da tabela.|
-|`ListaFuncionarios`|`usuarios`|Retorna informações permitidas pela classe de todos os usuários com vinculo a tabela funcionário existente no sistema|
-|`PesquisaFuncionario`|`usuarios`|Retorna perfis com base na informação enviada pelo método GET.|
-|`VerFuncionario`|`usuarios`|Retorna informações encapsulada conforme a regra de privacidade de informações.|
-|`EditarFuncionario`|`usuarios`|Retorna informações encapsulada e editáveis conforme a regra de privacidade de informações.|
-|`DeletarFuncionario`|`usuarios`|Deleta um usuário com base em seu id e permissão de administrador, se concedida.|
-|`AdicionarFuncionario`|`usuarios`|Adiciona um novo usuário vinculado há categoria `funcionário` e herda a classe do arquivo form `CriarContaForm`. |
-|`AutenticacaoClienteView`|`usuarios`|Verifica o e-mail e documento cadastrados do tutor, realizando a validade do uso para pagamento do mesmo.|
-|`CriarNovoPagamento`|`usuarios`|Formulário que retorna ao cliente qual tipo de pagamento quer realizar e cria uma nova instancia em pagamento__cliente ao ser realizado com sucesso. Essa classe é puramento ilustrativa, não é realizado nenhum tipo de pagamaneto real.|
-|`ListaPagamentos`|`usuarios`|Retorna os pagamento pendentes e a quantidade de dias que ele está vencido.|
-|`PesquisarPagamento`|`usuarios`|Retorna perfis de pagamento com base na informação enviada pelo método GET.|
-|`DeletarCliente`|`usuarios`|Realiza o delete do usuário com a categoria `Tutor`|
-|`ListaPets`|`servicos`|Retorna informações permitidas pela classe de todos os pets cadastrado no banco de dados|
-|`PesquisaPet`|`servicos`|Retorna perfis de pets com base na informação enviada pelo método GET.|
-|`VerPet`|`servicos`|Retorna informações encapsulada conforme a regra de privacidade de informações.|
-|`AdicionarVacinaPet`|`servico`|Vincula uma vacina cadastrada no banco de dados ao pet.|
-|`VincularTutor`|`servico`|Retorna uma lista de tutores existentes na base de dados para vincular ao novo pet.|
-|`AdicionarPet`|`servico`|Cria uma nova instância pet.|
-|`PesquisarTutor`|`servico`|Retorna perfis de tutores com base na informação enviada pelo método GET.|
-|`AdicionarTutor`|`servico`|Cria uma nova instância para tutor|
-|`ListaServicos`|`servico`|Retorna uma lista de serviços dispoiníveis pelo comércio.|
-|`PesquisarServico`|`servico`|Retorna serviços com base na informação enviada pelo método GET.|
-|`VerServicos`|`servico`|Retorna uma lista de pets cadastrados no serviço|
-|`EditarGrade`|`servico`|Atualiza as informações do pet há grade, servindo como meio de presença do pet ao serviço.|
-|`AdicionarPetServico`|`servico`|Vincula um pet ao serviço.|
-|`DeletarPetServico`|`servico`|deleta a instancia pet__servico da grade|
-***
-### Mensagem de ``Error``
+---
+
+### Mensagem de `Error`
 
 - 503 (Service Unavailable): Indica que o servidor não está disponível para lidar com a solicitação.
 - 204 (No Content): A solicitação foi bem-sucedida, mas não há conteúdo para retornar.
