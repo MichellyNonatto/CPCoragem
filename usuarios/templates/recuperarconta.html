@@ -12,7 +12,7 @@
 {% block container %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-        {% include "components/input.html" with type="text" label="Email" name="email" id="id_email" %}
+        {% include "components/input.html" with type="email" label="Email" name="email" id="id_email" %}
         <p class="text-primaryColor text-sm text-center">
             Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
         </p>
