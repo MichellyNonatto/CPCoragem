@@ -1,4 +1,4 @@
 <a href="{% url href %}"
-   class="rounded border-transparent text-primaryColor px-4 py-2 font-medium hover:border-surfaceContainer hover:bg-surfaceContainer focus:bg-primaryContainer focus:bg-primaryContainer">
+   class="rounded border-transparent text-primaryColor px-4 py-2 font-medium hover:border-surfaceContainer hover:bg-surfaceContainer focus:bg-primaryContainer {% if select %}bg-primaryContainer{% endif %}">
   {{ label }}
 </a>
