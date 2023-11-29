@@ -12,8 +12,8 @@
 {% block container %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-        {% include "components/input.html" with input_type="text" label="Email" input_name="email" %}
-        {% include "components/input.html" with input_type="password" label="Senha" input_name="password" %}
+        {% include "components/input.html" with type="text" label="Email" name="username" name="username" %}
+        {% include "components/input.html" with type="password" label="Senha" name="password" id="id_password" %}
         <p class="text-primaryColor text-sm text-center">
             Em caso de primeiro login, acesse <b>esqueci minha senha</b> para alterar a mesma.
         </p>
