@@ -18,16 +18,14 @@ from usuarios.forms import RecuperarContaForm, AutenticacaoContaForm, CriarFunci
 
 
 class CustomLoginView(LoginView):
-    def get_success_url(self):
-        if self.request.user.is_authenticated:
-            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
-            return dashboard_url
-
-        return super().get_success_url()
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('usuarios:dashboard', pk=self.request.user.pk)
+        else:
+            return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         response = super().form_valid(form)
-
         conta = Acesso()
         if not conta.get_acesso_conta(self.request.user):
             messages.error(self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
@@ -343,5 +341,6 @@ class PesquisarPagamento(ListaPagamentos):
 class DeletarCliente(LoginRequiredMixin, DeleteView):
     template_name = 'deletarcliente.html'
     model = Usuario
+
     def get_success_url(self):
         return reverse('usuarios:listafuncionarios')
