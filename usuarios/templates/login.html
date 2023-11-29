@@ -1,24 +1,25 @@
-{% extends "index.html" %}
+{% extends "login/authContainer.html" %}
 {% load static %}
 {% block title %}
     Login
 {% endblock title %}
-{% block content %}
-    <main>
-        <form method="post">
-            {% csrf_token %}
-            <fieldset>
-                <legend>Login</legend>
-                {% for message in messages %}
-                    <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-                {{ form.as_p }}
-            </fieldset>
-            <a href="{% url 'usuarios:recuperarconta' %}">Esqueci minha senha</a>
-            <button class="buttonPrimary" type="submit">Fazer Login</button>
-        </form>
-        <p>
+{% block containerTitle %}
+    Seja bem-vindo!
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Faça login com a sua conta <b>Coragem</b>
+{% endblock containerSubTitle %}
+{% block container %}
+    <form method="post" class="w-full flex flex-col gap-4">
+        {% csrf_token %}
+        {% include "components/input.html" with input_type="text" label="Email" input_name="email" %}
+        {% include "components/input.html" with input_type="password" label="Senha" input_name="password" %}
+        <p class="text-primaryColor text-sm text-center">
             Em caso de primeiro login, acesse <b>esqueci minha senha</b> para alterar a mesma.
         </p>
-    </main>
-{% endblock content %}
+        <div class="flex items-center justify-between">
+            {% include "components/anchor.html" with href="usuarios:recuperarconta" label="Esqueci minha senha" %}
+            {% include "components/button.html" with button_type="submit" label="Fazer login" %}
+        </div>
+    </form>
+{% endblock container %}
