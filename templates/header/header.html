@@ -3,8 +3,8 @@
   <nav class="justify-self-start">
     <ul class="flex gap-6">
       <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Dashboard" select=True %}</li>
-      <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Pets" %}</li>
-      <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Turmas" %}</li>
+      <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Funcionários" %}</li>
+      <li>{% include "components/anchor.html" with href="usuarios:financeiro" label="Financeiro" %}</li>
     </ul>
   </nav>
   <img src="{% static 'img/pata_logo.svg' %}"
@@ -12,9 +12,26 @@
        width="70px"
        height="70px"
        class="justify-self-center">
-  <img src="{% static 'img/dog.png' %}"
-       alt="perfil"
-       width="60px"
-       height="60px"
-       class="justify-self-end">
+  <div class="fixed flex flex-col items-end gap-3 top-6 end-5 group">
+    <button type="button" class="rounded-full w-14 h-14">
+      <img src="{% static 'img/dog.png' %}"
+           alt="perfil"
+           width="56px"
+           height="56px"
+           class="hover:opacity-75">
+    </button>
+    <a href="{% url 'usuarios:logout' %}"
+       class="group-hover:flex cursor-pointer hidden flex-row gap-3 items-center justify-end">
+      <div class="group-hover:opacity-100 transition-opacity bg-background px-1 text-xl text-primaryColor rounded-md opacity-0">
+        Sair
+      </div>
+      <button type="button"
+              class="flex justify-center items-center w-[52px] h-[52px] bg-surfaceContainer rounded-full hover:bg-primaryContainer">
+        <img src="{% static 'img/exit.svg' %}"
+             alt="sair"
+             width="32px"
+             height="32px">
+      </button>
+    </a>
+  </div>
 </header>
