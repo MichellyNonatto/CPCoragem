@@ -65,7 +65,7 @@ class Autenticacao(FormView):
 
 
 class AtualizarSenha(UpdateView):
-    template_name = "autenticacao.html"
+    template_name = "resetarsenha.html"
     model = Usuario
     fields = ['password']
 
