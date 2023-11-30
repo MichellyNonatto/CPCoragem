@@ -2,7 +2,7 @@
 <header class="grid grid-cols-3 w-full p-4 items-center">
   <nav class="justify-self-start">
     <ul class="flex gap-6">
-      <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Dashboard" select=True %}</li>
+      <li>{% include "components/anchor.html" with href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}</li>
       <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Funcionários" %}</li>
       <li>{% include "components/anchor.html" with href="usuarios:financeiro" label="Financeiro" %}</li>
     </ul>

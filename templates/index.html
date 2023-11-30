@@ -36,7 +36,7 @@
   </head>
   <body>
     {% if user.is_authenticated %}
-      {% include "header/header.html" %}
+      {% include "header/header.html" with user_id=user.id %}
     {% endif %}
     {% block content %}
     {% endblock content %}
