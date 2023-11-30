@@ -1,0 +1,22 @@
+{% extends "login/authContainer.html" %}
+{% load static %}
+{% block title %}
+  Recuperar Conta
+{% endblock title %}
+{% block containerTitle %}
+  Inserir nova senha
+{% endblock containerTitle %}
+{% block container %}
+  <form method="post" class="w-full flex flex-col gap-4">
+    {% csrf_token %}
+    {% include "components/input.html" with type="password" label="Criar nova senha" name="password" id="id_password" %}
+    {% include "components/input.html" with type="password" label="Confirmar" name="password" id="id_password" %}
+    <p class="text-primaryColor text-sm text-center">
+      Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
+    </p>
+    <div class="flex items-center justify-between">
+      {% include "components/anchor.html" with secondary=True href="usuarios:login" label="Fazer login" %}
+      {% include "components/button.html" with type="submit" label="Redefinir senha" %}
+    </div>
+  </form>
+{% endblock container %}

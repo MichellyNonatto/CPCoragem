@@ -1,22 +1,25 @@
-{% extends 'index.html' %}
+{% extends "login/authContainer.html" %}
 {% load static %}
-
 {% block title %}
     Autenticação
-{% endblock %}
-
-{% block content %}
-    <form method="post">
+{% endblock title %}
+{% block containerTitle %}
+    Recuperação de conta
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Um e-mail com um código de verificação acaba de ser enviado para
+    <b>seuemail@coragem.com.br</b>
+{% endblock containerSubTitle %}
+{% block container %}
+    <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-    <fieldset>
-        <legend>Recuperação de Conta</legend>
-        {{ form.as_p }}
-    </fieldset>
-        <a href="{% url 'usuarios:login' %}">Fazer Login</a>
-        {% if object.username %}
-            <button type="submit">Redefinir Senha</button>
-        {% else %}
-            <button type="submit">Verificar</button>
-        {% endif %}
+        {% include "components/input.html" with type="text" label="Inserir código" name="codigo" id="id_codigo" %}
+        <p class="text-primaryColor text-sm text-center">
+            Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
+        </p>
+        <div class="flex items-center justify-between">
+            {% include "components/anchor.html" with secondary=True href="usuarios:recuperarconta" label="Reenviar" %}
+            {% include "components/button.html" with type="submit" label="Verificar" %}
+        </div>
     </form>
-{% endblock %}
+{% endblock container %}

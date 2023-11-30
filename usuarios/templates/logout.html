@@ -1,13 +1,14 @@
-{% extends 'index.html' %}
+{% extends "login/authContainer.html" %}
 {% load static %}
-
 {% block title %}
     Logout
-{% endblock %}
-
-{% block content %}
-    <main>
-        <h1>Você foi desconectado!</h1>
-        <a href="{% url 'usuarios:login' %}">Fazer login</a>
-    </main>
-{% endblock %}
+{% endblock title %}
+{% block containerTitle %}
+    Você foi desconectado!
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Faça login com a sua conta <b>Coragem</b>
+{% endblock containerSubTitle %}
+{% block container %}
+    {% include "components/anchor.html" with secondary=True href="usuarios:login" label="Fazer login" %}
+{% endblock container %}

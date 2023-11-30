@@ -1,7 +1,9 @@
-from datetime import datetime, time, date
-from django.shortcuts import render
-from django.urls import reverse, resolve
+from datetime import date, datetime, time
+
 import holidays
+from django.shortcuts import render
+from django.urls import resolve, reverse
+
 from usuarios.models import Funcionario
 
 
@@ -12,7 +14,8 @@ class Funcionamento:
 
     def get_funcionamento(self):
         br_holiday = holidays.country_holidays('BR')
-        feriado = date(datetime.now().year, datetime.now().month, datetime.now().day) in br_holiday
+        feriado = date(datetime.now().year, datetime.now().month,
+                       datetime.now().day) in br_holiday
         hora = datetime.now().time()
         semana = datetime.now().weekday()
         return True
@@ -39,9 +42,11 @@ class FuncionamentoMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        funcionamento = Funcionamento()
-        if not funcionamento.get_funcionamento():
-            return render(self.request, 'error/error_504.html')
+        # TODO: ativar essa parte do código
+
+        # funcionamento = Funcionamento()
+        # if not funcionamento.get_funcionamento():
+        #     return render(self.request, 'error/error_504.html')
 
         response = self.get_response(request)
         return response
@@ -63,9 +68,12 @@ class Urls:
             except:
                 return True
             allowed_urls = [
-                reverse('usuarios:verfuncionario', kwargs={'pk': funcionario.pk}),
-                reverse('usuarios:editarfuncionario', kwargs={'pk': funcionario.pk}),
-                reverse('usuarios:deletarfuncionario', kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:verfuncionario',
+                        kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:editarfuncionario',
+                        kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:deletarfuncionario',
+                        kwargs={'pk': funcionario.pk}),
                 reverse('usuarios:adicionarfuncionario'),
                 reverse('usuarios:pesquisafuncionarios'),
                 reverse('usuarios:listafuncionarios'),
