@@ -114,5 +114,5 @@ class RegistroPagamento(models.Model):
         ("CREDITO", "Crédito"),
     ]
     tipo = models.CharField(max_length=8, choices=CHOICES_TIPO)
-    pagamento = models.ForeignKey(Pagamento, on_delete=models.SET_NULL, null=True)
     total_pago = models.DecimalField(max_digits=10, decimal_places=2)
+    pagamento = models.ForeignKey(Pagamento, on_delete=models.SET_NULL, null=True)

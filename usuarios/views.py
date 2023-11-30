@@ -30,9 +30,9 @@ class CustomLoginView(LoginView):
         response = super().form_valid(form)
         conta = Acesso()
         if not conta.get_acesso_conta(self.request.user):
-            messages.error(self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
             logout(self.request)
-            return self.form_invalid(form)
+            return messages.error(self.request,
+                                  "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
         return response
 
     def get_success_url(self):

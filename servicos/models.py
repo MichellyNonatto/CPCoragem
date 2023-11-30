@@ -64,7 +64,7 @@ class Pet(models.Model):
 class Vacina(models.Model):
     nome = models.CharField(max_length=45)
     dose = models.SmallIntegerField()  # 0 até 32767
-    idade_minima_em_semanas = models.SmallIntegerField(blank=True)
+    idade_minima_em_meses = models.SmallIntegerField(blank=True)
     tempo_de_espera_em_dias = models.SmallIntegerField()
 
     def __str__(self):
