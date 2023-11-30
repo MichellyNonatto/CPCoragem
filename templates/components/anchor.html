@@ -1,4 +1,8 @@
+{% load static %}
 <a href="{% if pk %}{% url href pk=pk %}{% else %}{% url href %}{% endif %}"
-   class="rounded border-transparent text-primaryColor px-4 py-2 font-medium hover:border-surfaceContainer hover:bg-surfaceContainer focus:bg-primaryContainer {% if select %}bg-primaryContainer{% endif %}">
+   class="flex gap-1 items-center justify-center rounded px-4 py-2 font-medium border {% if secondary %} border-transparent text-primaryColor hover:border-surfaceContainer hover:bg-surfaceContainer focus:bg-primaryContainer {% else %} border-primaryColor bg-primaryColor text-white hover:border-transparent hover:bg-onPrimaryFixedVariant hover:border-onPrimaryFixedVariant focus:bg-primaryColor {% endif %} {% if select %}bg-primaryContainer{% endif %}">
+  {% if icon %}
+    <img src="{% static icon %}" alt="" width="24px" height="24px">
+  {% endif %}
   {{ label }}
 </a>

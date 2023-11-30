@@ -7,26 +7,32 @@
     <main class="w-full flex flex-col items-center gap-4 p-10">
         <div class="w-full flex items-center justify-end gap-4">
             {% include "components/search.html" with placeholder="Pesquisar..." %}
-            {% include "components/button.html" with type="button" icon="img/icons/add.svg" label="Novo funcionário" %}
+            {% include "components/anchor.html" with href="usuarios:adicionarfuncionario" icon="img/icons/add.svg" label="Novo funcionário" %}
         </div>
         {% if object_list %}
-            <table border="1">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-800">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Cargo</th>
-                        <th>Opções</th>
+                        <th>Turno</th>
+                        <th>Telefone</th>
+                        <th>E-mail</th>
+                        <th>Editar</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for funcionario in object_list %}
                         {% if funcionario.usuario_id != usuario_atual.pk %}
                             <tr>
-                                <td>{{ funcionario.usuario.nome_completo }}</td>
-                                <td>{{ funcionario.funcao }}</td>
                                 <td>
-                                    <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">Mais informações</a>
+                                    <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
                                 </td>
+                                <td>{{ funcionario.funcao }}</td>
+                                <td>{{ funcionario.get_turno_display }}</td>
+                                <td>{{ funcionario.usuario.telefone }}</td>
+                                <td>{{ funcionario.usuario.email }}</td>
                             </tr>
                         {% endif %}
                     {% endfor %}

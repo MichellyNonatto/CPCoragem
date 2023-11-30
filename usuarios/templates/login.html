@@ -18,7 +18,7 @@
             Em caso de primeiro login, acesse <b>esqueci minha senha</b> para alterar a mesma.
         </p>
         <div class="flex items-center justify-between">
-            {% include "components/anchor.html" with href="usuarios:recuperarconta" label="Esqueci minha senha" %}
+            {% include "components/anchor.html" with secondary=True href="usuarios:recuperarconta" label="Esqueci minha senha" %}
             {% include "components/button.html" with type="submit" label="Fazer login" %}
         </div>
     </form>

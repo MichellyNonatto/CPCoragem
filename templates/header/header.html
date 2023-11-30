@@ -2,9 +2,13 @@
 <header class="grid relative grid-cols-3 w-full py-4 px-10 items-center">
   <nav class="justify-self-start">
     <ul class="flex gap-6">
-      <li>{% include "components/anchor.html" with href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}</li>
-      <li>{% include "components/anchor.html" with href="usuarios:listafuncionarios" label="Funcionários" %}</li>
-      <li>{% include "components/anchor.html" with href="usuarios:financeiro" label="Financeiro" %}</li>
+      <li>
+        {% include "components/anchor.html" with secondary=True href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}
+      </li>
+      <li>
+        {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
+      </li>
+      <li>{% include "components/anchor.html" with secondary=True href="usuarios:financeiro" label="Financeiro" %}</li>
     </ul>
   </nav>
   <img src="{% static 'img/pata_logo.svg' %}"
