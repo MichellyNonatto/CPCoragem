@@ -140,8 +140,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Direcionamento de páginas de login e logout
-LOGIN_REDIRECT_URL = 'usuarios:dashboard'
 LOGIN_URL = 'usuarios:login'
+LOGIN_REDIRECT_URL = 'usuarios:dashboard'
 
 # Envio de e-mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -1,32 +1,48 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Serviços de creche e cuidados para animais de estimação.">
-    <meta name="keywords"
-          content="ccreche pet, cuidado de animais, hotel para cães, hospedagem para pets, daycare para animais, socialização de animais, pet-friendly, atividades ao ar livre, monitoramento 24 horas, pet sitter, banho e tosa">
-    <meta name="author" content="Equipe Coragem">
-
-    <title>Coragem | {% block title %}{% endblock %}</title>
-
-    <!-- CSS Base  -->
-    <link rel="stylesheet" href="{% static 'css/reset.css' %}">
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
-
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</head>
-<body class="container-fluid">
-{% block content %}
-{% endblock %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="Serviços de creche e cuidados para animais de estimação.">
+        <meta name="keywords"
+              content="ccreche pet, cuidado de animais, hotel para cães, hospedagem para pets, daycare para animais, socialização de animais, pet-friendly, atividades ao ar livre, monitoramento 24 horas, pet sitter, banho e tosa">
+        <meta name="author" content="Equipe Coragem">
+        <title>Coragem |
+            {% block title %}
+            {% endblock title %}
+        </title>
+        <!-- Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                  extend: {
+                    colors: {
+                      primaryColor: '#974067',
+                      primaryContainer: '#FFD9E4',
+                      onPrimaryContainer: '#3E0021',
+                      background: '#FFFBFF',
+                    },
+                  },
+                },
+              };
+        </script>
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+              crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                crossorigin="anonymous"></script>
+                
+        <!-- CSS Base  -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body class="container-fluid">
+        {% block content %}
+        {% endblock content %}
+    </body>
 </html>

@@ -1,3 +1,4 @@
+from django import forms
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
@@ -14,27 +15,30 @@ from django.views.generic import DetailView, FormView, UpdateView, ListView, Del
 
 from usuarios.regra import Funcionamento, Acesso
 from usuarios.models import Funcionario, Usuario, Endereco, Pagamento, RegistroPagamento
-from usuarios.forms import RecuperarContaForm, AutenticacaoContaForm, CriarFuncionarioForm, AutenticacaoClienteForm
+from usuarios.forms import RecuperarContaForm, AutenticacaoContaForm, CriarFuncionarioForm, AutenticacaoClienteForm, \
+    AtualizarSenhaForm
 
 
 class CustomLoginView(LoginView):
-    def get_success_url(self):
-        if self.request.user.is_authenticated:
-            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
-            return dashboard_url
-
-        return super().get_success_url()
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('usuarios:dashboard', pk=self.request.user.pk)
+        else:
+            return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         response = super().form_valid(form)
-
         conta = Acesso()
         if not conta.get_acesso_conta(self.request.user):
             messages.error(self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
             logout(self.request)
             return self.form_invalid(form)
-
         return response
+
+    def get_success_url(self):
+        if self.request.user.is_authenticated:
+            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
+            return dashboard_url
 
 
 class RecuperarConta(FormView):
@@ -67,13 +71,12 @@ class Autenticacao(FormView):
 class AtualizarSenha(UpdateView):
     template_name = "autenticacao.html"
     model = Usuario
-    fields = ['password']
+    form_class = AtualizarSenhaForm
 
     def form_valid(self, form):
         user = form.save()
-        user.set_password(form.cleaned_data['password'])
-        user.save()
         update_session_auth_hash(self.request, user)
+        messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -343,5 +346,6 @@ class PesquisarPagamento(ListaPagamentos):
 class DeletarCliente(LoginRequiredMixin, DeleteView):
     template_name = 'deletarcliente.html'
     model = Usuario
+
     def get_success_url(self):
         return reverse('usuarios:listafuncionarios')

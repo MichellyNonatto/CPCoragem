@@ -1,5 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
 
 body {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+.buttonPrimary {
+  align-items: center;
+  background-color: red;
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  flex: 1 0 0;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 0.625rem 1.5rem;
+}
+
+.buttonPrimary:hover{
+  opacity: 0.8;
 }
