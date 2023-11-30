@@ -28,6 +28,26 @@ class Servico(models.Model):
         return self.nome
 
 
+class Turma(models.Model):
+    nome = models.CharField(max_length=45)
+    servicos = models.ManyToManyField(Servico)
+
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.atualizar_valor_total()
+
+    def atualizar_valor_total(self):
+        if self.servicos.exists():
+            valor_total = sum(servicos.valor for servicos in self.servicos.all())
+            self.valor_total = valor_total
+            self.save(update_fields=['valor_total'])
+
+    def __str__(self):
+        return self.nome
+
+
 class Raca(models.Model):
     nome = models.CharField(max_length=45)
 
@@ -78,18 +98,4 @@ class Vacinacao(models.Model):
 
     def __str__(self):
         informacao = f"Pet: {self.pet} - {self.vacina}"
-        return informacao
-
-
-class Grade(models.Model):
-    pet = models.ForeignKey(Pet, on_delete=models.CASCADE)
-    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
-    ultima_visita = models.DateField(default=timezone.now)
-    observacao = models.TextField(max_length=250, default="Nenhum tipo de observação.")
-
-    class Meta:
-        unique_together = ['pet', 'servico']
-
-    def __str__(self):
-        informacao = f"{self.pet.nome} {self.servico.nome}"
         return informacao

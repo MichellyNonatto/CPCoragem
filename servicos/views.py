@@ -4,14 +4,14 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.datetime_safe import datetime
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
 
 from usuarios.models import Usuario, Pagamento
 from usuarios.forms import CriarTutorForm
-from .models import Pet, Vacinacao, Servico, Grade
+from .models import Pet, Vacinacao, Servico, Turma
 
 
 class ListaPets(LoginRequiredMixin, ListView):
@@ -193,18 +193,18 @@ class VerServicos(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        pets_cadastrado = Grade.objects.filter(servico=self.kwargs['pk'])
+        pets_cadastrado = Turma.objects.filter(servico=self.kwargs['pk'])
         context['pets_cadastrado'] = pets_cadastrado
         return context
 
 
 class EditarGrade(LoginRequiredMixin, UpdateView):
     template_name = 'editargrade.html'
-    model = Grade
+    model = Turma
     fields = ['observacao']
 
     def form_valid(self, form):
-        grade = Grade.objects.get(pk=self.kwargs['pk'])
+        grade = Turma.objects.get(pk=self.kwargs['pk'])
         servico = Servico.objects.get(pk=grade.servico.pk)
         dias_da_semana = servico.dias_da_semana.values()
         dias_list = []
@@ -226,7 +226,7 @@ class EditarGrade(LoginRequiredMixin, UpdateView):
 
 class AdicionarPetServico(LoginRequiredMixin, CreateView):
     template_name = 'adicionarservico.html'
-    model = Grade
+    model = Turma
     fields = []
 
     def get_context_data(self, **kwargs):
@@ -234,7 +234,7 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         servico = self.kwargs['pk']
 
         pets = Pet.objects.all()
-        pets_cadastrados = Grade.objects.filter(servico__pk=servico).values('pet')
+        pets_cadastrados = Turma.objects.filter(servico__pk=servico).values('pet')
         pets_nao_vinculados = pets.exclude(pk__in=pets_cadastrados)
 
         context['pets_nao_vinculados'] = pets_nao_vinculados
@@ -246,7 +246,7 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         pet_id = self.request.POST.get('pet_id')
         servico = self.kwargs['pk']
 
-        if Grade.objects.filter(servico=servico, pet=pet_id).exists():
+        if Turma.objects.filter(servico=servico, pet=pet_id).exists():
             messages.error(self.request, 'Já existe uma associação para este pet e serviço.')
             return self.form_invalid(form)
 
@@ -261,7 +261,7 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
 
 class DeletarPetServico(LoginRequiredMixin, DeleteView):
     template_name = 'deletarpetservico.html'
-    model = Grade
+    model = Turma
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -270,7 +270,7 @@ class DeletarPetServico(LoginRequiredMixin, DeleteView):
         return context
 
     def get_success_url(self):
-        grade = Grade.objects.get(pk=self.kwargs['pk'])
+        grade = Turma.objects.get(pk=self.kwargs['pk'])
         cliente = grade.pet.tutor
         pagamento = Pagamento.objects.filter(cliente=cliente).order_by('-dia_vencimento').first()
         hoje = datetime.now().date()
