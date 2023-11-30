@@ -18,6 +18,7 @@ class Funcionamento:
         return True
 
     # return self._inicio <= hora <= self._fim and semana <= 4 and not feriado
+        return True
 
     @staticmethod
     def mensagem(now=None):
