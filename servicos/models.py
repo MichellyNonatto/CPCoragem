@@ -72,7 +72,7 @@ class Vacina(models.Model):
 
 
 class Vacinacao(models.Model):
-    vacina = models.ForeignKey(Vacina, related_name="vacinacao", on_delete=models.DO_NOTHING)
+    vacina = models.ForeignKey(Vacina, related_name="vacina", on_delete=models.DO_NOTHING)
     pet = models.ForeignKey(Pet, related_name="pet", on_delete=models.CASCADE)
     data_vacinacao = models.DateField(default=timezone.now)
 

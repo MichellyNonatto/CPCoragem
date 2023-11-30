@@ -4,7 +4,7 @@ import holidays
 from django.shortcuts import render
 from django.urls import resolve, reverse
 
-from usuarios.models import Funcionario
+from usuarios.models import Funcionario, Usuario
 
 
 class Funcionamento:
@@ -42,11 +42,10 @@ class FuncionamentoMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        # TODO: ativar essa parte do código
 
-        # funcionamento = Funcionamento()
-        # if not funcionamento.get_funcionamento():
-        #     return render(self.request, 'error/error_504.html')
+        funcionamento = Funcionamento()
+        if not funcionamento.get_funcionamento():
+            return render(self.request, 'error/error_504.html')
 
         response = self.get_response(request)
         return response
@@ -65,6 +64,7 @@ class Urls:
         if user.is_authenticated:
             try:
                 funcionario = Funcionario.objects.get(usuario__email=user)
+                cliente = Usuario.objects.get(categoria='TUTOR')
             except:
                 return True
             allowed_urls = [
@@ -77,6 +77,9 @@ class Urls:
                 reverse('usuarios:adicionarfuncionario'),
                 reverse('usuarios:pesquisafuncionarios'),
                 reverse('usuarios:listafuncionarios'),
+                reverse('usuarios:financeiro'),
+                reverse('usuarios:pesquisarfinanceiro'),
+                reverse('usuarios:deletarcliente', kwargs={'pk': cliente.pk}),
             ]
 
             if url in allowed_urls and funcionario.funcao.descricao != "Gerente":
