@@ -1,5 +1,5 @@
 {% load static %}
-<header class="grid relative grid-cols-3 w-full p-4 items-center">
+<header class="grid relative grid-cols-3 w-full py-4 px-10 items-center">
   <nav class="justify-self-start">
     <ul class="flex gap-6">
       <li>{% include "components/anchor.html" with href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}</li>
@@ -12,7 +12,7 @@
        width="70px"
        height="70px"
        class="justify-self-center">
-  <div class="absolute flex flex-col items-end gap-3 top-6 end-5 group">
+  <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
     <button type="button" class="rounded-full w-14 h-14">
       <img src="{% static 'img/dog.png' %}"
            alt="perfil"
@@ -27,7 +27,7 @@
       </div>
       <button type="button"
               class="flex justify-center items-center w-[52px] h-[52px] bg-surfaceContainer rounded-full hover:bg-primaryContainer">
-        <img src="{% static 'img/exit.svg' %}"
+        <img src="{% static 'img/icons/exit.svg' %}"
              alt="sair"
              width="32px"
              height="32px">

@@ -1,4 +1,8 @@
-<button type="{{ button_type }}"
-        class="rounded border border-primaryColor bg-primaryColor px-4 py-2 font-medium text-white hover:border-transparent hover:bg-onPrimaryFixedVariant hover:border-onPrimaryFixedVariant focus:bg-primaryColor">
+{% load static %}
+<button type="{{ type }}"
+        class="flex gap-1 items-center justify-center rounded border border-primaryColor bg-primaryColor px-4 py-2 font-medium text-white hover:border-transparent hover:bg-onPrimaryFixedVariant hover:border-onPrimaryFixedVariant focus:bg-primaryColor">
+  {% if icon %}
+    <img src="{% static icon %}" alt="" width="24px" height="24px">
+  {% endif %}
   {{ label }}
 </button>
