@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-
+# Estou modificando ainda
 
 class AuthenticateUser:
     def __init__(self):
@@ -9,5 +9,5 @@ class AuthenticateUser:
         if self.__user:
             return user
         else:
-            return HttpResponse("<h1>Sem contexto (204)</h1>")
+            return HttpResponse("'error/error_204.html'")
 

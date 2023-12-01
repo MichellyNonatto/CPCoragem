@@ -79,14 +79,21 @@ WSGI_APPLICATION = 'coragem.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': '5F56fBAd-d1*63DCACaeBBgbFeaFFaE1',
+#         'HOST': 'viaduct.proxy.rlwy.net',
+#         'PORT': '39927',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': '5F56fBAd-d1*63DCACaeBBgbFeaFFaE1',
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '39927',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

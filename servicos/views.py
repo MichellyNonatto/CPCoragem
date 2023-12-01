@@ -1,16 +1,16 @@
 from datetime import timedelta
 
-from django.db.models import Q
-from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
 
-from usuarios.models import Usuario, Pagamento
 from usuarios.forms import CriarTutorForm
+from usuarios.models import Usuario, Pagamento
 from .models import Pet, Vacinacao, Servico, Turma
 
 
@@ -94,7 +94,7 @@ class VincularTutor(LoginRequiredMixin, ListView):
 class AdicionarPet(LoginRequiredMixin, CreateView):
     template_name = 'adicionarpet.html'
     model = Pet
-    fields = ['imagem', 'nome', 'data_nascimento', 'genero', 'raca', 'descricao_medica', 'castrado']
+    fields = ['imagem', 'nome', 'data_nascimento', 'genero', 'raca', 'descricao_medica', 'castrado', 'turma']
 
     def form_valid(self, form):
         try:
@@ -156,46 +156,50 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
         return reverse('servicos:listapets')
 
 
-class ListaServicos(LoginRequiredMixin, ListView):
-    model = Servico
-    template_name = 'listaservicos.html'
+# class ListaServicos(LoginRequiredMixin, ListView):
+#     model = Servico
+#     template_name = 'listaservicos.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['usuario_pk'] = self.request.user.pk
+#         return context
+#
+#
+# class PesquisarServico(LoginRequiredMixin, ListView):
+#     template_name = 'listaservicos.html'
+#     model = Servico
+#
+#     def get_queryset(self):
+#         termo_pesquisa = self.request.GET.get("query")
+#         if not termo_pesquisa or termo_pesquisa.isspace():
+#             return Servico.objects.none()
+#
+#         resultados_servicos = Servico.objects.filter(
+#             Q(nome__icontains=termo_pesquisa)
+#         )
+#         return resultados_servicos
+#
+#     def get_context_data(self, *args, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['usuario_pk'] = self.request.user.pk
+#         context['termo_pesquisa'] = self.request.GET.get("query")
+#         return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['usuario_pk'] = self.request.user.pk
-        return context
 
-
-class PesquisarServico(LoginRequiredMixin, ListView):
-    template_name = 'listaservicos.html'
-    model = Servico
-
-    def get_queryset(self):
-        termo_pesquisa = self.request.GET.get("query")
-        if not termo_pesquisa or termo_pesquisa.isspace():
-            return Servico.objects.none()
-
-        resultados_servicos = Servico.objects.filter(
-            Q(nome__icontains=termo_pesquisa)
-        )
-        return resultados_servicos
+class ListaTurmas(LoginRequiredMixin, ListView):
+    template_name = 'listaturma.html'
+    model = Turma
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['usuario_pk'] = self.request.user.pk
-        context['termo_pesquisa'] = self.request.GET.get("query")
-        return context
+        turma = self.request
+        pets = Pet.objects.filter(turma=turma)
+#         return context
 
-
-class VerServicos(LoginRequiredMixin, DetailView):
-    template_name = 'verservico.html'
-    model = Servico
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        pets_cadastrado = Turma.objects.filter(servico=self.kwargs['pk'])
-        context['pets_cadastrado'] = pets_cadastrado
-        return context
+class VerTurma(LoginRequiredMixin, DetailView):
+    template_name = 'verturma.html'
+    model = Turma
 
 
 class EditarGrade(LoginRequiredMixin, UpdateView):
@@ -274,7 +278,7 @@ class DeletarPetServico(LoginRequiredMixin, DeleteView):
         cliente = grade.pet.tutor
         pagamento = Pagamento.objects.filter(cliente=cliente).order_by('-dia_vencimento').first()
         hoje = datetime.now().date()
-        if pagamento.dia_vencimento < hoje + timedelta(days=25) and  pagamento.total_pagamento > 0:
+        if pagamento.dia_vencimento < hoje + timedelta(days=25) and pagamento.total_pagamento > 0:
             pagamento.total_pagamento -= grade.servico.valor
             pagamento.save()
 

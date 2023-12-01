@@ -31,18 +31,7 @@ class Servico(models.Model):
 class Turma(models.Model):
     nome = models.CharField(max_length=45)
     servicos = models.ManyToManyField(Servico)
-
-    valor_total = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        self.atualizar_valor_total()
-
-    def atualizar_valor_total(self):
-        if self.servicos.exists():
-            valor_total = sum(servicos.valor for servicos in self.servicos.all())
-            self.valor_total = valor_total
-            self.save(update_fields=['valor_total'])
+    valor_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return self.nome
@@ -71,11 +60,12 @@ class Pet(models.Model):
         ("MASCULINO", "Masculino"),
     ]
     genero = models.CharField(max_length=45, choices=CHOICES_GENERO)
+    castrado = models.BooleanField(help_text='Marque esta caixa se o animal for castrado.', default=False)
+    descricao_medica = models.TextField(max_length=200, default="Nenhum tipo de observação.")
 
     tutor = models.ForeignKey(Usuario, related_name="tutor", on_delete=models.CASCADE)
     raca = models.ForeignKey(Raca, related_name="raca", on_delete=models.DO_NOTHING)
-    descricao_medica = models.TextField(max_length=200, default="Nenhum tipo de observação.")
-    castrado = models.BooleanField(help_text='Marque esta caixa se o animal for castrado.', default=False)
+    turma = models.ForeignKey(Turma, related_name='turma', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome

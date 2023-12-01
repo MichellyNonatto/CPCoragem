@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ object.nome }}
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{{ object.nome }}</h2>
+
+        <table border="1">
+            <caption>Pets</caption>
+            <thead>
+            <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Tutor</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+                <tbody>
+                <tr>
+                    <td>{{ object.nome }}</td>
+                </tr>
+                </tbody>
+        </table>
+    </main>
+{% endblock %}
