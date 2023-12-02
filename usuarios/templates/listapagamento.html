@@ -13,7 +13,6 @@
         {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
         {% include "components/button.html" with type="submit" label="Pesquisar" %}
     </form>
-    {% comment %} TODO: Descobrir pq aparece um 3 nesse local {% endcomment %}
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
             <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
@@ -26,7 +25,6 @@
         </thead>
         <tbody class="bg-background">
             {% for pagamento in object_list %}
-                {{ pagamento.cliente.pk }}
                 <tr class="text-base h-20 border-b border-b-primaryContainer">
                     <td class="px-6">{{ pagamento.cliente.nome_completo }}</td>
                     <td class="px-6">R$ {{ pagamento.total_pagamento }}</td>
