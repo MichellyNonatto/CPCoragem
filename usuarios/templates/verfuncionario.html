@@ -13,7 +13,7 @@
                  alt="pet"
                  width="128px"
                  height="128px"
-                 class="rounded-full" />
+                 class="h-32 w-32 rounded-full object-cover object-top" />
             {% include "components/input.html" with disabled="True" type="text" label="Nome completo" name="name" id="name" value=object.usuario.nome_completo %}
             {% include "components/input.html" with disabled="True" type="text" label="Documento" name="document" id="document" value=object.usuario.get_documento_formatado.1 %}
             {% include "components/input.html" with disabled="True" type="text" label="Email" name="email" id="email" value=object.usuario.email %}

@@ -19,16 +19,16 @@
   </nav>
   <img src="{% static 'img/pata_logo.svg' %}"
        alt="logo"
-       width="70px"
-       height="70px"
-       class="justify-self-center">
+       width="56px"
+       height="56px"
+       class="h-14 w-14 justify-self-center">
   <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
     <button type="button" class="rounded-full w-14 h-14">
       <img src="{% if funcionario_context.imagem.url %}{{ funcionario_context.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
            alt="perfil"
            width="56px"
            height="56px"
-           class="hover:opacity-75 rounded-full">
+           class="h-14 w-14 hover:opacity-75 rounded-full object-cover object-top">
     </button>
     <a href="{% url 'usuarios:logout' %}"
        class="group-hover:flex cursor-pointer hidden flex-row gap-3 items-center justify-end">
@@ -40,7 +40,8 @@
         <img src="{% static 'img/icons/exit.svg' %}"
              alt="sair"
              width="32px"
-             height="32px">
+             height="32px"
+             class="w-8 h-8">
       </button>
     </a>
   </div>
