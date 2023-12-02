@@ -9,8 +9,8 @@ from .views import CustomLoginView, Dashboard, EditarPerfilUsuario, EditarPerfil
 app_name = 'usuarios'
 
 urlpatterns = [
-    path('', CustomLoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_view.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('', CustomLoginView.as_view(template_name='desconnect/login.html'), name='login'),
+    path('logout/', auth_view.LogoutView.as_view(template_name='desconnect/logout.html'), name='logout'),
 
     path('dashboard/<int:pk>', Dashboard.as_view(), name='dashboard'),
     path('editarperfil/<int:pk>/', EditarPerfilUsuario.as_view(), name='editarperfil'),
@@ -29,7 +29,7 @@ urlpatterns = [
     path('dashboard/funcionarios/adicionar_funcionario', AdicionarFuncionario.as_view(), name='adicionarfuncionario'),
 
     path('dashboard/financeiro/', ListaPagamentos.as_view(), name='financeiro'),
-    path('dashboard/financeiro/pesquisa', PesquisarPagamento.as_view(template_name='listapagamento.html'),
+    path('dashboard/financeiro/pesquisa', PesquisarPagamento.as_view(template_name='funcionario/listapagamento.html'),
          name='pesquisarfinanceiro'),
     path('dashboard/financeiro/<int:pk>', DeletarCliente.as_view(), name='deletarcliente'),
 

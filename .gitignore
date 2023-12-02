@@ -1,12 +1,10 @@
 /.idea
-
 venv/
-
 __pycache__/
 *.pyc
 *.pyo
-
 db.sqlite3
 *.log
-
 node_modules/*
+media
+migrations/

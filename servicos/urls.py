@@ -17,8 +17,7 @@ urlpatterns = [
     path('dashboard/pets/vincular_tutor/pesquisar', PesquisarTutor.as_view(template_name='pets/vinculartutor.html'), name='pesquisartutor'),
     path('dashboard/pets/vincular_tutor/adicionar_tutor', AdicionarTutor.as_view(), name='adicionartutor'),
 
-    # path('dashboard/turmas/', ListaServicos.as_view(), name='listaservicos'),
-    # path('dashboard/turmas/pesquisar', PesquisarServico.as_view(), name='pesquisarservicos'),
+
     path('dashboard/turmas', ListaTurmas.as_view(), name='listaturmas'),
     path('dashboard/turmas/<int:pk>', VerTurma.as_view(), name='verturma'),
     path('dashboard/turmas/editar_grade/<int:pk>', EditarGrade.as_view(), name='editargrade'),

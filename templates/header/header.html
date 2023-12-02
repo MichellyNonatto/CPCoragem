@@ -5,15 +5,15 @@
       <li>
         {% include "components/anchor.html" with secondary=True href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}
       </li>
-      {% if funcionario.funcao.descricao == 'Gerente' %}
+      {% if authentication_user.funcao.descricao == 'Gerente' %}
         <li>
           {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
         </li>
         <li>{% include "components/anchor.html" with secondary=True href="usuarios:financeiro" label="Financeiro" %}</li>
       {% else %}
         <li>{% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Pets" %}</li>
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Serviços" %}</li>
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Turmas" %}</li>
+{#        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Serviços" %}</li>#}
+        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaturmas" label="Turmas" %}</li>
       {% endif %}
     </ul>
   </nav>
@@ -24,7 +24,7 @@
        class="justify-self-center">
   <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
     <button type="button" class="rounded-full w-14 h-14">
-      <img src="{% if funcionario.imagem.url %}{{ funcionario.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
+      <img src="{% if authentication_user.imagem.url %}{{ authentication_user.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
            alt="perfil"
            width="56px"
            height="56px"

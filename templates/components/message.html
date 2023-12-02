@@ -1,13 +1,11 @@
 {% if messages %}
     {% for message in messages %}
-        <div class="text-center text-xs font-medium">
-            <ul class="{% if message.tags %}text-red-400{% endif %}">
-                <li>{{ message }}</li>
-            </ul>
+        <div>
+            <p>{{ message }}</p>
         </div>
     {% endfor %}
 {% elif form.errors %}
-    <div class="text-red-400 text-center text-xs font-medium">
+    <div>
         <ul>
             {% for field, error_list in form.errors.items %}
                 {% for error in error_list %}

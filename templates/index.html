@@ -38,6 +38,7 @@
     {% if user.is_authenticated %}
       {% include "header/header.html" with user_id=user.id %}
     {% endif %}
+    {% include "components/message.html" %}
     {% block content %}
     {% endblock content %}
   </body>
