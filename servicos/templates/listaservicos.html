@@ -29,18 +29,18 @@
                     <td class="px-6">{{ servico.valor }}</td>
                     <td>
                         <div class="px-6 h-full flex gap-8 items-center">
-                            {% for day in '01234'|make_list %}
+                            {% for day in '12345'|make_list %}
                                 <div class="flex flex-col gap-2 items-center justify-center">
-                                    <p>
-                                        {% if day == '0' %}
+                                    <p class="text-primaryColor font-medium">
+                                        {% if day == '1' %}
                                             Seg
-                                        {% elif day == '1' %}
-                                            Ter
                                         {% elif day == '2' %}
-                                            Qua
+                                            Ter
                                         {% elif day == '3' %}
-                                            Qui
+                                            Qua
                                         {% elif day == '4' %}
+                                            Qui
+                                        {% elif day == '5' %}
                                             Sex
                                         {% endif %}
                                     </p>
@@ -48,9 +48,13 @@
                                            id="{{ day }}"
                                            name="dias_semana"
                                            value="{{ day }}"
-                                           checked
+                                           {% if day|add:"0" in servico_ids.0 %}checked{% endif %}
                                            disabled
-                                           class="h-6 w-6">
+                                           class="hidden">
+                                    <label for="{{ day }}"
+                                           class="h-6 w-6 text-white rounded flex items-center justify-center {% if day|add:"0" in servico_ids.0 %}bg-primaryColor{% else %}bg-gray-200{% endif %}">
+                                        {% if day|add:"0" in servico_ids.0 %}✔{% endif %}
+                                    </label>
                                 </div>
                             {% endfor %}
                         </div>

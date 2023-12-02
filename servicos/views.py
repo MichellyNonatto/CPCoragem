@@ -1,17 +1,19 @@
 from datetime import timedelta
 
-from django.db.models import Q
-from django.utils import timezone
 from django.contrib import messages
-from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.utils.datetime_safe import datetime
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, UpdateView)
 
-from usuarios.models import Usuario, Pagamento
 from usuarios.forms import CriarTutorForm
-from .models import Pet, Vacinacao, Servico, Grade
+from usuarios.models import Pagamento, Usuario
+
+from .models import Grade, Pet, Servico, Vacinacao
 
 
 class ListaPets(LoginRequiredMixin, ListView):
@@ -94,7 +96,8 @@ class VincularTutor(LoginRequiredMixin, ListView):
 class AdicionarPet(LoginRequiredMixin, CreateView):
     template_name = 'adicionarpet.html'
     model = Pet
-    fields = ['imagem', 'nome', 'data_nascimento', 'genero', 'raca', 'descricao_medica', 'castrado']
+    fields = ['imagem', 'nome', 'data_nascimento',
+              'genero', 'raca', 'descricao_medica', 'castrado']
 
     def form_valid(self, form):
         try:
@@ -105,7 +108,8 @@ class AdicionarPet(LoginRequiredMixin, CreateView):
         pet = form.save(commit=False)
         pet.tutor = tutor
         pet.save()
-        success_url = reverse('servicos:listapets') + '?mensagem=Pet adicionado com sucesso!'
+        success_url = reverse('servicos:listapets') + \
+            '?mensagem=Pet adicionado com sucesso!'
         return redirect(success_url)
 
 
@@ -147,10 +151,12 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
         documento = form.cleaned_data['documento']
 
         if Usuario.objects.filter(documento=documento).exists():
-            messages.error(self.request, 'Tutor já existe em nossa base de dados.')
+            messages.error(
+                self.request, 'Tutor já existe em nossa base de dados.')
         else:
             form.save()
-            success_url = reverse('servicos:vinculartutor') + '?mensagem=Tutor adicionado com sucesso!'
+            success_url = reverse('servicos:vinculartutor') + \
+                '?mensagem=Tutor adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('servicos:listapets')
@@ -163,6 +169,9 @@ class ListaServicos(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['usuario_pk'] = self.request.user.pk
+        context['servico_ids'] = [list(servico.dias_da_semana.values_list(
+            'id', flat=True)) for servico in context['object_list']]
+
         return context
 
 
@@ -214,10 +223,12 @@ class EditarGrade(LoginRequiredMixin, UpdateView):
 
         if timezone.now().date() != form.instance.ultima_visita and form.instance.ultima_visita.isoweekday() not in dias_da_semana:
             form.instance.ultima_visita = timezone.now()
-            pagamento = Pagamento.objects.filter(cliente=grade.pet.tutor).order_by('-dia_vencimento').first()
+            pagamento = Pagamento.objects.filter(
+                cliente=grade.pet.tutor).order_by('-dia_vencimento').first()
             pagamento.total_pagamento += servico.valor
             pagamento.save()
-            success_url = reverse('servicos:verservicos', kwargs={'pk': grade.servico.pk})
+            success_url = reverse('servicos:verservicos', kwargs={
+                                  'pk': grade.servico.pk})
             return redirect(success_url)
         else:
             messages.error(self.request, 'A atualização do pet já foi feita!')
@@ -234,7 +245,8 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         servico = self.kwargs['pk']
 
         pets = Pet.objects.all()
-        pets_cadastrados = Grade.objects.filter(servico__pk=servico).values('pet')
+        pets_cadastrados = Grade.objects.filter(
+            servico__pk=servico).values('pet')
         pets_nao_vinculados = pets.exclude(pk__in=pets_cadastrados)
 
         context['pets_nao_vinculados'] = pets_nao_vinculados
@@ -247,7 +259,8 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         servico = self.kwargs['pk']
 
         if Grade.objects.filter(servico=servico, pet=pet_id).exists():
-            messages.error(self.request, 'Já existe uma associação para este pet e serviço.')
+            messages.error(
+                self.request, 'Já existe uma associação para este pet e serviço.')
             return self.form_invalid(form)
 
         grade.servico = Servico.objects.get(pk=servico)
@@ -272,9 +285,10 @@ class DeletarPetServico(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         grade = Grade.objects.get(pk=self.kwargs['pk'])
         cliente = grade.pet.tutor
-        pagamento = Pagamento.objects.filter(cliente=cliente).order_by('-dia_vencimento').first()
+        pagamento = Pagamento.objects.filter(
+            cliente=cliente).order_by('-dia_vencimento').first()
         hoje = datetime.now().date()
-        if pagamento.dia_vencimento < hoje + timedelta(days=25) and  pagamento.total_pagamento > 0:
+        if pagamento.dia_vencimento < hoje + timedelta(days=25) and pagamento.total_pagamento > 0:
             pagamento.total_pagamento -= grade.servico.valor
             pagamento.save()
 
