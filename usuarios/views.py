@@ -123,6 +123,7 @@ class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
+        messages.success(self.request, 'Perfil atualizado com sucesso.')
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -145,6 +146,7 @@ class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
+        messages.success(self.request, 'Endereço atualizado com sucesso.')
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -160,7 +162,7 @@ class ListaFuncionarios(LoginRequiredMixin, ListView):
         funcionarios = Funcionario.objects.filter(usuario=self.request.user)
         for funcionario in funcionarios:
             if funcionario.funcao.descricao != 'Gerente':
-                return HttpResponse("<h1>Sem contexto (204)</h1>")
+                return HttpResponse('error/error_204.html')
             return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -207,6 +209,7 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, 'Alteração em funcionário salva com sucesso!')
         success_url = reverse('usuarios:listafuncionarios') + '?mensagem=Alteração em funcionário salva com sucesso!'
         return redirect(success_url)
 
@@ -218,6 +221,10 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 class DeletarFuncionario(LoginRequiredMixin, DeleteView):
     template_name = 'deletarfuncionario.html'
     model = Usuario
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Funcionário deletado com sucesso.')
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -239,6 +246,7 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             messages.error(self.request, 'Funcionário já existe em nossa base de dados.')
         else:
             form.save()
+            messages.success(self.request, 'Funcionário adicionado com sucesso!')
             success_url = reverse('usuarios:listafuncionarios') + '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
@@ -297,6 +305,7 @@ class CriarNovoPagamento(CreateView):
         )
 
         registro_pagamento.save()
+        messages.success(self.request, 'Pagamento efetuado com sucesso!.')
         success_url = reverse('usuarios:autenticacaocliente') + '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
@@ -356,6 +365,10 @@ class PesquisarPagamento(ListaPagamentos):
 class DeletarCliente(LoginRequiredMixin, DeleteView):
     template_name = 'deletarcliente.html'
     model = Usuario
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Cliente deletado com sucesso.')
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('usuarios:listafuncionarios')
