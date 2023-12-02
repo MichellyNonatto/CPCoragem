@@ -195,6 +195,13 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
     template_name = 'verfuncionario.html'
     model = Funcionario
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['endereco'] = self.object.usuario.endereco
+
+        return context
+
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
     template_name = "verfuncionario.html"

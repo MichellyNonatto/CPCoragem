@@ -1,51 +1,37 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
-    Detalhes
-{% endblock %}
-
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'usuarios:listafuncionarios' %}">Funcionários</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
-        <div>
-            <div>
-                <h2>{{ object.usuario.nome_completo }}</h2>
-                <img src="{{ object.imagem.url }}" width="100px">
-            </div>
-            <h3>{{ object.usuario.get_documento_formatado.0 }} {{ object.usuario.get_documento_formatado.1 }}</h3>
+    Funcionários
+{% endblock title %}
+{% block containerTitle %}
+    Funcionários/detalhes
+{% endblock containerTitle %}
+{% block container %}
+    <div class="flex gap-8 w-full">
+        <div class="flex flex-col justify-end gap-4 w-full">
+            <img src="{{ object.imagem.url }}"
+                 alt="pet"
+                 width="128px"
+                 height="128px"
+                 class="rounded-full" />
+            {% include "components/input.html" with disabled="True" type="text" label="Nome completo" name="name" id="name" value=object.usuario.nome_completo %}
+            {% include "components/input.html" with disabled="True" type="text" label="Documento" name="document" id="document" value=object.usuario.get_documento_formatado.1 %}
+            {% include "components/input.html" with disabled="True" type="text" label="Email" name="email" id="email" value=object.usuario.email %}
+            {% include "components/input.html" with disabled="True" type="text" label="Telefone" name="phone" id="phone" value=object.usuario.telefone %}
+            {% include "components/input.html" with disabled="True" type="text" label="Função" name="function" id="function" value=object.funcao %}
         </div>
-        <section>
-            <ul>
-                <li>Data criação: {{ object.usuario.date_joined }}</li>
-                <li>E-mail: {{ object.usuario.email }}</li>
-                {% if form.as_p %}
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for="id_turno">Turno:</label>
-                        {{ form.turno }}
-                        <br>
-                        <label for="id_turno">Cargo:</label>
-                        {{ form.funcao }}
-                        <br>
-                        <button type="submit">Salvar</button>
-                        <a href="{% url 'usuarios:verfuncionario' pk=object.pk %}">
-                            <button type="button">Cancelar</button>
-                        </a>
-                    </form>
-                {% else %}
-                    <li>Turno: {{ object.get_turno_display }}</li>
-                    <li>Cargo: {{ object.funcao }}</li>
-                    <a href="{% url 'usuarios:editarfuncionario' pk=object.pk %}">Editar Funcionário</a>
-                    <a href="{% url 'usuarios:deletarfuncionario' pk=object.usuario_id %}">Excluir Funcionário</a>
-                {% endif %}
-            </ul>
-        </section>
-    </main>
-{% endblock %}
+        <div class="flex flex-col justify-end gap-4 w-full">
+            {% include "components/input.html" with disabled="True" type="text" label="CEP" name="cep" id="cep" value=endereco.cep %}
+            {% include "components/input.html" with disabled="True" type="text" label="Estado" name="state" id="state" value=endereco.estado %}
+            {% include "components/input.html" with disabled="True" type="text" label="Cidade" name="city" id="city" value=endereco.cidade %}
+            {% include "components/input.html" with disabled="True" type="text" label="Bairro" name="neighborhood" id="neighborhood" value=endereco.bairro %}
+            {% include "components/input.html" with disabled="True" type="text" label="Rua" name="street" id="street" value=endereco.rua %}
+            {% include "components/input.html" with disabled="True" type="text" label="Número" name="number" id="number" value=endereco.numero %}
+            {% include "components/input.html" with disabled="True" type="text" label="Complemento" name="complement" id="complement" value=endereco.complemento %}
+        </div>
+    </div>
+    <div class="w-full pt-10 flex items-center justify-end gap-8">
+        {% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Editar Funcionário" %}
+        {% include "components/anchor.html" with href="servicos:listapets" label="Excluir Funcionário" %}
+    </div>
+{% endblock container %}
