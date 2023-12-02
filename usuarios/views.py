@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 from django.db.models import Q
 from django.utils import timezone
+=======
+from dateutil.relativedelta import relativedelta
+>>>>>>> feat/front
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -12,10 +16,19 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView, FormView, UpdateView, ListView, DeleteView, CreateView
 
+<<<<<<< HEAD
 from usuarios.regra import Funcionamento, Acesso
 from usuarios.models import Funcionario, Usuario, Endereco, Pagamento, RegistroPagamento
 from usuarios.forms import RecuperarContaForm, AutenticacaoContaForm, CriarFuncionarioForm, AutenticacaoClienteForm, \
     AtualizarSenhaForm
+=======
+from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
+                            AutenticacaoContaForm, CriarFuncionarioForm,
+                            RecuperarContaForm)
+from usuarios.models import (Endereco, Funcionario, Pagamento,
+                             RegistroPagamento, Usuario)
+from usuarios.regra import Acesso, Funcionamento
+>>>>>>> feat/front
 
 
 class CustomLoginView(LoginView):
@@ -36,7 +49,8 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         if self.request.user.is_authenticated:
-            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
+            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
+                                         'pk': self.request.user.pk})
             return dashboard_url
 
 

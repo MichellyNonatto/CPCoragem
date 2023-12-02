@@ -1,73 +1,34 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
-    Detalhes
-{% endblock %}
-
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'servicos:listapets' %}">Pets</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
-        <div>
-            <h2>{{ object.nome }} {{ object.usuario.last_name }}</h2>
-            <h3>{{ object.tutor.get_categoria_display }}: {{ object.tutor.nome_completo }}</h3>
-            <h3>{{ object.tutor.get_documento_formatado.0 }}: {{ object.tutor.get_documento_formatado.1 }}</h3>
+    Pets
+{% endblock title %}
+{% block containerTitle %}
+    Pets/{{ object.nome }}
+{% endblock containerTitle %}
+{% block container %}
+    <div class="flex gap-8 w-full">
+        <div class="flex flex-col justify-end gap-4 w-full">
+            <img src="{{ object.imagem.url }}"
+                 alt="pet"
+                 width="128px"
+                 height="128px"
+                 class="rounded-full" />
+            {% include "components/input.html" with disabled="True" type="text" label="Nome completo" name="name" id="name" value=object.nome %}
+            {% include "components/input.html" with disabled="True" type="text" label="Raça" name="race" id="race" value=object.raca %}
+            {% include "components/input.html" with disabled="True" type="text" label="Espécie" name="species" id="species" value=object.raca.get_especie_display %}
+            {% include "components/input.html" with disabled="True" type="text" label="Gênero" name="gender" id="gender" value=object.genero %}
         </div>
-        <section>
-            <ul>
-                <li><img src="{{ object.imagem.url }}" width="100px"></li>
-                <li>Data nascimento: {{ object.data_nascimento }}</li>
-                <li>Raça: {{ object.raca }}</li>
-                <li>Espécie: {{ object.raca.get_especie_display }}</li>
-                <li>Genêro: {{ object.get_genero_display }}</li>
-                <li>Castrado: {% if object.castrado %}Sim{% else %}Não{% endif %}</li>
-                <li>Descrição Médica {{ object.descricao_medica }}</li>
-                <li>
-                    Vaicnação
-                    <table border="1">
-                        <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Dose</th>
-                            <th>Data Vacinação</th>
-                            <th>Idade mínima</th>
-                            <th>Tempo de espera</th>
-                        </tr>
-                        </thead>
-                        {% for vacina in vacinacoes %}
-                            <tbody>
-                            <tr>
-                                <td>{{ vacina.vacina.nome }}</td>
-                                <td>{{ vacina.vacina.dose }}</td>
-                                <td>{{ vacina.data_vacinacao }}</td>
-                                <td>{{ vacina.vacina.idade_minima_em_semanas }} semanas de vida</td>
-                                <td>{{ vacina.vacina.tempo_de_espera_em_dias }} dias</td>
-                            </tbody>
-                        {% endfor %}
-                    </table>
-                    <a href="{% url 'servicos:adicionarvacina' pk=object.pk %}">
-                        <button type="button">Adicionar Vacina</button>
-                    </a>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <h3>Endereço</h3>
-            <ul>
-                <li>CEP: {{ object.tutor.endereco.cep }}</li>
-                <li>Estado: {{ object.tutor.endereco.estado }}</li>
-                <li>Cidade: {{ object.tutor.endereco.cidade }}</li>
-                <li>Bairro: {{ object.tutor.endereco.bairro }}</li>
-                <li>Rua: {{ object.tutor.endereco.rua }}</li>
-                <li>Número: {{ object.tutor.endereco.numero }}</li>
-                <li>Complemento: {{ object.tutor.endereco.complemento }}</li>
-            </ul>
-        </section>
-    </main>
-{% endblock %}
+        <div class="flex flex-col justify-end gap-4 w-full">
+            {% include "components/input.html" with disabled="True" type="text" label="Data de nascimento" name="dateofbirth" id="dateofbirth" value=object.data_nascimento %}
+            {% include "components/input.html" with disabled="True" type="text" label="Tutor" name="tutor" id="tutor" value=object.tutor.nome_completo %}
+            {% include "components/input.html" with disabled="True" type="text" label="Turma" name="class" id="class" value=object.tutor.nome_completo %}
+            {% include "components/input.html" with disabled="True" type="text" label="Vacinação" name="vaccination" id="vaccination" value=object.tutor.nome_completo %}
+            {% include "components/input.html" with disabled="True" type="text" label="Histórico de saúde" name="healthhistory" id="healthhistory" value=object.descricao_medica %}
+        </div>
+    </div>
+    <div class="w-full pt-10 flex items-center justify-end gap-8">
+        {% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Editar Pet" %}
+        {% include "components/anchor.html" with href="servicos:listapets" label="Excluir Pet" %}
+    </div>
+{% endblock container %}

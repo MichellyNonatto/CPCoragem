@@ -1,60 +1,42 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
     Financeiro
-{% endblock %}
-
-{% block content %}
-    <nav>
-        <form method="get" action="{% url 'usuarios:pesquisarfinanceiro' %}">
-            <label>
-                <input name="query" placeholder="Nome, Documento, Endereco, Contato" type="search"
-                       value="{{ request.GET.query }}">
-            </label>
-            <input type="submit" value="Pesquisar">
-        </form>
-        <ul>
-            <a href="{% url 'usuarios:dashboard' pk=usuario_atual.pk %}">
-                <li>Dashboard</li>
-            </a>
-        </ul>
-    </nav>
-
-    <main>
-        <h1>Pagamentos</h1>
-        {% if object_list %}
-            <table border="1">
-                <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Débito</th>
-                    <th>Data Vencimento</th>
-                    <th>Dias corridos</th>
-                    <th>Opções</th>
+{% endblock title %}
+{% block containerTitle %}
+    Financeiro
+{% endblock containerTitle %}
+{% block container %}
+    <form method="get"
+          action="{% url 'usuarios:pesquisarfinanceiro' %}"
+          class="w-full flex items-center justify-end  gap-4">
+        {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+        {% include "components/button.html" with type="submit" label="Pesquisar" %}
+    </form>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-800">
+        <thead>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th class="px-6">Nome</th>
+                <th class="px-6">Débito</th>
+                <th class="px-6">Data Vencimento</th>
+                <th class="px-6">Dias corridos</th>
+                <th class="px-6">Opções</th>
+            </tr>
+        </thead>
+        <tbody class="bg-background">
+            {% for pagamento in object_list %}
+                <tr class="text-base h-20 border-b border-b-primaryContainer">
+                    <td class="px-6">{{ pagamento.cliente.nome_completo }}</td>
+                    <td class="px-6">R$ {{ pagamento.total_pagamento }}</td>
+                    <td class="px-6">{{ pagamento.dia_vencimento }}</td>
+                    {% for dia_corrido in dias_corridos %}
+                        {% if dia_corrido.id == pagamento.pk %}<td class="px-6">{{ dia_corrido.dias }} dias</td>{% endif %}
+                    {% endfor %}
+                    <td class="px-6">
+                        <a href="{% url 'usuarios:deletarcliente' pk=pagamento.cliente.pk %}">Desligar cliente do serviço</a>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for pagamento in object_list %}
-                    {{ pagamento.cliente.pk }}
-                    <tr>
-                        <td>{{ pagamento.cliente.nome_completo }}</td>
-                        <td>R$ {{ pagamento.total_pagamento }}</td>
-                        <td>{{ pagamento.dia_vencimento }}</td>
-                        {% for dia_corrido in dias_corridos %}
-                            {% if dia_corrido.id == pagamento.pk %}
-                                <td>{{ dia_corrido.dias }} dias</td>
-                            {% endif %}
-                        {% endfor %}
-                        <th><a href="{% url 'usuarios:deletarcliente' pk=pagamento.cliente.pk %}">Desligar cliente do serviço</a></th>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>Nenhum pagamento foi encontrado em nossa base de dados.</p>
-            <a href="{% url 'usuarios:financeiro' %}">Financeiro</a>
-        {% endif %}
-    </main>
-
-{% endblock %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock container %}

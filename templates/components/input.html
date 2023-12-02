@@ -3,7 +3,9 @@
          placeholder=""
          name="{{ name }}"
          id="{{ id }}"
-         required
+         {% if disabled %}disabled{% endif %}
+         {% if not disabled %}required{% endif %}
+         {% if value %}value="{{ value }}"{% endif %}
          autofocus
          class="outline-none px-3 py-3 peer w-full" />
   <label for="{{ id }}"
