@@ -1,69 +1,62 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
     Serviços
-{% endblock %}
-
-{% block content %}
-    <nav>
-        <form method="get" action="{% url 'servicos:pesquisarservicos' %}">
-            <label>
-                <input name="query" placeholder="Nome do serviço" type="search"
-                       value="{{ request.GET.query }}">
-            </label>
-            <input type="submit" value="Pesquisar">
-        </form>
-        <ul>
-            <a href="{% url 'usuarios:dashboard' pk=usuario_pk %}">
-                <li>Dashboard</li>
-            </a>
-        </ul>
-    </nav>
-    <main>
-        {% if object_list %}
-            <h1>Serviços</h1>
-
-            <table border="1">
-                <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Serviço</th>
-                    <th>Valor</th>
-                    <th>Dia de Funcionamento</th>
-                    <th>Opções</th>
-                </tr>
-                </thead>
-                {% for servico in object_list %}
-                    <tbody>
-                    <tr>
-                        <td>
-                            {{ servico.nome }}
-                        </td>
-                        <td>
-                            {{ servico.funcionarios.first.funcao }}
-                        </td>
-                        <td>
-                            R${{ servico.valor }}
-                        </td>
-                        <td>
-                            {% for dia in servico.dias_da_semana.values %}
-                                <ul>
-                                    <li>{{ dia.dia }}</li>
-                                </ul>
+{% endblock title %}
+{% block containerTitle %}
+    Serviços
+{% endblock containerTitle %}
+{% block container %}
+    <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+        {% comment %} TODO: adicionarservico {% endcomment %}
+        {% include "components/anchor.html" with href="servicos:listapets" icon="img/icons/add.svg" label="Adicionar serviço" %}
+    </div>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-800">
+        <thead>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th class="px-6">Nome</th>
+                <th class="px-6">Valor</th>
+                <th class="px-6">Dias da Semana</th>
+            </tr>
+        </thead>
+        <tbody class="bg-background">
+            {% for servico in object_list %}
+                <tr class="text-base h-20 border-b border-b-primaryContainer">
+                    <td class="px-6">
+                        <a href="{% url 'servicos:verservicos' pk=servico.pk %}">{{ servico.nome }}</a>
+                    </td>
+                    <td class="px-6">{{ servico.valor }}</td>
+                    <td>
+                        <div class="px-6 h-full flex gap-8 items-center">
+                            {% for day in '01234'|make_list %}
+                                <div class="flex flex-col gap-2 items-center justify-center">
+                                    <p>
+                                        {% if day == '0' %}
+                                            Seg
+                                        {% elif day == '1' %}
+                                            Ter
+                                        {% elif day == '2' %}
+                                            Qua
+                                        {% elif day == '3' %}
+                                            Qui
+                                        {% elif day == '4' %}
+                                            Sex
+                                        {% endif %}
+                                    </p>
+                                    <input type="checkbox"
+                                           id="{{ day }}"
+                                           name="dias_semana"
+                                           value="{{ day }}"
+                                           checked
+                                           disabled
+                                           class="h-6 w-6">
+                                </div>
                             {% endfor %}
-                        </td>
-                        <td>
-                            <a href="{% url 'servicos:verservicos' pk=servico.pk %}">Mais informações</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                {% endfor %}
-            </table>
-        {% else %}
-            <p>Nenhum Serviço foi encontrado em nossa base de dados.</p>
-            <a href="{% url 'servicos:listaservicos' %}">Serviços</a>
-        {% endif %}
-    </main>
-
-{% endblock %}
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock container %}
