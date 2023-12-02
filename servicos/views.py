@@ -69,6 +69,13 @@ class VerPet(LoginRequiredMixin, DetailView):
 
         vacinacoes = Vacinacao.objects.filter(pet=pet)
 
+        nomes_vacinas = ", ".join(list(Vacinacao.objects.filter(
+            pet=pet).values_list('vacina__nome', flat=True)))
+
+        print("Nomes de Vacinas:", nomes_vacinas)
+
+        context['nomes_vacinas'] = nomes_vacinas
+
         context['vacinacoes'] = vacinacoes
         return context
 
