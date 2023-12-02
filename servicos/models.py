@@ -83,7 +83,7 @@ class Vacinacao(models.Model):
     data_vacinacao = models.DateField(default=timezone.now)
 
     def __str__(self):
-        return str(self.vacina.nome)
+        return f"Pet: {self.pet} - {self.vacina}"
 
 
 class Grade(models.Model):
