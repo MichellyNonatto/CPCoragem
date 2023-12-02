@@ -10,13 +10,7 @@
     Faça login com a sua conta <b>Coragem</b>
 {% endblock containerSubTitle %}
 {% block container %}
-    {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    {% include "components/message.html" %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
         {% include "components/input.html" with type="email" label="Email" name="username" id="username" %}

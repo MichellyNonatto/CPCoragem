@@ -6,11 +6,11 @@ from usuarios.models import Usuario, Funcionario
 
 #   Caso seja a primeira vez que executa o migration utilize o command  ``python manage.py diaDaSemana``
 class DiaDaSemana(models.Model):
-    dia = models.CharField(max_length=20)
+    dia = models.CharField(max_length=4)
 
     @staticmethod
     def create_dias_da_semana():
-        dias_da_semana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
+        dias_da_semana = ['Seg', 'Ter', 'Quar', 'Quin', 'Sex']
         for dia in dias_da_semana:
             DiaDaSemana.objects.get_or_create(dia=dia)
 
@@ -22,7 +22,7 @@ class Servico(models.Model):
     nome = models.CharField(max_length=45)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     dias_da_semana = models.ManyToManyField(DiaDaSemana)
-    funcionarios = models.ManyToManyField(Funcionario)
+    # funcionario = models.ForeignKey(Funcionario, related_name="funcionario", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nome
@@ -83,7 +83,7 @@ class Vacina(models.Model):
 
 class Vacinacao(models.Model):
     vacina = models.ForeignKey(Vacina, related_name="vacina", on_delete=models.DO_NOTHING)
-    pet = models.ForeignKey(Pet, related_name="pet", on_delete=models.CASCADE)
+    pet = models.ForeignKey(Pet, related_name="pets", on_delete=models.CASCADE)
     data_vacinacao = models.DateField(default=timezone.now)
 
     def __str__(self):

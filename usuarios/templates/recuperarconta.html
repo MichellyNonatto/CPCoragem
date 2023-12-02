@@ -10,6 +10,7 @@
     Para ajudar a proteger sua conta, o <b>Coragem</b> quer confirmar se é realmente você que está tentando fazer login
 {% endblock containerSubTitle %}
 {% block container %}
+    {% include "components/message.html" %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
         {% include "components/input.html" with type="email" label="Email" name="email" id="id_email" %}

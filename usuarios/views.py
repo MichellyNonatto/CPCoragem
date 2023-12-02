@@ -1,4 +1,3 @@
-from django import forms
 from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
@@ -63,19 +62,30 @@ class Autenticacao(FormView):
 
     def get_success_url(self):
         pk = self.kwargs.get('pk')
-        if not pk:
-            return messages.error('Código de autenticação fornecido é inválido.')
         return reverse('usuarios:atualizarsenha', args=[pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.kwargs['pk']
+        context['usuario'] = Usuario.objects.get(id=usuario)
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['pk'] = self.kwargs['pk']
+        return kwargs
 
 
 class AtualizarSenha(UpdateView):
-    template_name = "autenticacao.html"
+    template_name = "atualizarsenha.html"
     model = Usuario
     form_class = AtualizarSenhaForm
 
     def form_valid(self, form):
-        user = form.save()
-        update_session_auth_hash(self.request, user)
+        user = form.save(commit=False)
+        password = form.cleaned_data['password1']
+        user.set_password(password)
+        user.save()
         messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
 

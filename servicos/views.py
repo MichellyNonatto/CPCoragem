@@ -10,12 +10,12 @@ from django.utils.datetime_safe import datetime
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
 
 from usuarios.forms import CriarTutorForm
-from usuarios.models import Usuario, Pagamento
+from usuarios.models import Usuario, Pagamento, Funcionario
 from .models import Pet, Vacinacao, Servico, Turma
 
 
 class ListaPets(LoginRequiredMixin, ListView):
-    template_name = 'listapets.html'
+    template_name = 'pets/listapets.html'
     model = Pet
 
     def get_context_data(self, **kwargs):
@@ -25,7 +25,7 @@ class ListaPets(LoginRequiredMixin, ListView):
 
 
 class PesquisarPet(LoginRequiredMixin, ListView):
-    template_name = 'listapets.html'
+    template_name = 'pets/listapets.html'
     model = Pet
 
     def get_queryset(self):
@@ -49,7 +49,7 @@ class PesquisarPet(LoginRequiredMixin, ListView):
 
 
 class VerPet(LoginRequiredMixin, DetailView):
-    template_name = 'verpet.html'
+    template_name = 'pets/verpet.html'
     model = Pet
 
     def get_context_data(self, **kwargs):
@@ -63,7 +63,7 @@ class VerPet(LoginRequiredMixin, DetailView):
 
 
 class AdicionarVacinaPet(LoginRequiredMixin, CreateView):
-    template_name = 'adicionarvacina.html'
+    template_name = 'turmas/templates/pets/adicionarvacina.html'
     model = Vacinacao
     fields = ['vacina', 'data_vacinacao']
 
@@ -82,17 +82,17 @@ class AdicionarVacinaPet(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['pet'] = self.kwargs['pk']
+        context['pets'] = self.kwargs['pk']
         return context
 
 
 class VincularTutor(LoginRequiredMixin, ListView):
-    template_name = 'vinculartutor.html'
+    template_name = 'pets/vinculartutor.html'
     model = Usuario
 
 
 class AdicionarPet(LoginRequiredMixin, CreateView):
-    template_name = 'adicionarpet.html'
+    template_name = 'pets/adicionarpet.html'
     model = Pet
     fields = ['imagem', 'nome', 'data_nascimento', 'genero', 'raca', 'descricao_medica', 'castrado', 'turma']
 
@@ -140,7 +140,7 @@ class PesquisarTutor(LoginRequiredMixin, ListView):
 
 
 class AdicionarTutor(LoginRequiredMixin, FormView):
-    template_name = 'adicionartutor.html'
+    template_name = 'pets/adicionartutor.html'
     form_class = CriarTutorForm
 
     def form_valid(self, form):
@@ -155,55 +155,29 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
 
         return reverse('servicos:listapets')
 
-
-# class ListaServicos(LoginRequiredMixin, ListView):
-#     model = Servico
-#     template_name = 'listaservicos.html'
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['usuario_pk'] = self.request.user.pk
-#         return context
-#
-#
-# class PesquisarServico(LoginRequiredMixin, ListView):
-#     template_name = 'listaservicos.html'
-#     model = Servico
-#
-#     def get_queryset(self):
-#         termo_pesquisa = self.request.GET.get("query")
-#         if not termo_pesquisa or termo_pesquisa.isspace():
-#             return Servico.objects.none()
-#
-#         resultados_servicos = Servico.objects.filter(
-#             Q(nome__icontains=termo_pesquisa)
-#         )
-#         return resultados_servicos
-#
-#     def get_context_data(self, *args, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['usuario_pk'] = self.request.user.pk
-#         context['termo_pesquisa'] = self.request.GET.get("query")
-#         return context
-
-
 class ListaTurmas(LoginRequiredMixin, ListView):
-    template_name = 'listaturma.html'
+    template_name = 'turmas/listaturmas.html'
+    model = Turma
+
+
+class VerTurma(LoginRequiredMixin, DetailView):
+    template_name = 'turmas/verturma.html'
     model = Turma
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        turma = self.request
+        turma = Turma.objects.get(id=self.kwargs['pk'])
         pets = Pet.objects.filter(turma=turma)
-#         return context
-
-class VerTurma(LoginRequiredMixin, DetailView):
-    template_name = 'verturma.html'
-    model = Turma
+        servicos = turma.servicos.all()
+        funcionarios = Funcionario.objects.filter(servico__turma=turma).distinct()
+        context['pets'] = pets
+        context['servicos'] = servicos
+        context['funcionarios'] = funcionarios
+        return context
 
 
 class EditarGrade(LoginRequiredMixin, UpdateView):
-    template_name = 'editargrade.html'
+    template_name = 'turmas/editargrade.html'
     model = Turma
     fields = ['observacao']
 
@@ -221,15 +195,15 @@ class EditarGrade(LoginRequiredMixin, UpdateView):
             pagamento = Pagamento.objects.filter(cliente=grade.pet.tutor).order_by('-dia_vencimento').first()
             pagamento.total_pagamento += servico.valor
             pagamento.save()
-            success_url = reverse('servicos:verservicos', kwargs={'pk': grade.servico.pk})
+            success_url = reverse('turmas:verservicos', kwargs={'pk': grade.servico.pk})
             return redirect(success_url)
         else:
-            messages.error(self.request, 'A atualização do pet já foi feita!')
+            messages.error(self.request, 'A atualização do pets já foi feita!')
             return super().form_invalid(form)
 
 
 class AdicionarPetServico(LoginRequiredMixin, CreateView):
-    template_name = 'adicionarservico.html'
+    template_name = 'turmas/adicionarservico.html'
     model = Turma
     fields = []
 
@@ -238,7 +212,7 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         servico = self.kwargs['pk']
 
         pets = Pet.objects.all()
-        pets_cadastrados = Turma.objects.filter(servico__pk=servico).values('pet')
+        pets_cadastrados = Turma.objects.filter(servico__pk=servico).values('pets')
         pets_nao_vinculados = pets.exclude(pk__in=pets_cadastrados)
 
         context['pets_nao_vinculados'] = pets_nao_vinculados
@@ -251,20 +225,20 @@ class AdicionarPetServico(LoginRequiredMixin, CreateView):
         servico = self.kwargs['pk']
 
         if Turma.objects.filter(servico=servico, pet=pet_id).exists():
-            messages.error(self.request, 'Já existe uma associação para este pet e serviço.')
+            messages.error(self.request, 'Já existe uma associação para este pets e serviço.')
             return self.form_invalid(form)
 
         grade.servico = Servico.objects.get(pk=servico)
         grade.pet = Pet.objects.get(pk=pet_id)
         grade.save()
 
-        success_url = reverse('servicos:verservicos',
+        success_url = reverse('turmas:verservicos',
                               kwargs={'pk': servico}) + '?mensagem=Pet adicionado ao serviço com sucesso!'
         return redirect(success_url)
 
 
 class DeletarPetServico(LoginRequiredMixin, DeleteView):
-    template_name = 'deletarpetservico.html'
+    template_name = 'pets/deletarpetservico.html'
     model = Turma
 
     def get_context_data(self, **kwargs):
@@ -283,5 +257,5 @@ class DeletarPetServico(LoginRequiredMixin, DeleteView):
             pagamento.save()
 
         servico = self.kwargs['servico_pk']
-        success_url = reverse('servicos:verservicos', kwargs={'pk': servico})
+        success_url = reverse('turmas:verservicos', kwargs={'pk': servico})
         return success_url

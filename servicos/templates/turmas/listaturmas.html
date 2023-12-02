@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Turmas
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>Turmas</h2>
+
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Serviços Disponibilizados</th>
+                <th>Valor Total</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            {% for turma in object_list %}
+                <tbody>
+                <tr>
+                    <td>{{ turma.nome }}</td>
+                    <td>
+                        {
+                    </td>
+                    <td>{{ turma.valor_total }}</td>
+                    <td><a href="{% url 'servicos:verturma' pk=turma.pk %}">Ver Turma</a></td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+    </main>
+{% endblock %}

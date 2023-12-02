@@ -7,13 +7,16 @@
     Recuperação de conta
 {% endblock containerTitle %}
 {% block containerSubTitle %}
-    Um e-mail com um código de verificação acaba de ser enviado para
-    <b>seuemail@coragem.com.br</b>
+    Válidamos o seguinte e-mail
+    <b>{{ usuario.email }}</b>
+    <br>
+    Por favor inserir o número do documento cadastrado
 {% endblock containerSubTitle %}
 {% block container %}
+    {% include "components/message.html" %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-        {% include "components/input.html" with type="text" label="Inserir código" name="codigo" id="id_codigo" %}
+        {% include "components/input.html" with type="text" label="Inserir documento" name="codigo" id="id_codigo" %}
         <p class="text-primaryColor text-sm text-center">
             Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
         </p>

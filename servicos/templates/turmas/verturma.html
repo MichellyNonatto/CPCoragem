@@ -1,0 +1,80 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ object.nome }}
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="#">Dashboard</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>{{ object.nome }}</h2>
+
+        <table border="1">
+            <caption>Pets</caption>
+            <thead>
+            <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Tutor</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            {% for pet in pets %}
+                <tbody>
+                <tr>
+                    <td>
+                        <img src="{{ pet.imagem.url }}" width="100px">
+                    </td>
+                    <td>{{ pet.nome }}</td>
+                    <td>{{ pet.tutor.nome_completo }}</td>
+                    <td><a href="{% url 'servicos:verpet' pk=pet.id %}">Ver Pet</a></td>
+                </tr>
+                </tbody>
+            {% endfor %}
+        </table>
+
+        <table border="1">
+            <caption>Servicos</caption>
+            <thead>
+            <tr>
+                <th>Funcionários</th>
+                <th>Serviço</th>
+                <th>Valor</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            {% for funcionario in funcionarios %}
+                <tr>
+                    <td>
+                        <ul>
+                            <li><img src="{{ funcionario.imagem.url }}" width="100px"></li>
+                            <li>{{ funcionario.usuario.nome_completo }}</li>
+                        </ul>
+                    </td>
+                    {% for servico in servicos %}
+                        <td>
+                            {{ servico.nome }}
+                        </td>
+                        <td>
+                            {{ servico.valor }}
+                        </td>
+                        <td>
+                            <ul>
+                                {% for dia in servico.dias_da_semana.values %}
+                                    <li>{{ dia.dia }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </main>
+{% endblock %}

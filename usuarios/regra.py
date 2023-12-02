@@ -83,7 +83,7 @@ class Urls:
             ]
 
             if url in allowed_urls and funcionario.funcao.descricao != "Gerente":
-                if 'servicos' in app:
+                if 'turmas' in app:
                     return False
                 return False
         return True
