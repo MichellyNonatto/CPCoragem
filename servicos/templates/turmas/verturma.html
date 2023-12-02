@@ -44,37 +44,28 @@
             <caption>Servicos</caption>
             <thead>
             <tr>
-                <th>Funcionários</th>
                 <th>Serviço</th>
                 <th>Valor</th>
                 <th>Opções</th>
             </tr>
             </thead>
-            {% for funcionario in funcionarios %}
-                <tr>
+            <tr>
+                {% for servico in object.servicos.values %}
+                    <td>
+                        {{ servico.nome }}
+                    </td>
+                    <td>
+                        {{ servico.valor }}
+                    </td>
                     <td>
                         <ul>
-                            <li><img src="{{ funcionario.imagem.url }}" width="100px"></li>
-                            <li>{{ funcionario.usuario.nome_completo }}</li>
+                            {% for dia in servico.dias_da_semana.values %}
+                                <li>{{ dia.dia }}</li>
+                            {% endfor %}
                         </ul>
                     </td>
-                    {% for servico in servicos %}
-                        <td>
-                            {{ servico.nome }}
-                        </td>
-                        <td>
-                            {{ servico.valor }}
-                        </td>
-                        <td>
-                            <ul>
-                                {% for dia in servico.dias_da_semana.values %}
-                                    <li>{{ dia.dia }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
+                {% endfor %}
+            </tr>
         </table>
     </main>
 {% endblock %}

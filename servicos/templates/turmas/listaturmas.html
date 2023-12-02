@@ -30,10 +30,12 @@
                 <tr>
                     <td>{{ turma.nome }}</td>
                     <td>
-                        {
+                        {% for servico in turma.servicos.values %}
+                            {{ servico.nome }}
+                        {% endfor %}
                     </td>
                     <td>{{ turma.valor_total }}</td>
-                    <td><a href="{% url 'servicos:verturma' pk=turma.pk %}">Ver Turma</a></td>
+                    <td><a href="{% url 'servicos:verturma' pk=turma.id %}">Ver Turma</a></td>
                 </tr>
                 </tbody>
             {% endfor %}

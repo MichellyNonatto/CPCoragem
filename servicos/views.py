@@ -155,6 +155,7 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
 
         return reverse('servicos:listapets')
 
+
 class ListaTurmas(LoginRequiredMixin, ListView):
     template_name = 'turmas/listaturmas.html'
     model = Turma
@@ -168,11 +169,7 @@ class VerTurma(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         turma = Turma.objects.get(id=self.kwargs['pk'])
         pets = Pet.objects.filter(turma=turma)
-        servicos = turma.servicos.all()
-        funcionarios = Funcionario.objects.filter(servico__turma=turma).distinct()
         context['pets'] = pets
-        context['servicos'] = servicos
-        context['funcionarios'] = funcionarios
         return context
 
 
