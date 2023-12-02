@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Editar Grade
+{% endblock %}
+
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'turmas:listaservicos' %}">Serviços</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Editar Grade</legend>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </fieldset>
+            <div>
+                <button type="submit">Salvar</button>
+                <a href="{% url 'turmas:verservicos' pk=object.servico_id %}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </main>
+{% endblock %}
+

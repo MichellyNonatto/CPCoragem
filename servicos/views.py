@@ -150,12 +150,10 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
             messages.error(self.request, 'Tutor já existe em nossa base de dados.')
         else:
             form.save()
-            messages.success(self.request, 'Tutor adicionado com sucesso!')
             success_url = reverse('servicos:vinculartutor') + '?mensagem=Tutor adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('servicos:listapets')
-
 
 class ListaTurmas(LoginRequiredMixin, ListView):
     template_name = 'turmas/listaturmas.html'
@@ -176,3 +174,88 @@ class VerTurma(LoginRequiredMixin, DetailView):
         context['servicos'] = servicos
         context['funcionarios'] = funcionarios
         return context
+
+
+class EditarGrade(LoginRequiredMixin, UpdateView):
+    template_name = 'turmas/editargrade.html'
+    model = Turma
+    fields = ['observacao']
+
+    def form_valid(self, form):
+        grade = Turma.objects.get(pk=self.kwargs['pk'])
+        servico = Servico.objects.get(pk=grade.servico.pk)
+        dias_da_semana = servico.dias_da_semana.values()
+        dias_list = []
+
+        for dia in dias_da_semana:
+            dias_list.append(dia['id'])
+
+        if timezone.now().date() != form.instance.ultima_visita and form.instance.ultima_visita.isoweekday() not in dias_da_semana:
+            form.instance.ultima_visita = timezone.now()
+            pagamento = Pagamento.objects.filter(cliente=grade.pet.tutor).order_by('-dia_vencimento').first()
+            pagamento.total_pagamento += servico.valor
+            pagamento.save()
+            success_url = reverse('turmas:verservicos', kwargs={'pk': grade.servico.pk})
+            return redirect(success_url)
+        else:
+            messages.error(self.request, 'A atualização do pets já foi feita!')
+            return super().form_invalid(form)
+
+
+class AdicionarPetServico(LoginRequiredMixin, CreateView):
+    template_name = 'turmas/adicionarservico.html'
+    model = Turma
+    fields = []
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        servico = self.kwargs['pk']
+
+        pets = Pet.objects.all()
+        pets_cadastrados = Turma.objects.filter(servico__pk=servico).values('pets')
+        pets_nao_vinculados = pets.exclude(pk__in=pets_cadastrados)
+
+        context['pets_nao_vinculados'] = pets_nao_vinculados
+        context['servico'] = servico
+        return context
+
+    def form_valid(self, form):
+        grade = form.save(commit=False)
+        pet_id = self.request.POST.get('pet_id')
+        servico = self.kwargs['pk']
+
+        if Turma.objects.filter(servico=servico, pet=pet_id).exists():
+            messages.error(self.request, 'Já existe uma associação para este pets e serviço.')
+            return self.form_invalid(form)
+
+        grade.servico = Servico.objects.get(pk=servico)
+        grade.pet = Pet.objects.get(pk=pet_id)
+        grade.save()
+
+        success_url = reverse('turmas:verservicos',
+                              kwargs={'pk': servico}) + '?mensagem=Pet adicionado ao serviço com sucesso!'
+        return redirect(success_url)
+
+
+class DeletarPetServico(LoginRequiredMixin, DeleteView):
+    template_name = 'pets/deletarpetservico.html'
+    model = Turma
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        servico = self.kwargs['servico_pk']
+        context['servico'] = servico
+        return context
+
+    def get_success_url(self):
+        grade = Turma.objects.get(pk=self.kwargs['pk'])
+        cliente = grade.pet.tutor
+        pagamento = Pagamento.objects.filter(cliente=cliente).order_by('-dia_vencimento').first()
+        hoje = datetime.now().date()
+        if pagamento.dia_vencimento < hoje + timedelta(days=25) and pagamento.total_pagamento > 0:
+            pagamento.total_pagamento -= grade.servico.valor
+            pagamento.save()
+
+        servico = self.kwargs['servico_pk']
+        success_url = reverse('turmas:verservicos', kwargs={'pk': servico})
+        return success_url
