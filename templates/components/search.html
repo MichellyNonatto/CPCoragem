@@ -1,5 +1,5 @@
 {% load static %}
-<input type="text" placeholder={{ placeholder }} class="flex gap-1 items-center justify-center rounded border border-surfaceContainer px-4 py-2 font-medium text-black hover:bg-surfaceContainer focus:outline-primaryColor">
+<input type="search" placeholder={{ placeholder }} name={{ name }} class="flex gap-1 items-center justify-center rounded border border-surfaceContainer px-4 py-2 font-medium text-black hover:bg-background focus:outline-primaryColor">
 {% if icon %}
   <img src="{% static "img/icons/search.svg" %}" alt="" width="24px" height="24px">
 {% endif %}
