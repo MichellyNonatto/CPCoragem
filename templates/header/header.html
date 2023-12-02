@@ -5,10 +5,16 @@
       <li>
         {% include "components/anchor.html" with secondary=True href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}
       </li>
-      <li>
-        {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
-      </li>
-      <li>{% include "components/anchor.html" with secondary=True href="usuarios:financeiro" label="Financeiro" %}</li>
+      {% if funcionario.funcao.descricao == 'Gerente' %}
+        <li>
+          {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
+        </li>
+        <li>{% include "components/anchor.html" with secondary=True href="usuarios:financeiro" label="Financeiro" %}</li>
+      {% else %}
+        <li>{% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Pets" %}</li>
+        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Serviços" %}</li>
+        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Turmas" %}</li>
+      {% endif %}
     </ul>
   </nav>
   <img src="{% static 'img/pata_logo.svg' %}"
