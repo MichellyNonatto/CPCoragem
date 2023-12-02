@@ -23,7 +23,7 @@
             {% include "components/input.html" with disabled="True" type="text" label="Data de nascimento" name="dateofbirth" id="dateofbirth" value=object.data_nascimento %}
             {% include "components/input.html" with disabled="True" type="text" label="Tutor" name="tutor" id="tutor" value=object.tutor.nome_completo %}
             {% include "components/input.html" with disabled="True" type="text" label="Turma" name="class" id="class" value=object.tutor.nome_completo %}
-            {% include "components/input.html" with disabled="True" type="text" label="Vacinação" name="vaccination" id="vaccination" value=object.tutor.nome_completo %}
+            {% include "components/input.html" with disabled="True" type="text" label="Vacinação" name="vaccination" id="vaccination" value=nomes_vacinas %}
             {% include "components/input.html" with disabled="True" type="text" label="Histórico de saúde" name="healthhistory" id="healthhistory" value=object.descricao_medica %}
         </div>
     </div>
