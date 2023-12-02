@@ -34,7 +34,7 @@
     <!-- CSS Base  -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
-  <body>
+  <body class="h-screen flex flex-col">
     {% if user.is_authenticated %}
       {% include "header/header.html" with user_id=user.id %}
     {% endif %}

@@ -4,7 +4,7 @@
     Funcionarios
 {% endblock title %}
 {% block content %}
-    <main class="w-full flex flex-col items-center gap-4 p-10">
+    <main class="w-full h-full flex flex-col items-center gap-4 p-10">
         <div class="w-full flex items-center justify-end gap-4">
             {% include "components/search.html" with placeholder="Pesquisar..." %}
             {% include "components/anchor.html" with href="usuarios:adicionarfuncionario" icon="img/icons/add.svg" label="Novo funcionário" %}
@@ -12,20 +12,26 @@
         {% if object_list %}
             <table class="w-full text-sm text-left rtl:text-right text-gray-800">
                 <thead>
-                    <tr>
+                    <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                        <th className="w-24"></th>
+                        <th>ID</th>
                         <th>Nome</th>
                         <th>Cargo</th>
                         <th>Turno</th>
                         <th>Telefone</th>
                         <th>E-mail</th>
-                        <th>Editar</th>
-                        <th>Excluir</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-background">
                     {% for funcionario in object_list %}
                         {% if funcionario.usuario_id != usuario_atual.pk %}
-                            <tr>
+                            <tr class="text-base h-20 border-b border-b-primaryContainer">
+                                <td class="text-center w-24">
+                                    <img src={{ funcionario.imagem.url }} alt="perfil" class="w-12 h-12 rounded-full inline-block align-middle">
+                                </td>
+                                <td>{{ funcionario.pk }}</td>
                                 <td>
                                     <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
                                 </td>
@@ -33,6 +39,12 @@
                                 <td>{{ funcionario.get_turno_display }}</td>
                                 <td>{{ funcionario.usuario.telefone }}</td>
                                 <td>{{ funcionario.usuario.email }}</td>
+                                <td class="font-medium text-primaryColor">
+                                    <a href={% url 'usuarios:editarfuncionario' pk=funcionario.pk %}>Editar</a>
+                                </td>
+                                <td class="font-medium text-red-600">
+                                    <a href={% url 'usuarios:deletarfuncionario' pk=funcionario.pk %}>Excluir</a>
+                                </td>
                             </tr>
                         {% endif %}
                     {% endfor %}
