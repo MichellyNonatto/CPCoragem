@@ -3,3 +3,7 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+
+.buttonPrimary:hover {
+  opacity: 0.8;
+}

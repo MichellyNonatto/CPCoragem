@@ -84,9 +84,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': '5F56fBAd-d1*63DCACaeBBgbFeaFFaE1',
+        'PASSWORD': '4eF5D2D435EAfdDBFag53DGd*A24fDCA',
         'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '39927',
+        'PORT': '55759',
     }
 }
 
@@ -140,8 +140,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Direcionamento de páginas de login e logout
-LOGIN_REDIRECT_URL = 'usuarios:dashboard'
 LOGIN_URL = 'usuarios:login'
+LOGIN_REDIRECT_URL = 'usuarios:dashboard'
 
 # Envio de e-mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

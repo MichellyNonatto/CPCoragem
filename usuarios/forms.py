@@ -24,6 +24,30 @@ class AutenticacaoContaForm(forms.Form):
         return codigo
 
 
+class AtualizarSenhaForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = []
+
+    password1 = forms.CharField(label='Nova Senha', max_length=50, widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar Senha' ,max_length=50, widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("As senhas não coincidem.")
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data['password1']
+        user.set_password(password)
+        user.save()
+        return user
+
+
 class CriarUsuario(UserCreationForm):
     random_password = f'{random.randint(1000, 9999)}7b#T!pM$&W5uLqX9'
     password1 = forms.CharField(label='password1', widget=forms.HiddenInput, initial=random_password)
@@ -101,7 +125,7 @@ class CriarTutorForm(CriarUsuario):
         if commit:
             Pagamento.objects.create(
                 cliente=user,
-                total_pagamento= 0,
+                total_pagamento=0,
                 dia_vencimento=datetime.now().date() + relativedelta(months=1)
             )
             user.save()
