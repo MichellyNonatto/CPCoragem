@@ -32,7 +32,7 @@
                         <td class="text-center w-24 px-6">
                             <img src={{ funcionario.imagem.url }} alt="perfil" width="48px" height="48px" class="h-12 w-12 object-cover object-top rounded-full inline-block align-middle">
                         </td>
-                        <td class="px-6">{{ funcionario.pk }}</td>
+                        <td class="px-6">{{ funcionario.usuario.id }}</td>
                         <td class="px-6">
                             <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
                         </td class="px-6">
@@ -44,7 +44,7 @@
                             <a href={% url 'usuarios:editarfuncionario' pk=funcionario.pk %}>Editar</a>
                         </td class="px-6">
                         <td class="font-medium text-red-600 px-6">
-                            <a href={% url 'usuarios:deletarfuncionario' pk=funcionario.pk %}>Excluir</a>
+                            <a href="{% url 'usuarios:deletarfuncionario' pk=funcionario.usuario_id %}">Excluir</a>
                         </td>
                     </tr>
                 {% endif %}

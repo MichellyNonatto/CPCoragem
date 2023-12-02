@@ -199,7 +199,7 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
 
         context['endereco'] = self.object.usuario.endereco
-
+        context['acao'] = 'visualizar'
         return context
 
 
@@ -207,6 +207,12 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
     template_name = "verfuncionario.html"
     model = Funcionario
     fields = ['turno', 'funcao']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
+        context['acao'] = 'editar'
+        return context
 
     def form_valid(self, form):
         form.save()

@@ -14,24 +14,29 @@
                  width="128px"
                  height="128px"
                  class="h-32 w-32 rounded-full object-cover object-top" />
-            {% include "components/input.html" with disabled="True" type="text" label="Nome completo" name="name" id="name" value=object.usuario.nome_completo %}
-            {% include "components/input.html" with disabled="True" type="text" label="Documento" name="document" id="document" value=object.usuario.get_documento_formatado.1 %}
-            {% include "components/input.html" with disabled="True" type="text" label="Email" name="email" id="email" value=object.usuario.email %}
-            {% include "components/input.html" with disabled="True" type="text" label="Telefone" name="phone" id="phone" value=object.usuario.telefone %}
-            {% include "components/input.html" with disabled="True" type="text" label="Função" name="function" id="function" value=object.funcao %}
+            {% include "components/input.html" with acao=acao type="text" label="Nome completo" name="name" id="name" value=object.usuario.nome_completo %}
+            {% include "components/input.html" with acao=acao type="text" label="Documento" name="document" id="document" value=object.usuario.get_documento_formatado.1 %}
+            {% include "components/input.html" with acao=acao type="text" label="Email" name="email" id="email" value=object.usuario.email %}
+            {% include "components/input.html" with acao=acao type="text" label="Telefone" name="phone" id="phone" value=object.usuario.telefone %}
+            {% include "components/input.html" with acao=acao type="text" label="Função" name="function" id="function" value=object.funcao %}
         </div>
         <div class="flex flex-col justify-end gap-4 w-full">
-            {% include "components/input.html" with disabled="True" type="text" label="CEP" name="cep" id="cep" value=endereco.cep %}
-            {% include "components/input.html" with disabled="True" type="text" label="Estado" name="state" id="state" value=endereco.estado %}
-            {% include "components/input.html" with disabled="True" type="text" label="Cidade" name="city" id="city" value=endereco.cidade %}
-            {% include "components/input.html" with disabled="True" type="text" label="Bairro" name="neighborhood" id="neighborhood" value=endereco.bairro %}
-            {% include "components/input.html" with disabled="True" type="text" label="Rua" name="street" id="street" value=endereco.rua %}
-            {% include "components/input.html" with disabled="True" type="text" label="Número" name="number" id="number" value=endereco.numero %}
-            {% include "components/input.html" with disabled="True" type="text" label="Complemento" name="complement" id="complement" value=endereco.complemento %}
+            {% include "components/input.html" with acao=acao type="text" label="CEP" name="cep" id="cep" value=endereco.cep %}
+            {% include "components/input.html" with acao=acao type="text" label="Estado" name="state" id="state" value=endereco.estado %}
+            {% include "components/input.html" with acao=acao type="text" label="Cidade" name="city" id="city" value=endereco.cidade %}
+            {% include "components/input.html" with acao=acao type="text" label="Bairro" name="neighborhood" id="neighborhood" value=endereco.bairro %}
+            {% include "components/input.html" with acao=acao type="text" label="Rua" name="street" id="street" value=endereco.rua %}
+            {% include "components/input.html" with acao=acao type="text" label="Número" name="number" id="number" value=endereco.numero %}
+            {% include "components/input.html" with acao=acao type="text" label="Complemento" name="complement" id="complement" value=endereco.complemento %}
         </div>
     </div>
     <div class="w-full py-10 flex items-center justify-end gap-8">
-        {% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Editar Funcionário" %}
-        {% include "components/anchor.html" with href="servicos:listapets" label="Excluir Funcionário" %}
+        {% if acao == 'visualizar' %}
+            {% include "components/anchor.html" with secondary=True href="usuarios:editarfuncionario" pk=funcionario.pk label="Editar Funcionário" %}
+            {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
+        {% else %}
+            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/button.html" with type="submit" label="Salvar edição" %}
+        {% endif %}
     </div>
 {% endblock container %}
