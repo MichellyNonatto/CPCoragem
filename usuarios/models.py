@@ -19,7 +19,7 @@ class Endereco(models.Model):
 
 
 def validar_tamanho_documento(value):
-    if len(value) not in [7, 8, 11, 12]:
+    if len(value) not in [7, 9, 11, 12]:
         raise ValidationError("Insira um documento válido.")
 
 
@@ -45,9 +45,9 @@ class Usuario(AbstractUser, PermissionsMixin):
     def get_documento_formatado(self):
         if len(self.documento) == 7:
             return ["CNH", f"XXX-{self.documento[3:]}"]
-        elif 8 == len(self.documento) or len(self.documento) == 12:
+        elif 9 == len(self.documento) or len(self.documento) == 12:
             return ["RG",
-                    f"XXX.{self.documento[2:5]}.{self.documento[5:8]}{f'-{self.documento[9:]}' if len(self.documento) == 12 else ''}"]
+                    f"XXX.{self.documento[2:5]}.{self.documento[5:9]}{f'-{self.documento[10:]}' if len(self.documento) == 12 else ''}"]
         else:
             return ["CPF", f"XXX.{self.documento[3:6]}.{self.documento[6:9]}-{self.documento[9:]}"]
 
