@@ -241,13 +241,15 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 
 
 class DeletarFuncionario(LoginRequiredMixin, DeleteView):
-    template_name = 'funcionario/deletarfuncionario.html'
+    template_name = 'containers/deletar.html'
     model = Usuario
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         funcionario_pk = Funcionario.objects.get(usuario_id=self.object.pk)
+        funcionario = Funcionario.objects.get(usuario_id=self.object.pk)
         context['funcionario_pk'] = funcionario_pk.pk
+        context['nome_deletar'] = funcionario.usuario.nome_completo
         return context
 
     def get_success_url(self):
