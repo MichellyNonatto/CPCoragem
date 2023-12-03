@@ -80,7 +80,7 @@ class Autenticacao(FormView):
 
 
 class AtualizarSenha(UpdateView):
-    template_name = "funcionario/templates/desconnect/atualizarsenha.html"
+    template_name = "desconnect/atualizarsenha.html"
     model = Usuario
     form_class = AtualizarSenhaForm
 
