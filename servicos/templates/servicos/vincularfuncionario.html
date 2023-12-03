@@ -2,11 +2,11 @@
 {% load static %}
 
 {% block title %}
-    Vincular Serviço
+    Vincular Funcionário
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+     <form method="post">
         {% csrf_token %}
         {{ form }}
         <button type="submit">Vincular</button>

@@ -193,32 +193,73 @@ class DesvincularServico(LoginRequiredMixin, View):
 
 class ListaServicos(LoginRequiredMixin, ListView):
     model = Servico
-    template_name = 'listaservicos.html'
+    template_name = 'servicos/listaservicos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['servico_ids'] = [list(servico.dias_da_semana.values_list(
+            'id', flat=True)) for servico in context['object_list']]
+        return context
 
 
-class VincularServico(LoginRequiredMixin, ListView):
-    model = Servico
+class VincularServico(LoginRequiredMixin, UpdateView):
+    model = Turma
     template_name = 'turmas/vincularservico.html'
-    context_object_name = 'servicos_todos'
+    fields = ["servicos"]
 
-    def vincular_servico(self, request, servico_id, pk):
-        turma = get_object_or_404(Turma, id=pk)
-        servico = get_object_or_404(Servico, id=servico_id)
-        turma.servicos.add(servico)
-        turma.save()
-        messages.success(request, 'Serviço vinculado à turma com sucesso!')
-        return HttpResponseRedirect(reverse('servicos:verturma', args=[turma.pk]))
+    def get_success_url(self):
+        messages.success(self.request, 'Serviço vinculado há turma com sucesso!')
+        return reverse('servicos:verturma', args=[self.object.pk])
 
-    def get(self, request, pk):
-        return super().get(request, pk)
 
-    def post(self, request, pk):
-        servico_id = request.POST.get('servico_id')
-        return self.vincular_servico(request, servico_id, pk)
+class PesquisarServico(LoginRequiredMixin, ListView):
+    template_name = 'servicos/listaservicos.html'
+    model = Servico
+
+    def get_queryset(self):
+        termo_pesquisa = self.request.GET.get("query")
+        if not termo_pesquisa or termo_pesquisa.isspace():
+            return Servico.objects.none()
+
+        resultados_servicos = Servico.objects.filter(
+            Q(nome__icontains=termo_pesquisa)
+        )
+        return resultados_servicos
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        turma = Turma.objects.get(id=self.kwargs['pk'])
-        servicos_nao_vinculados = Servico.objects.exclude(id__in=[servico.id for servico in turma.servicos.all()])
-        context['servicos_nao_vinculados'] = servicos_nao_vinculados
+        context['servico_ids'] = [list(servico.dias_da_semana.values_list(
+            'id', flat=True)) for servico in context['object_list']]
+        context['termo_pesquisa'] = self.request.GET.get("query")
         return context
+
+
+class VerServicos(LoginRequiredMixin, DetailView):
+    template_name = 'servicos/verservico.html'
+    model = Servico
+
+
+class DesvincularFuncionario(LoginRequiredMixin, View):
+    template_name = 'servicos/verservico.html'
+
+    def desvincular_funcionario(self, request, servico_id, funcionario_id):
+        servico = get_object_or_404(Servico, id=servico_id)
+        funcionario = get_object_or_404(Funcionario, id=funcionario_id)
+        servico.funcionarios.remove(funcionario)
+        servico.save()
+        messages.success(request, 'Funcionário desvinculado do serviço com sucesso!')
+
+        return HttpResponseRedirect(reverse('servicos:verservicos', args=[servico.pk]))
+
+    def get(self, request, servico_id, funcionario_id):
+        return self.desvincular_funcionario(request, servico_id, funcionario_id)
+
+
+class VincularFuncionario(LoginRequiredMixin, UpdateView):
+    model = Servico
+    template_name = 'servicos/vincularfuncionario.html'
+    fields = ["funcionarios"]
+
+    def get_success_url(self):
+        messages.success(self.request, 'Funcionário vinculado ao serviço com sucesso!')
+        return reverse('servicos:verservicos', args=[self.object.pk])

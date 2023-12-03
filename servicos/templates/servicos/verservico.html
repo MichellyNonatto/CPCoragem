@@ -8,11 +8,14 @@
 {% block content %}
     <main>
         <h2>{{ object.nome }}</h2>
+         <a href="{% url 'servicos:vincularfuncionario' pk=object.id %}">Adicionar Funcionário</a>
 
         <table border="1">
             <thead>
             <tr>
                 <th>Funcionário</th>
+                <th>Turno</th>
+                <th>Função</th>
                 <th>Opções</th>
             </tr>
             </thead>
@@ -24,7 +27,14 @@
                         {{ funcionario.usuario.nome_completo }}
                     </td>
                     <td>
-                       <a href="{% url 'servicos:desvincularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
+                        {{ funcionario.get_turno_display }}
+                    </td>
+                    <td>
+                        {{ funcionario.funcao }}
+                    </td>
+                    <td>
+                        <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">Ver Funcionario</a>
+                        <a href="{% url 'servicos:desvicularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
                     </td>
                 </tr>
             {% endfor %}

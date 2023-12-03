@@ -26,7 +26,7 @@
                     <td class="px-6">
                         <a href="{% url 'servicos:verservicos' pk=servico.pk %}">{{ servico.nome }}</a>
                     </td>
-                    <td class="px-6">{{ servico.valor }}</td>
+                    <td class="px-6">R$ {{ servico.valor }}</td>
                     <td>
                         <div class="px-6 h-full flex gap-8 items-center">
                             {% for day in '12345'|make_list %}
