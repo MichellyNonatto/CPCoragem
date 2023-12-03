@@ -70,7 +70,13 @@ class VerPet(LoginRequiredMixin, DetailView):
 class EditarPet(LoginRequiredMixin, UpdateView):
     template_name = 'pets/editarpet.html'
     model = Pet
-    fields = ['imagem', 'castrado', 'descricao_medica', 'turma']
+    fields = ['imagem', 'nome', 'data_nascimento', 'genero',
+              'raca', 'descricao_medica', 'castrado', 'turma']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_tutor'] = self.object.tutor.nome_completo
+        return context
 
     def get_success_url(self):
         messages.success(self.request, 'Pet editado com sucesso!')
