@@ -6,6 +6,7 @@ from servicos.models import Pet
 class DateInput(forms.DateInput):
     input_type = 'date'
 
+
 class EditarPetForm(forms.ModelForm):
     class Meta:
         model = Pet
