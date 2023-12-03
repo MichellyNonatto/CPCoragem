@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ object.nome }}
+{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>{{ object.nome }}</h2>
+
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Funcionário</th>
+                <th>Opções</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for funcionario in object.funcionarios.all %}
+                <tr>
+                    <td>
+                        <img src="{{ funcionario.imagem.url }}" width="100px">
+                        {{ funcionario.usuario.nome_completo }}
+                    </td>
+                    <td>
+                       <a href="{% url 'servicos:desvincularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}

@@ -3,10 +3,12 @@ from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.datetime_safe import datetime
+from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
 
 from usuarios.forms import CriarTutorForm
@@ -173,86 +175,50 @@ class VerTurma(LoginRequiredMixin, DetailView):
         return context
 
 
-class EditarGrade(LoginRequiredMixin, UpdateView):
-    template_name = 'turmas/editargrade.html'
-    model = Turma
-    fields = ['observacao']
+class DesvincularServico(LoginRequiredMixin, View):
+    template_name = 'turmas/verturma.html'
 
-    def form_valid(self, form):
-        grade = Turma.objects.get(pk=self.kwargs['pk'])
-        servico = Servico.objects.get(pk=grade.servico.pk)
-        dias_da_semana = servico.dias_da_semana.values()
-        dias_list = []
+    def desvincular_servico(self, request, servico_id, turma_id):
+        servico = get_object_or_404(Servico, id=servico_id)
+        turma = get_object_or_404(Turma, id=turma_id)
+        turma.servicos.remove(servico)
+        turma.save()
+        messages.success(request, 'Serviço desvinculado da turma com sucesso!')
 
-        for dia in dias_da_semana:
-            dias_list.append(dia['id'])
+        return HttpResponseRedirect(reverse('servicos:verturma', args=[turma.pk]))
 
-        if timezone.now().date() != form.instance.ultima_visita and form.instance.ultima_visita.isoweekday() not in dias_da_semana:
-            form.instance.ultima_visita = timezone.now()
-            pagamento = Pagamento.objects.filter(cliente=grade.pet.tutor).order_by('-dia_vencimento').first()
-            pagamento.total_pagamento += servico.valor
-            pagamento.save()
-            success_url = reverse('turmas:verservicos', kwargs={'pk': grade.servico.pk})
-            return redirect(success_url)
-        else:
-            messages.error(self.request, 'A atualização do pets já foi feita!')
-            return super().form_invalid(form)
+    def get(self, request, servico_id, turma_id):
+        return self.desvincular_servico(request, servico_id, turma_id)
 
 
-class AdicionarPetServico(LoginRequiredMixin, CreateView):
-    template_name = 'turmas/adicionarservico.html'
-    model = Turma
-    fields = []
+class ListaServicos(LoginRequiredMixin, ListView):
+    model = Servico
+    template_name = 'listaservicos.html'
 
-    def get_context_data(self, **kwargs):
+
+class VincularServico(LoginRequiredMixin, ListView):
+    model = Servico
+    template_name = 'turmas/vincularservico.html'
+    context_object_name = 'servicos_todos'
+
+    def vincular_servico(self, request, servico_id, pk):
+        turma = get_object_or_404(Turma, id=pk)
+        servico = get_object_or_404(Servico, id=servico_id)
+        turma.servicos.add(servico)
+        turma.save()
+        messages.success(request, 'Serviço vinculado à turma com sucesso!')
+        return HttpResponseRedirect(reverse('servicos:verturma', args=[turma.pk]))
+
+    def get(self, request, pk):
+        return super().get(request, pk)
+
+    def post(self, request, pk):
+        servico_id = request.POST.get('servico_id')
+        return self.vincular_servico(request, servico_id, pk)
+
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        servico = self.kwargs['pk']
-
-        pets = Pet.objects.all()
-        pets_cadastrados = Turma.objects.filter(servico__pk=servico).values('pets')
-        pets_nao_vinculados = pets.exclude(pk__in=pets_cadastrados)
-
-        context['pets_nao_vinculados'] = pets_nao_vinculados
-        context['servico'] = servico
+        turma = Turma.objects.get(id=self.kwargs['pk'])
+        servicos_nao_vinculados = Servico.objects.exclude(id__in=[servico.id for servico in turma.servicos.all()])
+        context['servicos_nao_vinculados'] = servicos_nao_vinculados
         return context
-
-    def form_valid(self, form):
-        grade = form.save(commit=False)
-        pet_id = self.request.POST.get('pet_id')
-        servico = self.kwargs['pk']
-
-        if Turma.objects.filter(servico=servico, pet=pet_id).exists():
-            messages.error(self.request, 'Já existe uma associação para este pets e serviço.')
-            return self.form_invalid(form)
-
-        grade.servico = Servico.objects.get(pk=servico)
-        grade.pet = Pet.objects.get(pk=pet_id)
-        grade.save()
-
-        success_url = reverse('turmas:verservicos',
-                              kwargs={'pk': servico}) + '?mensagem=Pet adicionado ao serviço com sucesso!'
-        return redirect(success_url)
-
-
-class DeletarPetServico(LoginRequiredMixin, DeleteView):
-    template_name = 'pets/deletarpetservico.html'
-    model = Turma
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        servico = self.kwargs['servico_pk']
-        context['servico'] = servico
-        return context
-
-    def get_success_url(self):
-        grade = Turma.objects.get(pk=self.kwargs['pk'])
-        cliente = grade.pet.tutor
-        pagamento = Pagamento.objects.filter(cliente=cliente).order_by('-dia_vencimento').first()
-        hoje = datetime.now().date()
-        if pagamento.dia_vencimento < hoje + timedelta(days=25) and pagamento.total_pagamento > 0:
-            pagamento.total_pagamento -= grade.servico.valor
-            pagamento.save()
-
-        servico = self.kwargs['servico_pk']
-        success_url = reverse('turmas:verservicos', kwargs={'pk': servico})
-        return success_url

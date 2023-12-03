@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    {{ object.nome }}
+{% endblock %}
+
+{% block content %}
+    {% for servico in servicos_nao_vinculados %}
+        <form method="post" action="{% url 'servicos:vincularservico' pk=servico.id %}">
+            {% csrf_token %}
+             <label>{{ servico.nome }}</label>
+            <input type="hidden" name="servico_id" value="{{ servico.id }}">
+            <button type="submit">Vincular</button>
+        </form>
+    {% endfor %}
+{% endblock %}

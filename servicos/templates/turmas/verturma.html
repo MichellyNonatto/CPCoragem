@@ -11,6 +11,9 @@
             <li>
                 <a href="#">Dashboard</a>
             </li>
+            <li>
+                <a href="{% url 'servicos:vincularservico' pk=object.id %}">Adicionar Serviço</a>
+            </li>
         </ul>
     </nav>
     <main>
@@ -62,6 +65,15 @@
                             {% for dia in servico.dias_da_semana.values %}
                                 <li>{{ dia.dia }}</li>
                             {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li><a href="{% url 'servicos:verturma' pk=object.id %}">Ver serviço</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'servicos:desvincularservico' turma_id=object.id servico_id=servico.id %}">Desvincular</a>
+                            </li>
                         </ul>
                     </td>
                 {% endfor %}
