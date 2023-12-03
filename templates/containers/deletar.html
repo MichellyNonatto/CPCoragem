@@ -9,6 +9,11 @@
       Você está prestes a excluir os dados de <b>{{ nome_deletar }}</b>!
     </h2>
     <h3 class="text-lg text-center">Essa ação é irreversível. Tem certeza que deseja continuar?</h3>
+    <img src="{% static 'img/imagem-ilustratva_error_504.png' %}"
+         alt="dog"
+         width="208px"
+         height="208px"
+         class="w-52 h-52">
     <form method="post"  enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
@@ -17,10 +22,5 @@
         {% include "components/button.html" with type="submit" label="Excluir" %}
       </div>
     </form>
-    <img src="{% static 'img/imagem-ilustratva_error_504.png' %}"
-         alt="dog"
-         width="208px"
-         height="208px"
-         class="w-52 h-52">
   </main>
 {% endblock content %}

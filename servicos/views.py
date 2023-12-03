@@ -84,8 +84,13 @@ class EditarPet(LoginRequiredMixin, UpdateView):
 
 
 class DeletarPet(LoginRequiredMixin, DeleteView):
-    template_name = 'pets/deletarpet.html'
+    template_name = 'containers/deletar.html'
     model = Pet
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_deletar'] = self.object.nome
+        return context
 
     def get_success_url(self):
         messages.success(self.request, 'Pet deletado com sucesso!')
