@@ -10,4 +10,4 @@ def funcionario(request):
     else:
         funcionario = None
 
-    return {'authentication_user': funcionario}
+    return {'funcionario_context': funcionario}

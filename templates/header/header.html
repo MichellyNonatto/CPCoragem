@@ -5,7 +5,7 @@
       <li>
         {% include "components/anchor.html" with secondary=True href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}
       </li>
-      {% if authentication_user.funcao.descricao == 'Gerente' %}
+      {% if funcionario_context.funcao.descricao == 'Gerente' %}
         <li>
           {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
         </li>
@@ -13,22 +13,22 @@
       {% else %}
         <li>{% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Pets" %}</li>
         <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Serviços" %}</li>
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaturmas" label="Turmas" %}</li>
+        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Turmas" %}</li>
       {% endif %}
     </ul>
   </nav>
   <img src="{% static 'img/pata_logo.svg' %}"
        alt="logo"
-       width="70px"
-       height="70px"
-       class="justify-self-center">
+       width="56px"
+       height="56px"
+       class="h-14 w-14 justify-self-center">
   <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
     <button type="button" class="rounded-full w-14 h-14">
-      <img src="{% if authentication_user.imagem.url %}{{ authentication_user.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
+      <img src="{% if funcionario_context.imagem.url %}{{ funcionario_context.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
            alt="perfil"
            width="56px"
            height="56px"
-           class="hover:opacity-75 rounded-full">
+           class="h-14 w-14 hover:opacity-75 rounded-full object-cover object-top">
     </button>
     <a href="{% url 'usuarios:logout' %}"
        class="group-hover:flex cursor-pointer hidden flex-row gap-3 items-center justify-end">
@@ -40,7 +40,8 @@
         <img src="{% static 'img/icons/exit.svg' %}"
              alt="sair"
              width="32px"
-             height="32px">
+             height="32px"
+             class="w-8 h-8">
       </button>
     </a>
   </div>

@@ -3,8 +3,8 @@
          placeholder=""
          name="{{ name }}"
          id="{{ id }}"
-         {% if disabled %}disabled{% endif %}
-         {% if not disabled %}required{% endif %}
+         {% if acao == 'visualizar' or acao == 'disabled' %}disabled{% endif %}
+         {% if acao != 'visualizar' %}required{% endif %}
          {% if value %}value="{{ value }}"{% endif %}
          autofocus
          class="outline-none px-3 py-3 peer w-full" />

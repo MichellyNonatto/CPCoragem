@@ -1,51 +1,104 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
-    Detalhes
-{% endblock %}
-
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'usuarios:listafuncionarios' %}">Funcionários</a>
-            </li>
+    Funcionários
+{% endblock title %}
+{% block containerTitle %}
+    Funcionários/
+    {% if acao == 'visualizar' %}
+        detalhes
+    {% elif acao == 'editar' %}
+        edição
+    {% else %}
+        adicionar
+    {% endif %}
+{% endblock containerTitle %}
+{% block container %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
         </ul>
-    </nav>
-    <main>
-        <div>
-            <div>
-                <h2>{{ object.usuario.nome_completo }}</h2>
-                <img src="{{ object.imagem.url }}" width="100px">
-            </div>
-            <h3>{{ object.usuario.get_documento_formatado.0 }} {{ object.usuario.get_documento_formatado.1 }}</h3>
-        </div>
-        <section>
-            <ul>
-                <li>Data criação: {{ object.usuario.date_joined }}</li>
-                <li>E-mail: {{ object.usuario.email }}</li>
-                {% if form.as_p %}
-                    <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for="id_turno">Turno:</label>
-                        {{ form.turno }}
-                        <br>
-                        <label for="id_turno">Cargo:</label>
-                        {{ form.funcao }}
-                        <br>
-                        <button type="submit">Salvar</button>
-                        <a href="{% url 'usuarios:verfuncionario' pk=object.pk %}">
-                            <button type="button">Cancelar</button>
-                        </a>
-                    </form>
-                {% else %}
-                    <li>Turno: {{ object.get_turno_display }}</li>
-                    <li>Cargo: {{ object.funcao }}</li>
-                    <a href="{% url 'usuarios:editarfuncionario' pk=object.pk %}">Editar Funcionário</a>
-                    <a href="{% url 'usuarios:deletarfuncionario' pk=object.usuario_id %}">Excluir Funcionário</a>
+    {% endif %}
+    {% if acao != 'visualizar' %}
+        <form method="post" enctype="multipart/form-data" class="w-full">
+            {% csrf_token %}
+        {% endif %}
+        <div class="flex gap-8 w-full">
+            <div class="flex flex-col justify-end gap-4 w-full">
+                <div class="flex gap-4 h-36">
+                    <img src="{% if object.imagem.url %}{{ object.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
+                         alt="Imagem do funcionário"
+                         width="128px"
+                         height="128px"
+                         id="preview-imagem"
+                         class="h-32 w-32 rounded-full object-cover object-top" />
+                    {% if acao == 'editar' or acao == 'adicionar' %}
+                        <div class="flex items-center gap-4">
+                            <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
+                            <label for="id_imagem"
+                                   class="relative cursor-pointer bg-primaryColor hover:bg-onPrimaryFixedVariant focus:bg-primaryColor border border-primaryColor text-white rounded-md py-2 px-4 inline-flex items-center">
+                                <span>Escolher Imagem</span>
+                                <input type="file"
+                                       name="imagem"
+                                       id="id_imagem"
+                                       accept="image/*"
+                                       required
+                                       onchange="previewImagem(this)"
+                                       class="hidden">
+                            </label>
+                        </div>
+                    {% endif %}
+                </div>
+                <script>
+                function previewImagem(input) {
+                    var preview = document.getElementById('preview-imagem');
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+                </script>
+                {% include "components/input.html" with acao=acao type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
+                {% include "components/input.html" with acao=acao type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
+                {% if acao != 'adicionar' %}
+                    {% include "components/input.html" with acao=acao type="text" label="Email" name="email" id="email" value=object.usuario.email %}
                 {% endif %}
-            </ul>
-        </section>
-    </main>
-{% endblock %}
+                {% include "components/input.html" with acao=acao type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
+                {% if acao == 'visualizar' %}
+                    {% include "components/input.html" with acao=acao type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
+                    {% include "components/input.html" with acao=acao type="text" label="Turno" name="turno" id="id_turno" value=object.get_turno_display %}
+                {% else %}
+                    {% include "components/select.html" with name=form.funcao.name selected_value=form.funcao.value id=form.funcao.id_for_label label="Função" options=form.funcao.field.choices %}
+                    {% include "components/select.html" with name=form.turno.name selected_value=form.turno.value id=form.turno.id_for_label label="Turno" options=form.turno.field.choices %}
+                {% endif %}
+            </div>
+            <div class="flex flex-col justify-end gap-4 w-full">
+                {% include "components/input.html" with acao=acao type="text" label="CEP" name="cep" id="id_cep" value=endereco.cep %}
+                {% include "components/input.html" with acao=acao type="text" label="Estado" name="estado" id="id_estado" value=endereco.estado %}
+                {% include "components/input.html" with acao=acao type="text" label="Cidade" name="cidade" id="id_cidade" value=endereco.cidade %}
+                {% include "components/input.html" with acao=acao type="text" label="Bairro" name="bairro" id="id_bairro" value=endereco.bairro %}
+                {% include "components/input.html" with acao=acao type="text" label="Rua" name="rua" id="id_rua" value=endereco.rua %}
+                {% include "components/input.html" with acao=acao type="text" label="Número" name="numero" id="id_numero" value=endereco.numero %}
+                {% include "components/input.html" with acao=acao type="text" label="Complemento" name="complemento" id="id_complemento" value=endereco.complemento %}
+            </div>
+        </div>
+        <div class="w-full py-10 flex items-center justify-end gap-8">
+            {% if acao == 'visualizar' %}
+                {% include "components/anchor.html" with secondary=True href="usuarios:editarfuncionario" pk=funcionario.pk label="Editar Funcionário" %}
+                {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
+            {% else %}
+                {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+                {% if acao == 'editar' %}
+                    {% include "components/button.html" with type="submit" label="Salvar edição" %}
+                {% else %}
+                    {% include "components/button.html" with type="submit" label="Cadastrar funcionário" %}
+                {% endif %}
+            {% endif %}
+        </div>
+        {% if acao != 'visualizar' %}</form>{% endif %}
+{% endblock container %}

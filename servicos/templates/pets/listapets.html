@@ -9,7 +9,7 @@
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
         {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
-        {% include "components/anchor.html" with href="servicos:vinculartutor" icon="img/icons/add.svg" label="Adicionar pet" %}
+        {% include "components/anchor.html" with href="servicos:adicionartutor" icon="img/icons/add.svg" label="Adicionar pet" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
@@ -27,7 +27,7 @@
                 <tr class="text-base h-20 border-b border-b-primaryContainer">
                     <td class="text-center w-24 px-6">
                         <a href="{% url 'servicos:verpet' pk=pet.pk %}">
-                            <img src={{ pet.imagem.url }} alt="perfil" width="48px" height="48px" class="rounded-full inline-block align-middle">
+                            <img src={{ pet.imagem.url }} alt="perfil" width="48px" height="48px" class="w-12 h-12 object-cover object-top rounded-full inline-block align-middle">
                         </a>
                     </td>
                     <td class="px-6">
