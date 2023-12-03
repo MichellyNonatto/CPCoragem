@@ -4,16 +4,19 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.datetime_safe import datetime
 from django.views import View
-from django.views.generic import ListView, DetailView, UpdateView, CreateView, FormView, DeleteView
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, UpdateView)
 
 from usuarios.forms import CriarTutorForm
-from usuarios.models import Usuario, Pagamento, Funcionario
-from .models import Pet, Vacinacao, Servico, Turma
+from usuarios.models import Funcionario, Pagamento, Usuario
+from .forms import EditarPetForm
+
+from .models import Pet, Servico, Turma, Vacinacao
 
 
 class ListaPets(LoginRequiredMixin, ListView):
@@ -68,7 +71,12 @@ class VerPet(LoginRequiredMixin, DetailView):
 class EditarPet(LoginRequiredMixin, UpdateView):
     template_name = 'pets/editarpet.html'
     model = Pet
-    fields = ['imagem', 'castrado', 'descricao_medica', 'turma']
+    form_class = EditarPetForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_tutor'] = self.object.tutor.nome_completo
+        return context
 
     def get_success_url(self):
         messages.success(self.request, 'Pet editado com sucesso!')
@@ -76,8 +84,13 @@ class EditarPet(LoginRequiredMixin, UpdateView):
 
 
 class DeletarPet(LoginRequiredMixin, DeleteView):
-    template_name = 'pets/deletarpet.html'
+    template_name = 'containers/deletar.html'
     model = Pet
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_deletar'] = self.object.nome
+        return context
 
     def get_success_url(self):
         messages.success(self.request, 'Pet deletado com sucesso!')
@@ -116,7 +129,19 @@ class VincularTutor(LoginRequiredMixin, ListView):
 class AdicionarPet(LoginRequiredMixin, CreateView):
     template_name = 'pets/adicionarpet.html'
     model = Pet
-    fields = ['imagem', 'nome', 'data_nascimento', 'genero', 'raca', 'descricao_medica', 'castrado', 'turma']
+    fields = ['imagem', 'nome', 'data_nascimento', 'genero',
+              'raca', 'descricao_medica', 'castrado', 'turma']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        try:
+            tutor = Usuario.objects.get(pk=self.kwargs['pk'])
+            context['nome_tutor'] = tutor.nome_completo
+        except Usuario.DoesNotExist:
+            context['nome_tutor'] = None
+
+        return context
 
     def form_valid(self, form):
         try:
@@ -127,7 +152,8 @@ class AdicionarPet(LoginRequiredMixin, CreateView):
         pet = form.save(commit=False)
         pet.tutor = tutor
         pet.save()
-        success_url = reverse('servicos:listapets') + '?mensagem=Pet adicionado com sucesso!'
+        success_url = reverse('servicos:listapets') + \
+            '?mensagem=Pet adicionado com sucesso!'
         return redirect(success_url)
 
 
@@ -169,10 +195,12 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
         documento = form.cleaned_data['documento']
 
         if Usuario.objects.filter(documento=documento).exists():
-            messages.error(self.request, 'Tutor já existe em nossa base de dados.')
+            messages.error(
+                self.request, 'Tutor já existe em nossa base de dados.')
         else:
             form.save()
-            success_url = reverse('servicos:vinculartutor') + '?mensagem=Tutor adicionado com sucesso!'
+            success_url = reverse('servicos:vinculartutor') + \
+                '?mensagem=Tutor adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('servicos:listapets')
@@ -228,7 +256,8 @@ class VincularServico(LoginRequiredMixin, UpdateView):
     fields = ["servicos"]
 
     def get_success_url(self):
-        messages.success(self.request, 'Serviço vinculado há turma com sucesso!')
+        messages.success(
+            self.request, 'Serviço vinculado há turma com sucesso!')
         return reverse('servicos:verturma', args=[self.object.pk])
 
 
@@ -267,7 +296,8 @@ class DesvincularFuncionario(LoginRequiredMixin, View):
         funcionario = get_object_or_404(Funcionario, id=funcionario_id)
         servico.funcionarios.remove(funcionario)
         servico.save()
-        messages.success(request, 'Funcionário desvinculado do serviço com sucesso!')
+        messages.success(
+            request, 'Funcionário desvinculado do serviço com sucesso!')
 
         return HttpResponseRedirect(reverse('servicos:verservicos', args=[servico.pk]))
 
@@ -281,5 +311,6 @@ class VincularFuncionario(LoginRequiredMixin, UpdateView):
     fields = ["funcionarios"]
 
     def get_success_url(self):
-        messages.success(self.request, 'Funcionário vinculado ao serviço com sucesso!')
+        messages.success(
+            self.request, 'Funcionário vinculado ao serviço com sucesso!')
         return reverse('servicos:verservicos', args=[self.object.pk])
