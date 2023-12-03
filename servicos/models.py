@@ -82,10 +82,9 @@ class Vacina(models.Model):
 
 
 class Vacinacao(models.Model):
-    vacina = models.ForeignKey(Vacina, related_name="vacina", on_delete=models.DO_NOTHING)
+    vacina = models.ManyToManyField(Vacina)
     pet = models.ForeignKey(Pet, related_name="pets", on_delete=models.CASCADE)
-    data_vacinacao = models.DateField(default=timezone.now)
 
     def __str__(self):
-        informacao = f"Pet: {self.pet} - {self.vacina}"
+        informacao = f"Pet: {self.pet}"
         return informacao

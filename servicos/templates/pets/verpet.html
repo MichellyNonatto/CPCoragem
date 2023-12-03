@@ -17,13 +17,13 @@
             {% include "components/input.html" with disabled="True" type="text" label="Nome completo" name="name" id="name" value=object.nome %}
             {% include "components/input.html" with disabled="True" type="text" label="Raça" name="race" id="race" value=object.raca %}
             {% include "components/input.html" with disabled="True" type="text" label="Espécie" name="species" id="species" value=object.raca.get_especie_display %}
-            {% include "components/input.html" with disabled="True" type="text" label="Gênero" name="gender" id="gender" value=object.genero %}
+            {% include "components/input.html" with disabled="True" type="text" label="Gênero" name="gender" id="gender" value=object.get_genero_display %}
         </div>
         <div class="flex flex-col justify-end gap-4 w-full">
             {% include "components/input.html" with disabled="True" type="text" label="Data de nascimento" name="dateofbirth" id="dateofbirth" value=object.data_nascimento %}
             {% include "components/input.html" with disabled="True" type="text" label="Tutor" name="tutor" id="tutor" value=object.tutor.nome_completo %}
-            {% include "components/input.html" with disabled="True" type="text" label="Turma" name="class" id="class" value=object.tutor.nome_completo %}
-            {% include "components/input.html" with disabled="True" type="text" label="Vacinação" name="vaccination" id="vaccination" value=nomes_vacinas %}
+            {% include "components/input.html" with disabled="True" type="text" label="Turma" name="class" id="class" value=object.turma %}
+            {% include "components/input.html" with disabled="True" type="text" label="Vacinação" name="vaccination" id="vaccination" value=vacinacoes %}
             {% include "components/input.html" with disabled="True" type="text" label="Histórico de saúde" name="healthhistory" id="healthhistory" value=object.descricao_medica %}
         </div>
     </div>

@@ -58,10 +58,30 @@ class VerPet(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         pet = self.object
 
-        vacinacoes = Vacinacao.objects.filter(pet=pet)
+        vacinacoes = Vacinacao.objects.filter(pet=pet).select_related('vacina')
+        list_vacina = vacinacoes.values_list('vacina__nome', flat=True)
 
-        context['vacinacoes'] = vacinacoes
+        context['vacinacoes'] = ','.join(list_vacina)
         return context
+
+
+class EditarPet(LoginRequiredMixin, UpdateView):
+    template_name = 'pets/editarpet.html'
+    model = Pet
+    fields = ['imagem', 'castrado', 'descricao_medica', 'turma']
+
+    def get_success_url(self):
+        messages.success(self.request, 'Pet editado com sucesso!')
+        return reverse('servicos:verpet', args=[self.object.pk])
+
+
+class DeletarPet(LoginRequiredMixin, DeleteView):
+    template_name = 'pets/deletarpet.html'
+    model = Pet
+
+    def get_success_url(self):
+        messages.success(self.request, 'Pet deletado com sucesso!')
+        return reverse('servicos:listapets')
 
 
 class AdicionarVacinaPet(LoginRequiredMixin, CreateView):
