@@ -1,9 +1,46 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
     Turmas
-{% endblock %}
+{% endblock title %}
+{% block containerTitle %}
+    Turmas
+{% endblock containerTitle %}
+{% block container %}
+    <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+        {% include "components/anchor.html" with href="servicos:listaturmas" icon="img/icons/add.svg" label="Adicionar turma" %}
+    </div>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-800">
+        <thead>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th class="px-6">Nome</th>
+                <th class="px-6">Serviços Disponibilizados</th>
+                <th class="px-6">Valor Total</th>
+            </tr>
+        </thead>
+        <tbody class="bg-background">
+            {% for turma in object_list %}
+                <tr class="text-base h-20 border-b border-b-primaryContainer">
+                    <td class="px-6">
+                        <a href="{% url 'servicos:verturma' pk=turma.id %}">{{ turma.nome }}</a>
+                    </td>
+                    <td class="px-6">
+                        {% for servico in turma.servicos.values %}
+                            {{ servico.nome }}
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                    <td class="px-6">{{ turma.valor_total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock container %}
+{% comment %} {% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Turmas{% endblock %}
 
 {% block content %}
     <nav>
@@ -41,4 +78,4 @@
             {% endfor %}
         </table>
     </main>
-{% endblock %}
+{% endblock %} {% endcomment %}

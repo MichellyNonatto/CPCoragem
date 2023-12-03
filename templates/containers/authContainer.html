@@ -2,7 +2,11 @@
 {% load static %}
 {% block content %}
   <main class="bg-cover bg-center h-screen w-screen flex items-center justify-center" style="background-image: url({% static "img/paw_background.jpg" %})">
+<<<<<<< Updated upstream
+    <div class="w-[580px] h-[580px] bg-background flex flex-col p-20 items-center justify-center rounded-2xl gap-y-4 gap-x-7">
+=======
     <div class="w-[512px] h-[512px] bg-background flex flex-col p-20 items-center justify-center rounded-2xl gap-y-4 gap-x-7">
+>>>>>>> Stashed changes
       <img src="{% static 'img/pata_logo.svg' %}"
            alt="logo"
            width="80px"
@@ -17,6 +21,10 @@
           {% endblock containerSubTitle %}
         </h3>
       </div>
+<<<<<<< Updated upstream
+      {% include "components/message.html" %}
+=======
+>>>>>>> Stashed changes
       {% block container %}
       {% endblock container %}
     </main>

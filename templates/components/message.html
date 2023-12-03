@@ -1,18 +1,13 @@
 {% if messages %}
     {% for message in messages %}
         <div>
-            <p>{{ message }}</p>
+            <p class="text-red-500 text-sm text-center">{{ message }}</p>
         </div>
     {% endfor %}
 {% elif form.errors %}
-    <div>
-        <ul>
-            {% for field, error_list in form.errors.items %}
-                {% for error in error_list %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-        </ul>
-    </div>
+    <ul>
+        {% for field, error_list in form.errors.items %}
+            {% for error in error_list %}<li class="text-red-500 text-sm text-center">{{ error }}</li>{% endfor %}
+        {% endfor %}
+    </ul>
 {% endif %}
-

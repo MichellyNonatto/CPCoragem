@@ -1,10 +1,41 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
-    Adicionar Tutor
-{% endblock %}
-
+    Pet
+{% endblock title %}
+{% block containerTitle %}
+    Tutor/adicionar
+{% endblock containerTitle %}
+{% block container %}
+    <form method="post" enctype="multipart/form-data" class="w-full">
+        <fieldset>
+            {% csrf_token %}
+            <div class="flex gap-8 w-full">
+                <div class="flex flex-col justify-end gap-4 w-full">
+                    {% for field in form %}
+                        {% if field.name in 'nome_completo,documento,telefone,email' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="flex flex-col justify-end gap-4 w-full">
+                    {% for field in form %}
+                        {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="w-full py-10 flex items-center justify-end gap-8">
+                {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+                {% include "components/button.html" with type="submit" label="Cadastrar tutor" %}
+            </div>
+        </fieldset>
+    </form>
+{% endblock container %}
+{% comment %} {% extends 'index.html' %}
+{% load static %}
+{% block title %}Adicionar Tutor{% endblock %}
 {% block content %}
     <nav>
         <ul>
@@ -22,10 +53,10 @@
             </fieldset>
             <div>
                 <button type="submit">Salvar</button>
-                <a href="{% url 'servicos:vinculartutor'  %}">
+                <a href="{% url 'servicos:vinculartutor' %}">
                     <button type="button">Cancelar</button>
                 </a>
             </div>
         </form>
     </main>
-{% endblock %}
+{% endblock %} {% endcomment %}
