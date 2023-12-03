@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_view
 from .views import CustomLoginView, Dashboard, EditarPerfilUsuario, EditarPerfilEndereco, RecuperarConta, Autenticacao, \
     AtualizarSenha, ListaFuncionarios, PesquisaFuncionarios, VerFuncionario, EditarFuncionario, DeletarFuncionario, \
     AdicionarFuncionario, AutenticacaoClienteView, CriarNovoPagamento, ListaPagamentos, PesquisarPagamento, \
-    DeletarCliente
+    DeletarTutor, ListaTutor
 
 app_name = 'usuarios'
 
@@ -31,8 +31,10 @@ urlpatterns = [
     path('dashboard/financeiro/', ListaPagamentos.as_view(), name='financeiro'),
     path('dashboard/financeiro/pesquisa', PesquisarPagamento.as_view(template_name='funcionario/listapagamento.html'),
          name='pesquisarfinanceiro'),
-    path('dashboard/financeiro/<int:pk>', DeletarCliente.as_view(), name='deletarcliente'),
+    path('dashboard/financeiro/<int:pk>', DeletarTutor.as_view(), name='deletarcliente'),
 
     path('cliente_coragem/verificacao', AutenticacaoClienteView.as_view(), name='autenticacaocliente'),
     path('cliente_coragem/pagamento/<int:pk>', CriarNovoPagamento.as_view(), name='atualizarpagamento'),
+
+    path('dashboard/listatutor/', ListaTutor.as_view(), name='listatutor')
 ]

@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth import logout
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.views import LoginView
@@ -359,14 +359,24 @@ class PesquisarPagamento(ListaPagamentos):
         return pagamento
 
 
-class DeletarCliente(LoginRequiredMixin, DeleteView):
-    template_name = 'funcionario/deletarcliente.html'
+class DeletarTutor(LoginRequiredMixin, DeleteView):
+    template_name = 'funcionario/deletartutor.html'
     model = Usuario
 
     def form_valid(self, form):
         self.object = form.save()
-        messages.success(self.request, 'Cliente deletado com sucesso!')
+        messages.success(self.request, 'Tutor deletado com sucesso!')
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('usuarios:listafuncionarios')
+
+
+class ListaTutor(LoginRequiredMixin, ListView):
+    model = Usuario
+    template_name = "funcionario/listatutor.html"
+
+    def get(self, request, *args, **kwargs):
+        usuarios_tutor = Usuario.objects.filter(categoria='TUTOR')
+        context = {'object_list': usuarios_tutor}
+        return render(request, self.template_name, context)
