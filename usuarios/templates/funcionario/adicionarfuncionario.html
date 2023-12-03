@@ -45,20 +45,22 @@
                     }
                 }
                 </script>
-                {% include "components/input.html" with acao=acao type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=form.nome_completo.value erro=form.nome_completo.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Documento" name="documento" id="id_documento" value=form.documento.value erro=form.documento.errors %}
-                {% include "components/input.html" with acao=acao type="number" label="Telefone" name="telefone" id="id_telefone" value=form.telefone.value erro=form.telefone.errors %}
-                {% include "components/select.html" with name=form.funcao.name selected_value=form.funcao.value id=form.funcao.id_for_label label="Função" options=form.funcao.field.choices erro=form.funcao.errors %}
-                {% include "components/select.html" with name=form.turno.name selected_value=form.turno.value id=form.turno.id_for_label label="Turno" options=form.turno.field.choices erro=form.turno.errors %}
+                {% for field in form %}
+                    {% if field.name in 'nome_completo,documento,telefone,turno,funcao' %}
+                        {% if field.name != 'funcao' and field.name != 'turno' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% else %}
+                            {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
-                {% include "components/input.html" with acao=acao type="text" label="CEP" name="cep" id="id_cep" value=form.cep.value erro=form.cep.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Estado" name="estado" id="id_estado" value=form.estado.value erro=form.estado.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Cidade" name="cidade" id="id_cidade" value=form.cidade.value erro=form.cidade.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Bairro" name="bairro" id="id_bairro" value=form.bairro.value erro=form.bairro.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Rua" name="rua" id="id_rua" value=form.rua.value erro=form.rua.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Número" name="numero" id="id_numero" value=form.numero.value erro=form.numero.errors %}
-                {% include "components/input.html" with acao=acao type="text" label="Complemento" name="complemento" id="id_complemento" value=form.complemento.value erro=form.complemento.errors %}
+                {% for field in form %}
+                    {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
+                        {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
@@ -67,35 +69,3 @@
         </div>
     </form>
 {% endblock container %}
-{% comment %} {% extends 'index.html' %}
-{% load static %}
-{% block title %}Adicionar Funcionário{% endblock %}
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'usuarios:listafuncionarios' %}">Funcionários</a>
-            </li>
-        </ul>
-    </nav>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset>
-            <legend>Adicionar Funcionário</legend>
-            {{ form.as_p }}
-        </fieldset>
-        <div>
-            <button type="submit">Cadastrar</button>
-            <a href="{% url 'usuarios:listafuncionarios' %}">
-                <button type="button">Cancelar</button>
-            </a>
-        </div>
-    </form>
-{% endblock %} {% endcomment %}
