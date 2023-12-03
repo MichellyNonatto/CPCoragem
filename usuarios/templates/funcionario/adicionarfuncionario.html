@@ -4,14 +4,7 @@
     Funcionários
 {% endblock title %}
 {% block containerTitle %}
-    Funcionários/
-    {% if acao == 'visualizar' %}
-        detalhes
-    {% elif acao == 'editar' %}
-        edição
-    {% else %}
-        adicionar
-    {% endif %}
+    Funcionários/adicionar
 {% endblock containerTitle %}
 {% block container %}
     <form method="post" enctype="multipart/form-data" class="w-full">
@@ -25,26 +18,21 @@
                          height="128px"
                          id="preview-imagem"
                          class="h-32 w-32 rounded-full object-cover object-top" />
-                    {% if acao == 'editar' or acao == 'adicionar' %}
-                        <div class="flex items-center gap-4">
-                            <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
-                            <label for="id_imagem"
-                                   class="relative cursor-pointer bg-primaryColor hover:bg-onPrimaryFixedVariant focus:bg-primaryColor border border-primaryColor text-white rounded-md py-2 px-4 inline-flex items-center">
-                                <span>Escolher Imagem</span>
-                                <input type="file"
-                                       name="imagem"
-                                       id="id_imagem"
-                                       accept="image/*"
-                                       required
-                                       onchange="previewImagem(this)"
-                                       class="hidden">
-                            </label>
-                        </div>
-                    {% endif %}
+                    <div class="flex items-center gap-4">
+                        <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
+                        <label for="id_imagem"
+                               class="relative cursor-pointer bg-primaryColor hover:bg-onPrimaryFixedVariant focus:bg-primaryColor border border-primaryColor text-white rounded-md py-2 px-4 inline-flex items-center">
+                            <span>Escolher Imagem</span>
+                            <input type="file"
+                                   name="imagem"
+                                   id="id_imagem"
+                                   accept="image/*"
+                                   required
+                                   onchange="previewImagem(this)"
+                                   class="hidden">
+                        </label>
+                    </div>
                 </div>
-                {% if form.imagem.errors %}
-                    {% for error in form.imagem.errors %}<div class="text-red-500 text-sm">{{ erro }}</div>{% endfor %}
-                {% endif %}
                 <script>
                 function previewImagem(input) {
                     var preview = document.getElementById('preview-imagem');
