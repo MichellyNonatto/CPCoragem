@@ -8,3 +8,6 @@ db.sqlite3
 node_modules/*
 media
 migrations/
+
+package-lock.json
+package.json
