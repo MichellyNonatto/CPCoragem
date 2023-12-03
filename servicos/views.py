@@ -62,11 +62,8 @@ class VerPet(LoginRequiredMixin, DetailView):
 
         nomes_vacinas = ", ".join(list(Vacinacao.objects.filter(
             pet=pet).values_list('vacina__nome', flat=True)))
-
-        print("Nomes de Vacinas:", nomes_vacinas)
-
+        context['acao'] = 'visualizar'
         context['nomes_vacinas'] = nomes_vacinas
-
         context['vacinacoes'] = vacinacoes
         return context
 
@@ -102,9 +99,15 @@ class VincularTutor(LoginRequiredMixin, ListView):
 
 class AdicionarPet(LoginRequiredMixin, CreateView):
     template_name = 'adicionarpet.html'
+    template_name = 'verpet.html'
     model = Pet
     fields = ['imagem', 'nome', 'data_nascimento',
               'genero', 'raca', 'descricao_medica', 'castrado']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acao'] = 'adicionar'
+        return context
 
     def form_valid(self, form):
         try:
@@ -151,6 +154,7 @@ class PesquisarTutor(LoginRequiredMixin, ListView):
 
 
 class AdicionarTutor(LoginRequiredMixin, FormView):
+    # template_name = 'vertutor.html'
     template_name = 'adicionartutor.html'
     form_class = CriarTutorForm
 
