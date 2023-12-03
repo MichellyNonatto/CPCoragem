@@ -9,18 +9,9 @@
         detalhes
     {% elif acao == 'editar' %}
         edição
-    {% else %}
-        adicionar
     {% endif %}
 {% endblock containerTitle %}
 {% block container %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     {% if acao != 'visualizar' %}
         <form method="post" enctype="multipart/form-data" class="w-full">
             {% csrf_token %}
@@ -34,7 +25,7 @@
                          height="128px"
                          id="preview-imagem"
                          class="h-32 w-32 rounded-full object-cover object-top" />
-                    {% if acao == 'editar' or acao == 'adicionar' %}
+                    {% if acao == 'editar' %}
                         <div class="flex items-center gap-4">
                             <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
                             <label for="id_imagem"
@@ -65,9 +56,7 @@
                 </script>
                 {% include "components/input.html" with acao=acao type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
                 {% include "components/input.html" with acao=acao type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
-                {% if acao != 'adicionar' %}
-                    {% include "components/input.html" with acao=acao type="text" label="Email" name="email" id="email" value=object.usuario.email %}
-                {% endif %}
+                {% include "components/input.html" with acao=acao type="text" label="Email" name="email" id="email" value=object.usuario.email %}
                 {% include "components/input.html" with acao=acao type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
                 {% if acao == 'visualizar' %}
                     {% include "components/input.html" with acao=acao type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
@@ -93,11 +82,7 @@
                 {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
             {% else %}
                 {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
-                {% if acao == 'editar' %}
-                    {% include "components/button.html" with type="submit" label="Salvar edição" %}
-                {% else %}
-                    {% include "components/button.html" with type="submit" label="Cadastrar funcionário" %}
-                {% endif %}
+                {% include "components/button.html" with type="submit" label="Salvar edição" %}
             {% endif %}
         </div>
         {% if acao != 'visualizar' %}</form>{% endif %}

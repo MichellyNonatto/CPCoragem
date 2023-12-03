@@ -13,7 +13,6 @@
     Por favor inserir o número do documento cadastrado
 {% endblock containerSubTitle %}
 {% block container %}
-    {% include "components/message.html" %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
         {% include "components/input.html" with type="text" label="Inserir documento" name="codigo" id="id_codigo" %}
@@ -21,7 +20,7 @@
             Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
         </p>
         <div class="flex items-center justify-between">
-            {% include "components/anchor.html" with secondary=True href="usuarios:recuperarconta" label="Reenviar" %}
+            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
             {% include "components/button.html" with type="submit" label="Verificar" %}
         </div>
     </form>
