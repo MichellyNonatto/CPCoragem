@@ -1,13 +1,14 @@
 <div class="relative w-full group">
-  <input type="{{ type }}"
-         placeholder=""
-         name="{{ name }}"
-         id="{{ id }}"
-         {% if acao == 'visualizar' or acao == 'disabled' %}disabled{% endif %}
-         {% if acao != 'visualizar' %}required{% endif %}
-         {% if value %}value="{{ value }}"{% endif %}
-         autofocus
-         class="outline-none px-3 py-3 peer w-full" />
+  <select name="{{ name }}"
+          id="{{ id }}"
+          required
+          class="outline-none px-3 py-3 peer w-full">
+    <option value="" disabled {% if selected_value is None %}selected{% endif %}>Selecione uma opção...</option>
+    {% for value, label in options %}
+      <option value="{{ value }}"
+              {% if value == selected_value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
   <label for="{{ id }}"
          class="absolute left-[9px] top-px text-sm text-gray-500 transition-all duration-300 px-1 transform -translate-y-1/2 pointer-events-none peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-xl group-focus-within:!top-px group-focus-within:!text-sm group-focus-within:!text-primaryColor">
     {{ label }}

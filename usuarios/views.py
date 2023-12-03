@@ -241,7 +241,8 @@ class DeletarFuncionario(LoginRequiredMixin, DeleteView):
 
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
-    template_name = "verfuncionario.html"
+    # template_name = "verfuncionario.html"
+    template_name = "adicionarfuncionario.html"
     form_class = CriarFuncionarioForm
 
     def get_context_data(self, **kwargs):
