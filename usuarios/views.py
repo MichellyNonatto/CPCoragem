@@ -208,11 +208,23 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
     template_name = 'funcionario/verfuncionario.html'
     model = Funcionario
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
+        context['acao'] = 'visualizar'
+        return context
+
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
     template_name = "funcionario/verfuncionario.html"
     model = Funcionario
     fields = ['turno', 'funcao']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
+        context['acao'] = 'editar'
+        return context
 
     def form_valid(self, form):
         form.save()
@@ -245,7 +257,13 @@ class DeletarFuncionario(LoginRequiredMixin, DeleteView):
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
     template_name = "funcionario/adicionarfuncionario.html"
+    # template_name = "funcionario/verfuncionario.html"
     form_class = CriarFuncionarioForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acao'] = 'adicionar'
+        return context
 
     def form_valid(self, form):
         documento = form.cleaned_data['documento']
