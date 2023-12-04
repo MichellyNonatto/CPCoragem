@@ -132,7 +132,7 @@ class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                                     'pk': self.request.user.pk})
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
@@ -157,7 +157,7 @@ class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                                     'pk': self.request.user.pk})
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
@@ -229,7 +229,7 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         form.save()
         success_url = reverse('funcionarios') + \
-            '?mensagem=Alteração em funcionário salva com sucesso!'
+                      '?mensagem=Alteração em funcionário salva com sucesso!'
         messages.success(
             self.request, 'Alteração em funcionário salva com sucesso!')
         return redirect(success_url)
@@ -277,7 +277,7 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             messages.success(
                 self.request, 'Funcionário adicionado com sucesso!')
             success_url = reverse('funcionarios') + \
-                '?mensagem=Funcionário adicionado com sucesso!'
+                          '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('usuarios:adicionarfuncionario')
@@ -338,7 +338,7 @@ class CriarNovoPagamento(CreateView):
 
         registro_pagamento.save()
         success_url = reverse('usuarios:autenticacaocliente') + \
-            '?mensagem=Pagamento efetuado com sucesso!'
+                      '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
