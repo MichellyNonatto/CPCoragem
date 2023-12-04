@@ -1,44 +1,48 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
-    {{ object.nome }}
-{% endblock %}
-
-{% block content %}
-    <main>
-        <h2>{{ object.nome }}</h2>
-         <a href="{% url 'servicos:vincularfuncionario' pk=object.id %}">Adicionar Funcionário</a>
-
-        <table border="1">
-            <thead>
-            <tr>
-                <th>Funcionário</th>
-                <th>Turno</th>
-                <th>Função</th>
-                <th>Opções</th>
+    Serviços
+{% endblock title %}
+{% block containerTitle %}
+    Serviços/detalhes
+{% endblock containerTitle %}
+{% block container %}
+    <h3 class="text-xl text-primaryColor">{{ object.nome }}</h3>
+    <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        {% include "components/anchor.html" with href="servicos:vincularfuncionario" pk=object.id icon="img/icons/add.svg" label="Vincular funcionário" %}
+    </div>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-800">
+        <thead>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th className="w-24 px-6"></th>
+                <th class="px-6">Nome</th>
+                <th class="px-6">Cargo</th>
+                <th class="px-6">Turno</th>
+                <th class="px-6">Telefone</th>
+                <th class="px-6">E-mail</th>
+                <th class="px-6"></th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody class="bg-background">
             {% for funcionario in object.funcionarios.all %}
-                <tr>
-                    <td>
-                        <img src="{{ funcionario.imagem.url }}" width="100px">
-                        {{ funcionario.usuario.nome_completo }}
-                    </td>
-                    <td>
-                        {{ funcionario.get_turno_display }}
-                    </td>
-                    <td>
-                        {{ funcionario.funcao }}
-                    </td>
-                    <td>
-                        <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">Ver Funcionario</a>
-                        <a href="{% url 'servicos:desvicularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
-                    </td>
-                </tr>
+                {% if funcionario.usuario_id != usuario_atual.pk %}
+                    <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="text-center w-24 px-6">
+                            <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}"><img src={{ funcionario.imagem.url }} alt="perfil" width="48px" height="48px" class="h-12 w-12 object-cover object-top rounded-full"></a>
+                        </td>
+                        <td class="px-6">
+                            <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
+                        </td>
+                        <td class="px-6">{{ funcionario.funcao }}</td>
+                        <td class="px-6">{{ funcionario.get_turno_display }}</td>
+                        <td class="px-6">{{ funcionario.usuario.telefone }}</td>
+                        <td class="px-6">{{ funcionario.usuario.email }}</td>
+                        <td class="font-medium text-red-600 px-6">
+                            <a href="{% url 'servicos:desvicularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-            </tbody>
-        </table>
-    </main>
-{% endblock %}
+        </tbody>
+    </table>
+{% endblock container %}
