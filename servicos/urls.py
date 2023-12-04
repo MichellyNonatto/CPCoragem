@@ -5,7 +5,7 @@ from .views import (AdicionarPet, AdicionarServico, AdicionarTutor,
                     DesvincularServico, EditarPet, EditarServico, ListaPets,
                     ListaServicos, ListaTurmas, PesquisarPet, PesquisarServico,
                     PesquisarTurma, PesquisarTutor, VerPet, VerServicos,
-                    VerTurma, VincularServico, VincularTutor)
+                    VerTurma, VerTutor, VincularServico, VincularTutor)
 
 app_name = 'servicos'
 
@@ -28,6 +28,8 @@ urlpatterns = [
          name='pesquisartutor'),
     path('dashboard/pets/vincular_tutor/adicionar_tutor',
          AdicionarTutor.as_view(), name='adicionartutor'),
+    path('dashboard/pets/ver_tutor/<int:pk>',
+         VerTutor.as_view(), name='vertutor'),
 
     path('dashboard/turmas', ListaTurmas.as_view(), name='listaturmas'),
     path('dashboard/turmas/pesquisar',

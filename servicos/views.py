@@ -128,6 +128,17 @@ class VincularTutor(LoginRequiredMixin, ListView):
     model = Usuario
 
 
+class VerTutor(LoginRequiredMixin, DetailView):
+    template_name = 'pets/vertutor.html'
+    model = Usuario
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acao'] = 'visualizar'
+
+        return context
+
+
 class AdicionarPet(LoginRequiredMixin, CreateView):
     template_name = 'pets/adicionarpet.html'
     model = Pet

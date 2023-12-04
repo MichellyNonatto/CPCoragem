@@ -1,0 +1,35 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Pet
+{% endblock title %}
+{% block containerTitle %}
+    Tutor/detalhes
+{% endblock containerTitle %}
+{% block container %}
+    <div class="flex gap-8 w-full">
+        <div class="flex flex-col justify-end gap-4 w-full">
+            {% if object %}
+                {% include "components/input.html" with type="text" acao=acao label="Nome Completo" name="nome_completo" id="id_nome_completo" value=object.nome_completo %}
+                {% include "components/input.html" with type="text" acao=acao label="Documento" name="documento" id="id_documento" value=object.get_documento_formatado.1 %}
+                {% include "components/input.html" with type="text" acao=acao label="Telefone" name="telefone" id="id_telefone" value=object.telefone %}
+                {% include "components/input.html" with type="text" acao=acao label="Email" name="email" id="id_email" value=object.email %}
+            {% endif %}
+        </div>
+        <div class="flex flex-col justify-end gap-4 w-full">
+            {% if object %}
+                {% include "components/input.html" with type="text" acao=acao label="CEP" name="cep" id="id_cep" value=object.endereco.cep %}
+                {% include "components/input.html" with type="text" acao=acao label="Estado" name="estado" id="id_estado" value=object.endereco.estado %}
+                {% include "components/input.html" with type="text" acao=acao label="Cidade" name="cidade" id="id_cidade" value=object.endereco.cidade %}
+                {% include "components/input.html" with type="text" acao=acao label="Bairro" name="bairro" id="id_bairro" value=object.endereco.bairro %}
+                {% include "components/input.html" with type="text" acao=acao label="Rua" name="rua" id="id_rua" value=object.endereco.rua %}
+                {% include "components/input.html" with type="text" acao=acao label="Número" name="numero" id="id_numero" value=object.endereco.numero %}
+                {% include "components/input.html" with type="text" acao=acao label="Complemento" name="complemento" id="id_complemento" value=object.endereco.complemento %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="w-full py-10 flex items-center justify-end gap-8">
+        {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Editar tutor" %}
+        {% include "components/button.html" with type="button" label="Excluir tutor" %}
+    </div>
+{% endblock container %}
