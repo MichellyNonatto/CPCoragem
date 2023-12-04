@@ -129,7 +129,6 @@ class VerTutor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['endereco'] = self.object.endereco
         context['acao'] = 'visualizar'
 
         return context
