@@ -94,7 +94,7 @@ class DeletarPet(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, 'Pet deletado com sucesso!')
-        return reverse('servicos:listapets')
+        return reverse('pets')
 
 
 class AdicionarVacinaPet(LoginRequiredMixin, CreateView):
@@ -152,7 +152,7 @@ class AdicionarPet(LoginRequiredMixin, CreateView):
         pet = form.save(commit=False)
         pet.tutor = tutor
         pet.save()
-        success_url = reverse('servicos:listapets') + \
+        success_url = reverse('pets') + \
             '?mensagem=Pet adicionado com sucesso!'
         return redirect(success_url)
 
@@ -203,7 +203,7 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
                 '?mensagem=Tutor adicionado com sucesso!'
             return redirect(success_url)
 
-        return reverse('servicos:listapets')
+        return reverse('pets')
 
 
 class ListaTurmas(LoginRequiredMixin, ListView):

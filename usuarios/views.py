@@ -228,7 +228,7 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
-        success_url = reverse('usuarios:listafuncionarios') + \
+        success_url = reverse('funcionarios') + \
             '?mensagem=Alteração em funcionário salva com sucesso!'
         messages.success(
             self.request, 'Alteração em funcionário salva com sucesso!')
@@ -254,7 +254,7 @@ class DeletarFuncionario(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, 'Funcionário deletado com sucesso!')
-        return reverse('usuarios:listafuncionarios')
+        return reverse('funcionarios')
 
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
@@ -276,7 +276,7 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             form.save()
             messages.success(
                 self.request, 'Funcionário adicionado com sucesso!')
-            success_url = reverse('usuarios:listafuncionarios') + \
+            success_url = reverse('funcionarios') + \
                 '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
@@ -404,7 +404,7 @@ class DeletarTutor(LoginRequiredMixin, DeleteView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('usuarios:listafuncionarios')
+        return reverse('funcionarios')
 
 
 class ListaTutor(LoginRequiredMixin, ListView):
