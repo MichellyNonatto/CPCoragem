@@ -19,6 +19,7 @@
                 <th class="px-6">Nome</th>
                 <th class="px-6">Valor</th>
                 <th class="px-6">Dias da Semana</th>
+                <th></th>
             </tr>
         </thead>
         <tbody class="bg-background">
@@ -54,6 +55,9 @@
                                 </div>
                             {% endfor %}
                         </div>
+                    </td>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href={% url 'servicos:verservicos' pk=servico.pk %}>Ver serviço</a>
                     </td>
                 </tr>
             {% endfor %}

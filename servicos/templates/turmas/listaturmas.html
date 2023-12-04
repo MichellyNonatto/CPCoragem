@@ -19,13 +19,14 @@
                 <th class="px-6">Nome</th>
                 <th class="px-6">Serviços Disponibilizados</th>
                 <th class="px-6">Valor Total</th>
+                <th></th>
             </tr>
         </thead>
         <tbody class="bg-background">
             {% for turma in object_list %}
                 <tr class="text-base h-20 border-b border-b-primaryContainer">
                     <td class="px-6">
-                        <a href="{% url 'servicos:verturma' pk=turma.id %}">{{ turma.nome }}</a>
+                        <a href="{% url 'servicos:verturma' pk=turma.pk %}">{{ turma.nome }}</a>
                     </td>
                     <td class="px-6">
                         {% for servico in turma.servicos.values %}
@@ -34,6 +35,9 @@
                         {% endfor %}
                     </td>
                     <td class="px-6">R$ {{ turma.valor_total }}</td>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href={% url 'servicos:verturma' pk=turma.pk %}>Ver turma</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
