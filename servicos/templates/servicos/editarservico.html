@@ -9,11 +9,34 @@
 {% block container %}
     <form method="post" class="w-full flex flex-col justify-end gap-4">
         {% csrf_token %}
+        <div class="h-full flex gap-8 items-center">
+            <h3 class="text-xl text-primaryColor">Selecione os dias em que o serviço será oferecido:</h3>
+            {% for day in '12345'|make_list %}
+                <div class="flex flex-col gap-2 items-center justify-center">
+                    <p class="text-primaryColor font-medium">
+                        {% if day == '1' %}
+                            Seg
+                        {% elif day == '2' %}
+                            Ter
+                        {% elif day == '3' %}
+                            Qua
+                        {% elif day == '4' %}
+                            Qui
+                        {% elif day == '5' %}
+                            Sex
+                        {% endif %}
+                    </p>
+                    <input type="checkbox" name="dias_da_semana" id="id_dias_da_semana" value={{ day }} {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %} class="accent-primaryColor w-5 h-5">
+                </div>
+            {% endfor %}
+        </div>
         {% for field in form %}
-            {% if field.field.widget.input_type != 'select' %}
-                {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
-            {% else %}
-                {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+            {% if field.name != 'dias_da_semana' %}
+                {% if field.field.widget.input_type != 'select' %}
+                    {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                {% else %}
+                    {% include "components/multipleselect.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+                {% endif %}
             {% endif %}
         {% endfor %}
         <div class="w-full py-10 flex items-center justify-end gap-8">
