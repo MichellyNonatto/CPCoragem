@@ -21,7 +21,6 @@ class ListaPets(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['usuario_pk'] = self.request.user.pk
         return context
 
 
@@ -130,7 +129,7 @@ class VerTutor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['endereco'] = self.object.usuario.endereco
+        context['endereco'] = self.object.endereco
         context['acao'] = 'visualizar'
 
         return context
