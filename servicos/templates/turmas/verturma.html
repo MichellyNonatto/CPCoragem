@@ -1,10 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
-
-{% block title %}
-    {{ object.nome }}
-{% endblock %}
-
+{% block title %}{{ object.nome }}{% endblock %}
 {% block content %}
     <nav>
         <ul>
@@ -16,68 +12,100 @@
             </li>
         </ul>
     </nav>
+    <ul id="tabs" class="inline-flex pt-2 px-1 w-full border-b">
+        <li class="me-4 inline-block p-4 text-blue-600 border-b-2 border-blue-600 active">
+            <a id="default-tab" href="#pets">Pets</a>
+        </li>
+        <li class="me-4 inline-block p-4 text-gray-800 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-600">
+            <a href="#servicos">Serviços</a>
+        </li>
+    </ul>
+    <!-- Tab Contents -->
     <main>
         <h2>{{ object.nome }}</h2>
-
-        <table border="1">
-            <caption>Pets</caption>
-            <thead>
-            <tr>
-                <th>Imagem</th>
-                <th>Nome</th>
-                <th>Tutor</th>
-                <th>Opções</th>
-            </tr>
-            </thead>
-            {% for pet in pets %}
-                <tbody>
-                <tr>
-                    <td>
-                        <img src="{{ pet.imagem.url }}" width="100px">
-                    </td>
-                    <td>{{ pet.nome }}</td>
-                    <td>{{ pet.tutor.nome_completo }}</td>
-                    <td><a href="{% url 'servicos:verpet' pk=pet.id %}">Ver Pet</a></td>
-                </tr>
-                </tbody>
-            {% endfor %}
-        </table>
-
-        <table border="1">
-            <caption>Servicos</caption>
-            <thead>
-            <tr>
-                <th>Serviço</th>
-                <th>Valor</th>
-                <th>Opções</th>
-            </tr>
-            </thead>
-            {% for servico in object.servicos.values %}
-                <tr>
-                    <td>
-                        {{ servico.nome }}
-                    </td>
-                    <td>
-                        {{ servico.valor }}
-                    </td>
-                    <td>
-                        <ul>
-                            {% for dia in servico.dias_da_semana.values %}
-                                <li>{{ dia.dia }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            <li><a href="{% url 'servicos:verturma' pk=object.id %}">Ver serviço</a>
-                            </li>
-                            <li>
-                                <a href="{% url 'servicos:desvincularservico' turma_id=object.id servico_id=servico.id %}">Desvincular</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+        <div id="tab-contents">
+            <table border="1" id="pets">
+                <caption>Pets</caption>
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Tutor</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                {% for pet in pets %}
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src="{{ pet.imagem.url }}" width="100px">
+                            </td>
+                            <td>{{ pet.nome }}</td>
+                            <td>{{ pet.tutor.nome_completo }}</td>
+                            <td>
+                                <a href="{% url 'servicos:verpet' pk=pet.id %}">Ver Pet</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <table id="servicos">
+                <caption>Servicos</caption>
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Valor</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                {% for servico in object.servicos.values %}
+                    <tr>
+                        <td>{{ servico.nome }}</td>
+                        <td>{{ servico.valor }}</td>
+                        <td>
+                            <ul>
+                                {% for dia in servico.dias_da_semana.values %}<li>{{ dia.dia }}</li>{% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'servicos:verturma' pk=object.id %}">Ver serviço</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'servicos:desvincularservico' turma_id=object.id servico_id=servico.id %}">Desvincular</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </main>
+    <script>
+        let tabsContainer = document.querySelector("#tabs");
+        let tabTogglers = tabsContainer.querySelectorAll("#tabs a");        
+        tabTogglers.forEach(function(toggler) {
+            toggler.addEventListener("click", function(e) {
+                e.preventDefault();
+                let tabName = this.getAttribute("href");
+                let tabContents = document.querySelector("#tab-contents");
+                
+                for (let i = 0; i < tabContents.children.length; i++) {
+                    tabContents.children[i].classList.add("hidden");
+                    if ("#" + tabContents.children[i].id === tabName) {
+                        tabContents.children[i].classList.remove("hidden");
+                    }
+                }
+
+                tabTogglers.forEach(function(tabToggler) {
+                    tabToggler.parentElement.classList.remove("text-blue-600", "border-blue-600", "active");
+                    tabToggler.parentElement.classList.add("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                });
+
+                e.target.parentElement.classList.remove("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                e.target.parentElement.classList.add("text-blue-600", "border-blue-600", "active");
+            });
+        });
+    </script>
 {% endblock %}
