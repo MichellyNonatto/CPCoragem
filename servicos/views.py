@@ -14,6 +14,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
 
 from usuarios.forms import CriarTutorForm
 from usuarios.models import Funcionario, Pagamento, Usuario
+from .forms import EditarPetForm
 
 from .models import Pet, Servico, Turma, Vacinacao
 
@@ -70,8 +71,7 @@ class VerPet(LoginRequiredMixin, DetailView):
 class EditarPet(LoginRequiredMixin, UpdateView):
     template_name = 'pets/editarpet.html'
     model = Pet
-    fields = ['imagem', 'nome', 'data_nascimento', 'genero',
-              'raca', 'descricao_medica', 'castrado', 'turma']
+    form_class = EditarPetForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

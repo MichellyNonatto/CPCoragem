@@ -12,12 +12,14 @@
         <div class="flex gap-8 w-full">
             <div class="flex flex-col justify-end gap-4 w-full">
                 <div class="flex gap-4 h-36">
-                    <img src="{% if object.imagem.url %}{{ object.imagem.url }}{% else %}{% static 'img/blank-profile-pet.jpg' %}{% endif %}"
+                    <img src="
+
+                            {% if object.imagem.url %}{{ object.imagem.url }}{% else %}{% static 'img/blank-profile-pet.jpg' %}{% endif %}"
                          alt="Imagem do pet"
                          width="128px"
                          height="128px"
                          id="preview-imagem"
-                         class="h-32 w-32 rounded-full object-cover object-top" />
+                         class="h-32 w-32 rounded-full object-cover object-top"/>
                     <div class="flex items-center gap-4">
                         <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
                         <label for="id_imagem"
@@ -33,16 +35,16 @@
                     </div>
                 </div>
                 <script>
-                function previewImagem(input) {
-                    var preview = document.getElementById('preview-imagem');
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            preview.src = e.target.result;
+                    function previewImagem(input) {
+                        var preview = document.getElementById('preview-imagem');
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                preview.src = e.target.result;
+                            }
+                            reader.readAsDataURL(input.files[0]);
                         }
-                        reader.readAsDataURL(input.files[0]);
                     }
-                }
                 </script>
                 {% for field in form %}
                     {% if field.name in 'nome,raca,genero' %}
@@ -57,12 +59,16 @@
             <div class="flex flex-col justify-end gap-4 w-full">
                 {% include "components/input.html" with acao="visualizar" type="text" label="Nome do tutor" name="nome_tutor" id="id_nome_tutor" value=nome_tutor %}
                 {% for field in form %}
-                    {% if field.name in 'data_nascimento,turma,descricao_medica' %}
+                    {% if field.name in 'turma,descricao_medica' %}
                         {% if field.field.widget.input_type != 'select' %}
                             {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         {% else %}
                             {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
                         {% endif %}
+                    {% elif field.name in 'data_nascimento' %}
+                        {% with field_value=field.value|date:'Y-m-d' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field_value erro=field.errors %}
+                        {% endwith %}
                     {% endif %}
                 {% endfor %}
                 {% for field in form %}
