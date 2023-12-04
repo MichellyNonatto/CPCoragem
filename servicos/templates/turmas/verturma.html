@@ -13,10 +13,10 @@
         </ul>
     </nav>
     <ul id="tabs" class="inline-flex pt-2 px-1 w-full border-b">
-        <li class="me-4 inline-block p-4 text-blue-600 border-b-2 border-blue-600 active">
+        <li class="me-4 cursor-pointer inline-block p-4 text-blue-600 border-b-2 border-blue-600 active">
             <a id="default-tab" href="#pets">Pets</a>
         </li>
-        <li class="me-4 inline-block p-4 text-gray-800 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-600">
+        <li class="me-4 cursor-pointer inline-block p-4 text-gray-800 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-600">
             <a href="#servicos">Serviços</a>
         </li>
     </ul>
@@ -84,11 +84,12 @@
     </main>
     <script>
         let tabsContainer = document.querySelector("#tabs");
-        let tabTogglers = tabsContainer.querySelectorAll("#tabs a");        
+        let tabTogglers = tabsContainer.querySelectorAll("#tabs li");
+        
         tabTogglers.forEach(function(toggler) {
             toggler.addEventListener("click", function(e) {
                 e.preventDefault();
-                let tabName = this.getAttribute("href");
+                let tabName = this.children[0].getAttribute("href");
                 let tabContents = document.querySelector("#tab-contents");
                 
                 for (let i = 0; i < tabContents.children.length; i++) {
@@ -99,12 +100,12 @@
                 }
 
                 tabTogglers.forEach(function(tabToggler) {
-                    tabToggler.parentElement.classList.remove("text-blue-600", "border-blue-600", "active");
-                    tabToggler.parentElement.classList.add("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                    tabToggler.classList.remove("text-blue-600", "border-blue-600", "active");
+                    tabToggler.classList.add("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
                 });
 
-                e.target.parentElement.classList.remove("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
-                e.target.parentElement.classList.add("text-blue-600", "border-blue-600", "active");
+                this.classList.remove("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                this.classList.add("text-blue-600", "border-blue-600", "active");
             });
         });
     </script>
