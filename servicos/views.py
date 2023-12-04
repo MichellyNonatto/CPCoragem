@@ -1,20 +1,15 @@
-from datetime import timedelta
-
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.utils import timezone
-from django.utils.datetime_safe import datetime
 from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, UpdateView)
 
 from usuarios.forms import CriarTutorForm
-from usuarios.models import Funcionario, Pagamento, Usuario
-
+from usuarios.models import Funcionario, Usuario
 from .forms import EditarPetForm
 from .models import Pet, Servico, Turma, Vacinacao
 
@@ -260,20 +255,19 @@ class DesvincularServico(LoginRequiredMixin, View):
         return self.desvincular_servico(request, servico_id, turma_id)
 
 
+class EditarTurma(LoginRequiredMixin, UpdateView):
+    template_name = 'turmas/editarturma.html'
+    model = Turma
+    fields ="__all__"
+
+    def get_success_url(self):
+        messages.success(self.request, 'Turma editada com sucesso!')
+        return reverse('servicos:verpet', args=[self.object.pk])
+
+
 class ListaServicos(LoginRequiredMixin, ListView):
     model = Servico
     template_name = 'servicos/listaservicos.html'
-
-
-class VincularServico(LoginRequiredMixin, UpdateView):
-    model = Turma
-    template_name = 'turmas/vincularservico.html'
-    fields = ["servicos"]
-
-    def get_success_url(self):
-        messages.success(
-            self.request, 'Serviço vinculado há turma com sucesso!')
-        return reverse('servicos:verturma', args=[self.object.pk])
 
 
 class PesquisarServico(LoginRequiredMixin, ListView):

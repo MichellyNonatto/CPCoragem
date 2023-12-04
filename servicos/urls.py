@@ -5,7 +5,7 @@ from .views import (AdicionarPet, AdicionarServico, AdicionarTutor,
                     DesvincularServico, EditarPet, EditarServico, ListaPets,
                     ListaServicos, ListaTurmas, PesquisarPet, PesquisarServico,
                     PesquisarTurma, PesquisarTutor, VerPet, VerServicos,
-                    VerTurma, VincularServico, VincularTutor)
+                    VerTurma, VincularTutor, EditarTurma)
 
 app_name = 'servicos'
 
@@ -24,8 +24,8 @@ urlpatterns = [
     path('turmas', ListaTurmas.as_view(), name='turmas'),
     path('turmas/pesquisar', PesquisarTurma.as_view(), name='pesquisarturma'),
     path('turmas/<int:pk>', VerTurma.as_view(), name='verturma'),
+    path('turmas/editarservico/<int:pk>', EditarTurma.as_view(),name='editarturma'),
     path('turmas/desvincularservico/<int:servico_id>/<int:turma_id>', DesvincularServico.as_view(), name='desvincularservico'),
-    path('turmas/vincularservico/<int:pk>', VincularServico.as_view(), name='vincularservico'),
 
     path('servicos', ListaServicos.as_view(), name='servicos'),
     path('servicos/pesquisar', PesquisarServico.as_view(), name='pesquisarservico'),
