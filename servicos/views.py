@@ -14,8 +14,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
 
 from usuarios.forms import CriarTutorForm
 from usuarios.models import Funcionario, Pagamento, Usuario
-from .forms import EditarPetForm
 
+from .forms import EditarPetForm
 from .models import Pet, Servico, Turma, Vacinacao
 
 
@@ -242,12 +242,6 @@ class DesvincularServico(LoginRequiredMixin, View):
 class ListaServicos(LoginRequiredMixin, ListView):
     model = Servico
     template_name = 'servicos/listaservicos.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['servico_ids'] = [list(servico.dias_da_semana.values_list(
-            'id', flat=True)) for servico in context['object_list']]
-        return context
 
 
 class VincularServico(LoginRequiredMixin, UpdateView):

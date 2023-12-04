@@ -45,16 +45,11 @@
                                         {% endif %}
                                     </p>
                                     <input type="checkbox"
-                                           id="{{ day }}"
-                                           name="dias_semana"
-                                           value="{{ day }}"
-                                           {% if day|add:"0" in servico_ids.0 %}checked{% endif %}
+                                           name="day"
+                                           id="day"
                                            disabled
-                                           class="hidden">
-                                    <label for="{{ day }}"
-                                           class="h-6 w-6 text-white rounded flex items-center justify-center {% if day|add:"0" in servico_ids.0 %}bg-primaryColor{% else %}bg-gray-200{% endif %}">
-                                        {% if day|add:"0" in servico_ids.0 %}✔{% endif %}
-                                    </label>
+                                           {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %}
+                                           class="accent-primaryColor w-5 h-5">
                                 </div>
                             {% endfor %}
                         </div>
