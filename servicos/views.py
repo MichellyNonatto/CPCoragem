@@ -299,10 +299,10 @@ class DesvincularFuncionario(LoginRequiredMixin, View):
         return self.desvincular_funcionario(request, servico_id, funcionario_id)
 
 
-class VincularFuncionario(LoginRequiredMixin, UpdateView):
+class EditarServico(LoginRequiredMixin, UpdateView):
     model = Servico
-    template_name = 'servicos/vincularfuncionario.html'
-    fields = ["funcionarios"]
+    template_name = 'servicos/editarservico.html'
+    fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
 
     def get_success_url(self):
         messages.success(

@@ -1,0 +1,38 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Serviços
+{% endblock title %}
+{% block containerTitle %}
+    Serviços/editar
+{% endblock containerTitle %}
+{% block container %}
+    <form method="post" class="w-full flex flex-col justify-end gap-4">
+        {% csrf_token %}
+        {% for field in form %}
+            {% if field.field.widget.input_type != 'select' %}
+                {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+            {% else %}
+                {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+            {% endif %}
+        {% endfor %}
+        <div class="w-full py-10 flex items-center justify-end gap-8">
+            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/button.html" with type="submit" label="Editar serviço" %}
+        </div>
+    </form>
+{% endblock container %}
+{% comment %} {% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Vincular Funcionário
+{% endblock %}
+
+{% block content %}
+     <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Vincular</button>
+    </form>
+{% endblock %} {% endcomment %}

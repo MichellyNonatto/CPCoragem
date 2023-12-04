@@ -84,17 +84,3 @@
         </div>
     </form>
 {% endblock container %}
-{% comment %} {% extends 'index.html' %}
-{% load static %}
-
-{% block title %}
-    Editar Pet
-{% endblock %}
-
-{% block content %}
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">Editar</button>
-    </form>
-{% endblock %} {% endcomment %}

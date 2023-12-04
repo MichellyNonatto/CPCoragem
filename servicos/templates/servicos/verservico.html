@@ -9,6 +9,7 @@
 {% block container %}
     <h3 class="text-xl text-primaryColor">{{ object.nome }}</h3>
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        <div>Valor: {{ object.valor }}</div>
         <div class="px-6 h-full flex gap-8 items-center">
             {% for day in '12345'|make_list %}
                 <div class="flex flex-col gap-2 items-center justify-center">
@@ -34,7 +35,7 @@
                 </div>
             {% endfor %}
         </div>
-        {% include "components/anchor.html" with href="servicos:vincularfuncionario" pk=object.id icon="img/icons/add.svg" label="Vincular funcionário" %}
+        {% include "components/anchor.html" with href="servicos:editarservico" pk=object.id icon="img/icons/edit.svg" label="Editar serviço" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
