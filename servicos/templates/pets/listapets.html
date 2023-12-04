@@ -38,7 +38,7 @@
                     <td class="px-6">
                         <a href="{% url 'servicos:verpet' pk=pet.pk %}">{{ pet.tutor.nome_completo }}</a>
                     </td>
-                    <td class="px-6">Turma</td>
+                    <td class="px-6">{{ pet.turma }}</td>
                     <td class="px-6">{{ pet.get_genero_display }}</td>
                     <td class="px-6">{{ pet.raca }}</td>
                 </tr>

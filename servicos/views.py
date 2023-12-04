@@ -40,7 +40,9 @@ class PesquisarPet(LoginRequiredMixin, ListView):
 
         resultados_pets = Pet.objects.filter(
             Q(nome__icontains=termo_pesquisa) |
+            Q(genero__icontains=termo_pesquisa) |
             Q(raca__nome__icontains=termo_pesquisa) |
+            Q(turma__nome__icontains=termo_pesquisa) |
             Q(tutor__nome_completo__icontains=termo_pesquisa)
         )
 
