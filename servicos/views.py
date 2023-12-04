@@ -134,9 +134,35 @@ class VerTutor(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
         context['acao'] = 'visualizar'
 
         return context
+
+
+class EditarTutor(LoginRequiredMixin, UpdateView):
+    template_name = 'pets/editartutor.html'
+    model = Usuario
+    form_class = CriarTutorForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acao'] = 'editar'
+        return context
+
+    def form_valid(self, form):
+        documento = form.cleaned_data['documento']
+
+        if Usuario.objects.filter(documento=documento).exists():
+            messages.error(
+                self.request, 'Tutor já existe em nossa base de dados.')
+        else:
+            form.save()
+            success_url = reverse('servicos:vertutor', args=[self.object.pk]) + \
+                '?mensagem=Tutor editado com sucesso!'
+            return redirect(success_url)
+
+        return reverse('servicos:vinculartutor')
 
 
 class AdicionarPet(LoginRequiredMixin, CreateView):

@@ -29,7 +29,7 @@
         </div>
     </div>
     <div class="w-full py-10 flex items-center justify-end gap-8">
-        {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Editar tutor" %}
-        {% include "components/button.html" with type="button" label="Excluir tutor" %}
+        {% include "components/anchor.html" with secondary=True href="servicos:editartutor" pk=object.pk label="Editar Tutor" %}
+        {% include "components/anchor.html" with href="servicos:deletarpet" pk=object.pk label="Excluir Tutor" %}
     </div>
 {% endblock container %}
