@@ -14,7 +14,7 @@ def funcionario(request):
             if funcionario:
                 funcionario_context = funcionario
 
-            if funcionario.funcao == 'Gerente':
+            if funcionario.funcao.descricao == 'Gerente':
                 urls = {
                     'Dashboard': 'usuarios:dashboard',
                     'Funcionários': 'usuarios:funcionarios',
@@ -30,12 +30,12 @@ def funcionario(request):
                 }
                 urls_context = urls.items()
 
-                resolver_match = resolve(request.path_info)
-                url_name = resolver_match.route
+            resolver_match = resolve(request.path_info)
+            url_name = resolver_match.route
 
-                if '/' in url_name:
-                    parts = url_name.split('/')
-                    url_parent = parts[0]
+            if '/' in url_name:
+                parts = url_name.split('/')
+                url_parent = parts[0]
 
         except Funcionario.DoesNotExist:
             pass
