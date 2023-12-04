@@ -279,11 +279,12 @@ class VincularServico(LoginRequiredMixin, UpdateView):
 class PesquisarServico(LoginRequiredMixin, ListView):
     template_name = 'servicos/listaservicos.html'
     model = Servico
+    context_object_name = 'resultados_servico'
 
     def get_queryset(self):
         termo_pesquisa = self.request.GET.get("query")
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Servico.objects.none()
+            return Servico.objects.all()
 
         resultados_servicos = Servico.objects.filter(
             Q(nome__icontains=termo_pesquisa)
