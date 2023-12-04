@@ -2,15 +2,17 @@ from django.urls import resolve
 
 from .models import Funcionario
 
-
 def funcionario(request):
     funcionario_context = None
     urls_context = None
+    url_parent = None
 
     if request.user.is_authenticated:
         try:
             funcionario = Funcionario.objects.get(usuario=request.user)
-            funcionario_context = funcionario
+
+            if funcionario:
+                funcionario_context = funcionario
 
             if funcionario.funcao == 'Gerente':
                 urls = {
@@ -31,7 +33,6 @@ def funcionario(request):
                 resolver_match = resolve(request.path_info)
                 url_name = resolver_match.route
 
-                url_parent = None
                 if '/' in url_name:
                     parts = url_name.split('/')
                     url_parent = parts[0]
@@ -40,3 +41,4 @@ def funcionario(request):
             pass
 
     return {'funcionario_context': funcionario_context, 'urls_context': urls_context, 'url_pai': url_parent}
+
