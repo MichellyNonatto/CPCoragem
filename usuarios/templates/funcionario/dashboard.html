@@ -6,28 +6,6 @@
 {% endblock %}
 
 {% block content %}
-    <nav>
-        {% if funcionario.funcao.descricao == 'Gerente' %}
-            <ul>
-                <a href="{% url 'usuarios:listafuncionarios' %}">
-                    <li>Funcionários</li>
-                </a>
-                <a href="{% url 'usuarios:financeiro' %}">
-                    <li>Financeiro</li>
-                </a>
-            </ul>
-        {% else %}
-            <ul>
-                <a href="{% url 'servicos:listapets' %}">
-                    <li>Pets</li>
-                </a>
-                <a href="{% url 'servicos:listaturmas' %}">
-                    <li>Turmas</li>
-                </a>
-            </ul>
-        {% endif %}
-    </nav>
-
     <h1>Dashboard</h1>
     <section>
         <ol>

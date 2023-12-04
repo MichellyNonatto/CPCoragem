@@ -22,7 +22,7 @@ class Servico(models.Model):
     nome = models.CharField(max_length=45)
     valor = models.DecimalField(max_digits=10, decimal_places=2)
     dias_da_semana = models.ManyToManyField(DiaDaSemana)
-    funcionarios = models.ManyToManyField(Funcionario)
+    funcionarios = models.ManyToManyField(Funcionario, limit_choices_to=~models.Q(funcao__descricao__iexact='Gerente'))
 
     def __str__(self):
         return self.nome

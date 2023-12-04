@@ -1,48 +1,54 @@
 {% load static %}
 <header class="grid sticky bg-background top-0 grid-cols-3 w-full py-4 px-10 items-center">
-  <nav class="justify-self-start">
-    <ul class="flex gap-6">
-      <li>
-        {% include "components/anchor.html" with secondary=True href="usuarios:dashboard" pk=user_id label="Dashboard" select=True %}
-      </li>
-      {% if funcionario_context.funcao.descricao == 'Gerente' %}
-        <li>
-          {% include "components/anchor.html" with secondary=True href="usuarios:listafuncionarios" label="Funcionários" %}
-        </li>
-        <li>{% include "components/anchor.html" with secondary=True href="usuarios:financeiro" label="Financeiro" %}</li>
-      {% else %}
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listapets" label="Pets" %}</li>
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaservicos" label="Serviços" %}</li>
-        <li>{% include "components/anchor.html" with secondary=True href="servicos:listaturmas" label="Turmas" %}</li>
-      {% endif %}
-    </ul>
-  </nav>
-  <img src="{% static 'img/pata_logo.svg' %}"
-       alt="logo"
-       width="56px"
-       height="56px"
-       class="h-14 w-14 justify-self-center">
-  <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
-    <button type="button" class="rounded-full w-14 h-14">
-      <img src="{% if funcionario_context.imagem.url %}{{ funcionario_context.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
-           alt="perfil"
-           width="56px"
-           height="56px"
-           class="h-14 w-14 hover:opacity-75 rounded-full object-cover object-top">
-    </button>
-    <a href="{% url 'usuarios:logout' %}"
-       class="group-hover:flex cursor-pointer hidden flex-row gap-3 items-center justify-end">
-      <div class="group-hover:opacity-100 transition-opacity bg-background px-1 text-xl text-primaryColor rounded-md opacity-0">
-        Sair
-      </div>
-      <button type="button"
-              class="flex justify-center items-center w-[52px] h-[52px] bg-surfaceContainer rounded-full hover:bg-primaryContainer">
-        <img src="{% static 'img/icons/exit.svg' %}"
-             alt="sair"
-             width="32px"
-             height="32px"
-             class="w-8 h-8">
-      </button>
-    </a>
-  </div>
+    <nav class="justify-self-start">
+        <ul class="flex gap-6">
+            {% for name, url in urls_context %}
+                {% if name == "Dashboard" %}
+                    <li>
+                        {% if url_pai == name|lower or name|lower == request.resolver_match.url_name %}
+                            {% include "components/anchor.html" with secondary=True href=url pk=user_id label=name select=True %}
+                        {% else %}
+                            {% include "components/anchor.html" with secondary=True href=url pk=user_id label=name %}
+                        {% endif %}
+                    </li>
+                {% else %}
+                    {% if url_pai == name|lower or name|lower == request.resolver_match.url_name %}
+                        {% include "components/anchor.html" with secondary=True href=url label=name select=True %}
+                    {% else %}
+                        {% include "components/anchor.html" with secondary=True href=url label=name %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    <img src="{% static 'img/pata_logo.svg' %}"
+         alt="logo"
+         width="56px"
+         height="56px"
+         class="h-14 w-14 justify-self-center">
+    <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
+        <button type="button" class="rounded-full w-14 h-14">
+            <img src="
+
+                    {% if funcionario_context.imagem.url %}{{ funcionario_context.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
+                 alt="perfil"
+                 width="56px"
+                 height="56px"
+                 class="h-14 w-14 hover:opacity-75 rounded-full object-cover object-top">
+        </button>
+        <a href="{% url 'usuarios:logout' %}"
+           class="group-hover:flex cursor-pointer hidden flex-row gap-3 items-center justify-end">
+            <div class="group-hover:opacity-100 transition-opacity bg-background px-1 text-xl text-primaryColor rounded-md opacity-0">
+                Sair
+            </div>
+            <button type="button"
+                    class="flex justify-center items-center w-[52px] h-[52px] bg-surfaceContainer rounded-full hover:bg-primaryContainer">
+                <img src="{% static 'img/icons/exit.svg' %}"
+                     alt="sair"
+                     width="32px"
+                     height="32px"
+                     class="w-8 h-8">
+            </button>
+        </a>
+    </div>
 </header>

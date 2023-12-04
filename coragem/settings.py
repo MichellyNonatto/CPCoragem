@@ -69,7 +69,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'usuarios.context_processors.funcionario'
+                'usuarios.context_processors.funcionario',
             ],
         },
     },
@@ -90,11 +90,10 @@ DATABASES = {
         'PORT': '55077',
     }
 }
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'NAME': BASE_DIR / "db.sqlite3",
 #     }
 # }
 

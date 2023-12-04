@@ -132,7 +132,7 @@ class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                                     'pk': self.request.user.pk})
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
@@ -157,7 +157,7 @@ class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                                     'pk': self.request.user.pk})
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
@@ -228,8 +228,8 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.save()
-        success_url = reverse('usuarios:listafuncionarios') + \
-            '?mensagem=Alteração em funcionário salva com sucesso!'
+        success_url = reverse('funcionarios') + \
+                      '?mensagem=Alteração em funcionário salva com sucesso!'
         messages.success(
             self.request, 'Alteração em funcionário salva com sucesso!')
         return redirect(success_url)
@@ -254,12 +254,11 @@ class DeletarFuncionario(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, 'Funcionário deletado com sucesso!')
-        return reverse('usuarios:listafuncionarios')
+        return reverse('funcionarios')
 
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
     template_name = "funcionario/adicionarfuncionario.html"
-    # template_name = "funcionario/verfuncionario.html"
     form_class = CriarFuncionarioForm
 
     def get_context_data(self, **kwargs):
@@ -276,8 +275,8 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             form.save()
             messages.success(
                 self.request, 'Funcionário adicionado com sucesso!')
-            success_url = reverse('usuarios:listafuncionarios') + \
-                '?mensagem=Funcionário adicionado com sucesso!'
+            success_url = reverse('funcionarios') + \
+                          '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('usuarios:adicionarfuncionario')
@@ -338,7 +337,7 @@ class CriarNovoPagamento(CreateView):
 
         registro_pagamento.save()
         success_url = reverse('usuarios:autenticacaocliente') + \
-            '?mensagem=Pagamento efetuado com sucesso!'
+                      '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
@@ -404,7 +403,7 @@ class DeletarTutor(LoginRequiredMixin, DeleteView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('usuarios:listafuncionarios')
+        return reverse('funcionarios')
 
 
 class ListaTutor(LoginRequiredMixin, ListView):

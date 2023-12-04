@@ -1,6 +1,7 @@
 /.idea
 venv/
 *__pycache__
+*__pycache__/*
 *.pyc
 *.pyo
 db.sqlite3
@@ -8,3 +9,6 @@ db.sqlite3
 node_modules/*
 media
 migrations/
+
+package-lock.json
+package.json

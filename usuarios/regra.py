@@ -76,7 +76,7 @@ class Urls:
                         kwargs={'pk': funcionario.pk}),
                 reverse('usuarios:adicionarfuncionario'),
                 reverse('usuarios:pesquisafuncionarios'),
-                reverse('usuarios:listafuncionarios'),
+                reverse('usuarios:funcionarios'),
                 reverse('usuarios:financeiro'),
                 reverse('usuarios:pesquisarfinanceiro'),
                 reverse('usuarios:deletarcliente', kwargs={'pk': cliente.pk}),
