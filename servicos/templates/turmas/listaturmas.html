@@ -11,6 +11,7 @@
         <form method="get" action="{% url 'servicos:pesquisarturma' %}">
             {% include "components/search.html" with value=request.GET.query %}
         </form>
+        {% include "components/anchor.html" with href="servicos:adicionarturma" icon="img/icons/add.svg" label="Adicionar turma" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>

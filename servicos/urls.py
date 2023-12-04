@@ -1,12 +1,12 @@
 from django.urls import path
 
-from .views import (AdicionarPet, AdicionarServico, AdicionarTutor,
-                    AdicionarVacinaPet, DeletarPet, DesvincularFuncionario,
-                    DesvincularServico, EditarPet, EditarServico, EditarTurma,
-                    EditarTutor, ListaPets, ListaServicos, ListaTurmas,
-                    PesquisarPet, PesquisarServico, PesquisarTurma,
-                    PesquisarTutor, VerPet, VerServicos, VerTurma, VerTutor,
-                    VincularTutor)
+from .views import (AdicionarPet, AdicionarServico, AdicionarTurma,
+                    AdicionarTutor, AdicionarVacinaPet, DeletarPet,
+                    DesvincularFuncionario, DesvincularServico, EditarPet,
+                    EditarServico, EditarTurma, EditarTutor, ListaPets,
+                    ListaServicos, ListaTurmas, PesquisarPet, PesquisarServico,
+                    PesquisarTurma, PesquisarTutor, VerPet, VerServicos,
+                    VerTurma, VerTutor, VincularTutor)
 
 app_name = 'servicos'
 
@@ -33,6 +33,8 @@ urlpatterns = [
     path('turmas', ListaTurmas.as_view(), name='turmas'),
     path('turmas/pesquisar', PesquisarTurma.as_view(), name='pesquisarturma'),
     path('turmas/<int:pk>', VerTurma.as_view(), name='verturma'),
+    path('turmas/adicionaturma',
+         AdicionarTurma.as_view(), name='adicionarturma'),
     path('turmas/editarturma/<int:pk>',
          EditarTurma.as_view(), name='editarturma'),
     path('turmas/desvincularservico/<int:servico_id>/<int:turma_id>',

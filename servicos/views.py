@@ -303,6 +303,16 @@ class EditarTurma(LoginRequiredMixin, UpdateView):
         return reverse('servicos:verturma', args=[self.object.pk])
 
 
+class AdicionarTurma(LoginRequiredMixin, CreateView):
+    template_name = 'turmas/adicionarturma.html'
+    model = Turma
+    fields = ["nome", "servicos"]
+
+    def get_success_url(self):
+        messages.success(self.request, 'Turma adicionada com sucesso!')
+        return reverse('servicos:verturma', args=[self.object.pk])
+
+
 class ListaServicos(LoginRequiredMixin, ListView):
     model = Servico
     template_name = 'servicos/listaservicos.html'
