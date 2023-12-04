@@ -8,32 +8,32 @@
 {% endblock containerTitle %}
 {% block container %}
     <h3 class="text-xl text-primaryColor">{{ object.nome }}</h3>
-    <div class="px-6 h-full flex gap-8 items-center">
-        {% for day in '12345'|make_list %}
-            <div class="flex flex-col gap-2 items-center justify-center">
-                <p class="text-primaryColor font-medium">
-                    {% if day == '1' %}
-                        Seg
-                    {% elif day == '2' %}
-                        Ter
-                    {% elif day == '3' %}
-                        Qua
-                    {% elif day == '4' %}
-                        Qui
-                    {% elif day == '5' %}
-                        Sex
-                    {% endif %}
-                </p>
-                <input type="checkbox"
-                       name="day"
-                       id="day"
-                       disabled
-                       {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %}
-                       class="accent-primaryColor w-5 h-5">
-            </div>
-        {% endfor %}
-    </div>
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        <div class="px-6 h-full flex gap-8 items-center">
+            {% for day in '12345'|make_list %}
+                <div class="flex flex-col gap-2 items-center justify-center">
+                    <p class="text-primaryColor font-medium">
+                        {% if day == '1' %}
+                            Seg
+                        {% elif day == '2' %}
+                            Ter
+                        {% elif day == '3' %}
+                            Qua
+                        {% elif day == '4' %}
+                            Qui
+                        {% elif day == '5' %}
+                            Sex
+                        {% endif %}
+                    </p>
+                    <input type="checkbox"
+                           name="day"
+                           id="day"
+                           disabled
+                           {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %}
+                           class="accent-primaryColor w-5 h-5">
+                </div>
+            {% endfor %}
+        </div>
         {% include "components/anchor.html" with href="servicos:vincularfuncionario" pk=object.id icon="img/icons/add.svg" label="Vincular funcionário" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
