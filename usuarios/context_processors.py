@@ -23,7 +23,7 @@ def funcionario(request):
                 urls = {
                     'Dashboard': 'usuarios:dashboard',
                     'Pets': 'servicos:pets',
-                    'Serviços': 'servicos:servicos',
+                    'Servicos': 'servicos:servicos',
                     'Turmas': 'servicos:turmas',
                 }
                 urls_context = urls.items()
