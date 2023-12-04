@@ -9,8 +9,7 @@
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
         {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
-        {% comment %} TODO: adicionarservico {% endcomment %}
-        {% include "components/anchor.html" with href="servicos:listapets" icon="img/icons/add.svg" label="Adicionar serviço" %}
+        {% include "components/anchor.html" with href="servicos:adicionarservico" icon="img/icons/add.svg" label="Adicionar serviço" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>

@@ -1,10 +1,11 @@
 from django.urls import path
 
-from .views import (AdicionarPet, AdicionarTutor, AdicionarVacinaPet,
-                    DeletarPet, DesvincularFuncionario, DesvincularServico,
-                    EditarPet, EditarServico, ListaPets, ListaServicos,
-                    ListaTurmas, PesquisarPet, PesquisarTutor, VerPet,
-                    VerServicos, VerTurma, VincularServico, VincularTutor)
+from .views import (AdicionarPet, AdicionarServico, AdicionarTutor,
+                    AdicionarVacinaPet, DeletarPet, DesvincularFuncionario,
+                    DesvincularServico, EditarPet, EditarServico, ListaPets,
+                    ListaServicos, ListaTurmas, PesquisarPet, PesquisarTutor,
+                    VerPet, VerServicos, VerTurma, VincularServico,
+                    VincularTutor)
 
 app_name = 'servicos'
 
@@ -36,6 +37,8 @@ urlpatterns = [
          VincularServico.as_view(), name='vincularservico'),
 
     path('dashboard/servicos', ListaServicos.as_view(), name='listaservicos'),
+    path('dashboard/servicos/adicionar',
+         AdicionarServico.as_view(), name='adicionarservico'),
     path('dashboard/servicos/<int:pk>',
          VerServicos.as_view(), name='verservicos'),
     path('dashboard/servicos/<int:servico_id>/<int:funcionario_id>', DesvincularFuncionario.as_view(),

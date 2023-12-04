@@ -313,3 +313,14 @@ class EditarServico(LoginRequiredMixin, UpdateView):
         messages.success(
             self.request, 'Funcionário vinculado ao serviço com sucesso!')
         return reverse('servicos:verservicos', args=[self.object.pk])
+
+
+class AdicionarServico(LoginRequiredMixin, CreateView):
+    model = Servico
+    template_name = 'servicos/adicionarservico.html'
+    fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
+
+    def get_success_url(self):
+        messages.success(
+            self.request, 'Serviço criado com sucesso!')
+        return reverse('servicos:verservicos', args=[self.object.pk])
