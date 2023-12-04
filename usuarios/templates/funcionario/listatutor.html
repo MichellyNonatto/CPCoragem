@@ -9,40 +9,40 @@
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
         <form method="get" action="{% url 'servicos:pesquisartutor' %}">
-            {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+            {% include "components/search.html" with value=request.GET.query %}
         </form>
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
-        <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
-            <th className="w-24 px-6"></th>
-            <th class="px-6">ID</th>
-            <th class="px-6">Nome</th>
-            <th class="px-6">Telefone</th>
-            <th class="px-6">E-mail</th>
-            <th class="px-6"></th>
-            <th class="px-6"></th>
-        </tr>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th className="w-24 px-6"></th>
+                <th class="px-6">ID</th>
+                <th class="px-6">Nome</th>
+                <th class="px-6">Telefone</th>
+                <th class="px-6">E-mail</th>
+                <th class="px-6"></th>
+                <th class="px-6"></th>
+            </tr>
         </thead>
         <tbody class="bg-background">
-        {% for tutor in object_list %}
-            {% if tutor.usuario_id != usuario_atual.pk %}
-                <tr class="text-base h-20 border-b border-b-primaryContainer">
-                    <td class="px-6">{{ tutor.pk }}</td>
-                    <td class="px-6">
-                        <a href="{% url 'usuarios:verfuncionario' pk=tutor.pk %}">{{ tutor.nome_completo }}</a>
-                    </td>
-                    <td class="px-6">{{ tutor.telefone }}</td>
-                    <td class="px-6">{{ tutor.email }}</td>
-                    <td class="font-medium text-primaryColor px-6">
-                        <a href={% url 'usuarios:editartutor' pk=tutor.pk %}>Editar</a>
-                    </td>
-                    <td class="font-medium text-red-600 px-6">
-                        <a href={% url 'usuarios:deletartutor' pk=tutor_id %}>Excluir</a>
-                    </td>
-                </tr>
-            {% endif %}
-        {% endfor %}
+            {% for tutor in object_list %}
+                {% if tutor.usuario_id != usuario_atual.pk %}
+                    <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="px-6">{{ tutor.pk }}</td>
+                        <td class="px-6">
+                            <a href="{% url 'usuarios:verfuncionario' pk=tutor.pk %}">{{ tutor.nome_completo }}</a>
+                        </td>
+                        <td class="px-6">{{ tutor.telefone }}</td>
+                        <td class="px-6">{{ tutor.email }}</td>
+                        <td class="font-medium text-primaryColor px-6">
+                            <a href={% url 'usuarios:editartutor' pk=tutor.pk %}>Editar</a>
+                        </td>
+                        <td class="font-medium text-red-600 px-6">
+                            <a href={% url 'usuarios:deletartutor' pk=tutor_id %}>Excluir</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
         </tbody>
     </table>
 {% endblock container %}

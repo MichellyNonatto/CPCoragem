@@ -223,6 +223,23 @@ class VerTurma(LoginRequiredMixin, DetailView):
         return context
 
 
+class PesquisarTurma(LoginRequiredMixin, ListView):
+    template_name = 'turmas/listaturmas.html'
+    model = Turma
+    context_object_name = 'resultados_turmas'
+
+    def get_queryset(self):
+        termo_pesquisa = self.request.GET.get("query")
+
+        if not termo_pesquisa or termo_pesquisa.isspace():
+            return Turma.objects.all()
+
+        return Turma.objects.filter(
+            Q(nome__icontains=termo_pesquisa) |
+            Q(servicos__nome__icontains=termo_pesquisa)
+        ).distinct()
+
+
 class DesvincularServico(LoginRequiredMixin, View):
     template_name = 'turmas/verturma.html'
 

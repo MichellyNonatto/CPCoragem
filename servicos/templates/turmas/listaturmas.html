@@ -8,8 +8,9 @@
 {% endblock containerTitle %}
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
-        {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
-        {% include "components/anchor.html" with href="servicos:listaturmas" icon="img/icons/add.svg" label="Adicionar turma" %}
+        <form method="get" action="{% url 'servicos:pesquisarturma' %}">
+            {% include "components/search.html" with value=request.GET.query %}
+        </form>
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
@@ -37,45 +38,3 @@
         </tbody>
     </table>
 {% endblock container %}
-{% comment %} {% extends 'index.html' %}
-{% load static %}
-
-{% block title %}Turmas{% endblock %}
-
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="#">Dashboard</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
-        <h2>Turmas</h2>
-
-        <table border="1">
-            <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Serviços Disponibilizados</th>
-                <th>Valor Total</th>
-                <th>Opções</th>
-            </tr>
-            </thead>
-            {% for turma in object_list %}
-                <tbody>
-                <tr>
-                    <td>{{ turma.nome }}</td>
-                    <td>
-                        {% for servico in turma.servicos.values %}
-                            {{ servico.nome }}
-                        {% endfor %}
-                    </td>
-                    <td>{{ turma.valor_total }}</td>
-                    <td><a href="{% url 'servicos:verturma' pk=turma.id %}">Ver Turma</a></td>
-                </tr>
-                </tbody>
-            {% endfor %}
-        </table>
-    </main>
-{% endblock %} {% endcomment %}

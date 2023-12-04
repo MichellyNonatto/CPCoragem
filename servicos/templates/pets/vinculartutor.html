@@ -10,7 +10,7 @@
     <h3 class="text-xl text-primaryColor">Selecione um tutor para vincular</h3>
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
         <form method="get" action="{% url 'servicos:pesquisartutor' %}">
-            {% include "components/search.html" with placeholder="Pesquisar..." name="query" value=request.GET.query %}
+            {% include "components/search.html" with value=request.GET.query %}
         </form>
         {% include "components/anchor.html" with href="servicos:adicionartutor" icon="img/icons/add.svg" label="Adicionar tutor" %}
     </div>
