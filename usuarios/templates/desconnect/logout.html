@@ -1,0 +1,14 @@
+{% extends "containers/authContainer.html" %}
+{% load static %}
+{% block title %}
+    Logout
+{% endblock title %}
+{% block containerTitle %}
+    Você foi desconectado!
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Faça login com a sua conta <b>Coragem</b>
+{% endblock containerSubTitle %}
+{% block container %}
+    {% include "components/anchor.html" with secondary=True href="usuarios:login" label="Fazer login" %}
+{% endblock container %}

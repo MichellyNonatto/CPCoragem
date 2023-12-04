@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+   Adicionar Pet ao Serviço
+{% endblock %}
+
+{% block content %}
+       <main>
+       <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Editar {{ titulo }}</legend>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </fieldset>
+            <div>
+                <button type="submit">Salvar</button>
+                <a href="{% url 'turmas:verservicos' pk=servico_pk %}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </main>
+{% endblock %}

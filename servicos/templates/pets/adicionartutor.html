@@ -1,0 +1,72 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Pet
+{% endblock title %}
+{% block containerTitle %}
+    Tutor/adicionar
+{% endblock containerTitle %}
+{% block container %}
+    <form method="post" enctype="multipart/form-data" class="w-full">
+        <fieldset>
+            {% csrf_token %}
+            <input type="password"
+                   name="password2"
+                   id="id_password2"
+                   value="coragem@2023"
+                   class="hidden">
+            <input type="password"
+                   name="password1"
+                   id="id_password1"
+                   value="coragem@2023"
+                   class="hidden">
+            <div class="flex gap-8 w-full">
+                <div class="flex flex-col justify-end gap-4 w-full">
+                    {% for field in form %}
+                        {% if field.name in 'nome_completo,documento,telefone,email' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="flex flex-col justify-end gap-4 w-full">
+                    {% for field in form %}
+                        {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="w-full py-10 flex items-center justify-end gap-8">
+                {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+                {% include "components/button.html" with type="submit" label="Cadastrar tutor" %}
+            </div>
+        </fieldset>
+    </form>
+{% endblock container %}
+{% comment %} {% extends 'index.html' %}
+{% load static %}
+{% block title %}Adicionar Tutor{% endblock %}
+{% block content %}
+    <nav>
+        <ul>
+            <li>
+                <a href="{% url 'servicos:listapets' %}">Pets</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <form method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Adicionar Tutor</legend>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </fieldset>
+            <div>
+                <button type="submit">Salvar</button>
+                <a href="{% url 'servicos:vinculartutor' %}">
+                    <button type="button">Cancelar</button>
+                </a>
+            </div>
+        </form>
+    </main>
+{% endblock %} {% endcomment %}

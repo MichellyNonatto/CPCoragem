@@ -15,12 +15,16 @@ class RecuperarContaForm(forms.Form):
 class AutenticacaoContaForm(forms.Form):
     codigo = forms.CharField(max_length=15)
 
+    def __init__(self, *args, **kwargs):
+        self.pk = kwargs.pop('pk', None)
+        super().__init__(*args, **kwargs)
+
     def clean_codigo(self):
         codigo = self.cleaned_data['codigo']
         try:
-            usuario = Usuario.objects.get(documento=codigo)
+            usuario = Usuario.objects.get(documento=codigo, pk=self.pk)
         except Usuario.DoesNotExist:
-            raise forms.ValidationError('Código de autenticação fornecido é inválido.')
+            raise forms.ValidationError('Documento para a autenticação fornecido é inválido.')
         return codigo
 
 
@@ -30,7 +34,7 @@ class AtualizarSenhaForm(forms.ModelForm):
         fields = []
 
     password1 = forms.CharField(label='Nova Senha', max_length=50, widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmar Senha' ,max_length=50, widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar Senha', max_length=50, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -38,13 +42,14 @@ class AtualizarSenhaForm(forms.ModelForm):
         password2 = cleaned_data.get("password2")
 
         if password1 and password2 and password1 != password2:
-            raise forms.ValidationError("As senhas não coincidem.")
+            raise forms.ValidationError("As senhas estão diferentes.")
 
     def save(self, commit=True):
         user = super().save(commit=False)
         password = self.cleaned_data['password1']
         user.set_password(password)
-        user.save()
+        if commit:
+            user.save()
         return user
 
 

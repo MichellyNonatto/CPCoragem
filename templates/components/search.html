@@ -1,0 +1,12 @@
+{% load static %}
+<div class="flex gap-4">
+    <div class="relative">
+        <img src="{% static "img/icons/search.svg" %}" alt="" class="absolute left-3 top-1/2 transform -translate-y-1/2" width="24px" height="24px">
+        <input type="search"
+               placeholder="Pesquisar..."
+               name="query"
+               {% if value %}value="{{ value }}"{% endif %}
+               class="pl-10 flex gap-1 items-center justify-center rounded border border-surfaceContainer px-4 py-2 font-medium text-black hover:bg-background focus:outline-primaryColor">
+    </div>
+    {% include "components/button.html" with type="submit" label="Pesquisar" %}
+</div>

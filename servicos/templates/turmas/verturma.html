@@ -1,0 +1,133 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Turmas
+{% endblock title %}
+{% block containerTitle %}
+    Turmas/detalhes
+{% endblock containerTitle %}
+{% block container %}
+    <h3 class="text-xl text-primaryColor">{{ object.nome }}</h3>
+    <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        <p class="text-lg">
+            <span class="text-primaryColor">Valor:</span> R$ {{ object.valor_total }}
+        </p>
+        {% include "components/anchor.html" with href="servicos:editarturma" pk=object.id icon="img/icons/add.svg" label="Editar Turma" %}
+    </div>
+    <ul id="tabs" class="inline-flex pt-2 px-1 w-full border-b text-lg">
+        <li class="me-4 cursor-pointer inline-block p-4 text-primaryColor border-b-2 border-primaryColor active">
+            <a id="default-tab" href="#pets">Pets</a>
+        </li>
+        <li class="me-4 cursor-pointer inline-block p-4 text-gray-800 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-600">
+            <a href="#servicos">Serviços</a>
+        </li>
+    </ul>
+    <div id="tab-contents" class="w-full">
+        <table border="1"
+               id="pets"
+               class="w-full text-sm text-left rtl:text-right text-gray-800">
+            <thead>
+                <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                    <th className="w-24 px-6"></th>
+                    <th class="px-6">Nome</th>
+                    <th class="px-6">Tutor</th>
+                    <th class="px-6">Gênero</th>
+                    <th class="px-6">Raça</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pet in pets %}
+                    <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="text-center w-24 px-6">
+                            <a href="{% url 'servicos:verpet' pk=pet.pk %}"><img src={{ pet.imagem.url }} alt="pet" width="48px" height="48px" class="h-12 w-12 object-cover object-top rounded-full"></a>
+                        </td>
+                        <td class="px-6">
+                            <a href="{% url 'servicos:verpet' pk=pet.pk %}">{{ pet.nome }}</a>
+                        </td>
+                        <td class="px-6">{{ pet.tutor.nome_completo }}</td>
+                        <td class="px-6">{{ pet.get_genero_display }}</td>
+                        <td class="px-6">{{ pet.raca }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table id="servicos"
+               class="hidden w-full text-sm text-left rtl:text-right text-gray-800">
+            <thead>
+                <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                    <th class="px-6">Serviço</th>
+                    <th class="px-6">Valor</th>
+                    <th class="px-6">Dias da Semana</th>
+                    <th class="px-6">Desvincular</th>
+                </tr>
+            </thead>
+            <tbody class="bg-background">
+                {% for servico in servicos %}
+                    <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="px-6">
+                            <a href="{% url 'servicos:verservicos' pk=servico.id %}">{{ servico.nome }}</a>
+                        </td>
+                        <td class="px-6">R$ {{ servico.valor }}</td>
+                        <td class="px-6">
+                            <div class="h-full flex gap-8 items-center">
+                                {% for day in '12345'|make_list %}
+                                    <div class="flex flex-col gap-2 items-center justify-center">
+                                        <p class="text-primaryColor font-medium">
+                                            {% if day == '1' %}
+                                                Seg
+                                            {% elif day == '2' %}
+                                                Ter
+                                            {% elif day == '3' %}
+                                                Qua
+                                            {% elif day == '4' %}
+                                                Qui
+                                            {% elif day == '5' %}
+                                                Sex
+                                            {% endif %}
+                                        </p>
+                                        <input type="checkbox"
+                                               name="day"
+                                               id="day"
+                                               disabled
+                                               {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %}
+                                               class="accent-primaryColor w-5 h-5">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="font-medium text-red-600 px-6">
+                            <a href="{% url 'servicos:desvincularservico' turma_id=object.id servico_id=servico.id %}">Desvincular</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let tabsContainer = document.querySelector("#tabs");
+        let tabTogglers = tabsContainer.querySelectorAll("#tabs li");
+        
+        tabTogglers.forEach(function(toggler) {
+            toggler.addEventListener("click", function(e) {
+                e.preventDefault();
+                let tabName = this.children[0].getAttribute("href");
+                let tabContents = document.querySelector("#tab-contents");
+                
+                for (let i = 0; i < tabContents.children.length; i++) {
+                    tabContents.children[i].classList.add("hidden");
+                    if ("#" + tabContents.children[i].id === tabName) {
+                        tabContents.children[i].classList.remove("hidden");
+                    }
+                }
+
+                tabTogglers.forEach(function(tabToggler) {
+                    tabToggler.classList.remove("text-primaryColor", "border-primaryColor", "active");
+                    tabToggler.classList.add("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                });
+
+                this.classList.remove("text-gray-800", "border-transparent", "hover:text-gray-500", "hover:border-gray-500");
+                this.classList.add("text-primaryColor", "border-primaryColor", "active");
+            });
+        });
+    </script>
+{% endblock container %}

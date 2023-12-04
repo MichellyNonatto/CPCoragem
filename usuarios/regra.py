@@ -1,8 +1,10 @@
-from datetime import datetime, time, date
-from django.shortcuts import render
-from django.urls import reverse, resolve
+from datetime import date, datetime, time
+
 import holidays
-from usuarios.models import Funcionario
+from django.shortcuts import render
+from django.urls import resolve, reverse
+
+from usuarios.models import Funcionario, Usuario
 
 
 class Funcionamento:
@@ -12,7 +14,8 @@ class Funcionamento:
 
     def get_funcionamento(self):
         br_holiday = holidays.country_holidays('BR')
-        feriado = date(datetime.now().year, datetime.now().month, datetime.now().day) in br_holiday
+        feriado = date(datetime.now().year, datetime.now().month,
+                       datetime.now().day) in br_holiday
         hora = datetime.now().time()
         semana = datetime.now().weekday()
         return True
@@ -39,6 +42,7 @@ class FuncionamentoMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+
         funcionamento = Funcionamento()
         if not funcionamento.get_funcionamento():
             return render(self.request, 'error/error_504.html')
@@ -60,19 +64,26 @@ class Urls:
         if user.is_authenticated:
             try:
                 funcionario = Funcionario.objects.get(usuario__email=user)
+                cliente = Usuario.objects.get(categoria='TUTOR')
             except:
                 return True
             allowed_urls = [
-                reverse('usuarios:verfuncionario', kwargs={'pk': funcionario.pk}),
-                reverse('usuarios:editarfuncionario', kwargs={'pk': funcionario.pk}),
-                reverse('usuarios:deletarfuncionario', kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:verfuncionario',
+                        kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:editarfuncionario',
+                        kwargs={'pk': funcionario.pk}),
+                reverse('usuarios:deletarfuncionario',
+                        kwargs={'pk': funcionario.pk}),
                 reverse('usuarios:adicionarfuncionario'),
                 reverse('usuarios:pesquisafuncionarios'),
-                reverse('usuarios:listafuncionarios'),
+                reverse('usuarios:funcionarios'),
+                reverse('usuarios:financeiro'),
+                reverse('usuarios:pesquisarfinanceiro'),
+                reverse('usuarios:deletarcliente', kwargs={'pk': cliente.pk}),
             ]
 
             if url in allowed_urls and funcionario.funcao.descricao != "Gerente":
-                if 'servicos' in app:
+                if 'turmas' in app:
                     return False
                 return False
         return True

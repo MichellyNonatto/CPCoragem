@@ -1,0 +1,25 @@
+{% extends "index.html" %}
+{% load static %}
+{% block content %}
+  <main class="bg-cover bg-center h-screen w-screen flex items-center justify-center" style="background-image: url({% static "img/paw_background.jpg" %})">
+    <div class="w-[580px] h-[580px] bg-background flex flex-col p-20 items-center justify-center rounded-2xl gap-y-4 gap-x-7">
+      <img src="{% static 'img/pata_logo.svg' %}"
+           alt="Logo que representa uma pata de cachorro da cor rosa."
+           width="80px"
+           height="80px">
+      <div class="flex flex-col gap-2 items-center">
+        <h2 class="text-3xl font-bold text-center">
+          {% block containerTitle %}
+          {% endblock containerTitle %}
+        </h2>
+        <h3 class="text-sm text-center">
+          {% block containerSubTitle %}
+          {% endblock containerSubTitle %}
+        </h3>
+      </div>
+      {% include "components/message.html" %}
+      {% block container %}
+      {% endblock container %}
+    </main>
+  </div>
+{% endblock content %}

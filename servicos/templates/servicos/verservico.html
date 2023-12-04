@@ -1,0 +1,76 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Serviços
+{% endblock title %}
+{% block containerTitle %}
+    Serviços/detalhes
+{% endblock containerTitle %}
+{% block container %}
+    <h3 class="text-xl text-primaryColor">{{ object.nome }}</h3>
+    <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
+        <p class="text-lg">
+            <span class="text-primaryColor">Valor:</span> R$ {{ object.valor }}
+        </p>
+        <div class="px-6 h-full flex gap-8 items-center">
+            {% for day in '12345'|make_list %}
+                <div class="flex flex-col gap-2 items-center justify-center">
+                    <p class="text-primaryColor font-medium">
+                        {% if day == '1' %}
+                            Seg
+                        {% elif day == '2' %}
+                            Ter
+                        {% elif day == '3' %}
+                            Qua
+                        {% elif day == '4' %}
+                            Qui
+                        {% elif day == '5' %}
+                            Sex
+                        {% endif %}
+                    </p>
+                    <input type="checkbox"
+                           name="day"
+                           id="day"
+                           disabled
+                           {% if day|add:"0" in servico.get_dias_da_semana_ids %}checked{% endif %}
+                           class="accent-primaryColor w-5 h-5">
+                </div>
+            {% endfor %}
+        </div>
+        {% include "components/anchor.html" with href="servicos:editarservico" pk=object.id icon="img/icons/edit.svg" label="Editar serviço" %}
+    </div>
+    <table class="w-full text-sm text-left rtl:text-right text-gray-800">
+        <thead>
+            <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th className="w-24 px-6"></th>
+                <th class="px-6">Nome</th>
+                <th class="px-6">Cargo</th>
+                <th class="px-6">Turno</th>
+                <th class="px-6">Telefone</th>
+                <th class="px-6">E-mail</th>
+                <th class="px-6"></th>
+            </tr>
+        </thead>
+        <tbody class="bg-background">
+            {% for funcionario in object.funcionarios.all %}
+                {% if funcionario.usuario_id != usuario_atual.pk %}
+                    <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="text-center w-24 px-6">
+                            <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}"><img src={{ funcionario.imagem.url }} alt="perfil" width="48px" height="48px" class="h-12 w-12 object-cover object-top rounded-full"></a>
+                        </td>
+                        <td class="px-6">
+                            <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
+                        </td>
+                        <td class="px-6">{{ funcionario.funcao }}</td>
+                        <td class="px-6">{{ funcionario.get_turno_display }}</td>
+                        <td class="px-6">{{ funcionario.usuario.telefone }}</td>
+                        <td class="px-6">{{ funcionario.usuario.email }}</td>
+                        <td class="font-medium text-red-600 px-6">
+                            <a href="{% url 'servicos:desvicularfuncionario' servico_id=object.id funcionario_id=funcionario.id %}">Desvincular</a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock container %}

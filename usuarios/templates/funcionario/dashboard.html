@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <section>
+        <ol>
+            <li>{{ mensagem }} {{ funcionario.usuario.nome_completo }}</li>
+             <li>E-mail: {{ funcionario.usuario.email }}</li>
+            <li>Cargo: {{ funcionario.funcao }}</li>
+        </ol>
+        <div>
+            <a href="{% url 'usuarios:logout' %}">Logout</a>
+            <a href="{% url 'usuarios:editarperfil' pk=object.pk %}">Editar Perfil</a>
+        </div>
+    </section>
+{% endblock %}

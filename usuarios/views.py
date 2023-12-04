@@ -1,22 +1,23 @@
-from django import forms
-from django.db.models import Q
-from django.utils import timezone
-from django.contrib import messages
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.contrib.auth import logout
-from django.urls import reverse_lazy, reverse
-from django.contrib.auth.views import LoginView
-from django.utils.datetime_safe import datetime
 from dateutil.relativedelta import relativedelta
-from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import DetailView, FormView, UpdateView, ListView, DeleteView, CreateView
+from django.contrib.auth.views import LoginView
+from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
+from django.utils.datetime_safe import datetime
+from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
+                                  ListView, UpdateView)
 
-from usuarios.regra import Funcionamento, Acesso
-from usuarios.models import Funcionario, Usuario, Endereco, Pagamento, RegistroPagamento
-from usuarios.forms import RecuperarContaForm, AutenticacaoContaForm, CriarFuncionarioForm, AutenticacaoClienteForm, \
-    AtualizarSenhaForm
+from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
+                            AutenticacaoContaForm, CriarFuncionarioForm,
+                            RecuperarContaForm)
+from usuarios.models import (Endereco, Funcionario, Pagamento,
+                             RegistroPagamento, Usuario)
+from usuarios.regra import Acesso, Funcionamento
 
 
 class CustomLoginView(LoginView):
@@ -30,19 +31,20 @@ class CustomLoginView(LoginView):
         response = super().form_valid(form)
         conta = Acesso()
         if not conta.get_acesso_conta(self.request.user):
-            messages.error(self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
             logout(self.request)
-            return self.form_invalid(form)
+            return messages.error(self.request,
+                                  "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
         return response
 
     def get_success_url(self):
         if self.request.user.is_authenticated:
-            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
+            dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
+                'pk': self.request.user.pk})
             return dashboard_url
 
 
 class RecuperarConta(FormView):
-    template_name = 'recuperarconta.html'
+    template_name = 'desconnect/recuperarconta.html'
     form_class = RecuperarContaForm
 
     def get_success_url(self):
@@ -58,24 +60,35 @@ class RecuperarConta(FormView):
 
 
 class Autenticacao(FormView):
-    template_name = "autenticacao.html"
+    template_name = "desconnect/autenticacao.html"
     form_class = AutenticacaoContaForm
 
     def get_success_url(self):
         pk = self.kwargs.get('pk')
-        if not pk:
-            return messages.error('Código de autenticação fornecido é inválido.')
         return reverse('usuarios:atualizarsenha', args=[pk])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.kwargs['pk']
+        context['usuario'] = Usuario.objects.get(id=usuario)
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['pk'] = self.kwargs['pk']
+        return kwargs
 
 
 class AtualizarSenha(UpdateView):
-    template_name = "autenticacao.html"
+    template_name = "desconnect/atualizarsenha.html"
     model = Usuario
     form_class = AtualizarSenhaForm
 
     def form_valid(self, form):
-        user = form.save()
-        update_session_auth_hash(self.request, user)
+        user = form.save(commit=False)
+        password = form.cleaned_data['password1']
+        user.set_password(password)
+        user.save()
         messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
 
@@ -84,7 +97,7 @@ class AtualizarSenha(UpdateView):
 
 
 class Dashboard(LoginRequiredMixin, DetailView):
-    template_name = 'dashboard.html'
+    template_name = 'funcionario/dashboard.html'
     model = Usuario
 
     def get_context_data(self, **kwargs):
@@ -99,7 +112,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
 
 
 class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
-    template_name = "editarperfil.html"
+    template_name = "funcionario/editarperfil.html"
     model = Usuario
     fields = ['nome_completo', 'telefone']
 
@@ -113,17 +126,21 @@ class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
+        messages.success(
+            self.request, 'Seu perfil foi atualizado com sucesso!')
         return super().form_valid(form)
 
     def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
+        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
 class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
-    template_name = "editarperfil.html"
+    template_name = "funcionario/editarperfil.html"
     model = Endereco
-    fields = ['cep', 'estado', 'cidade', 'bairro', 'rua', 'numero', 'complemento']
+    fields = ['cep', 'estado', 'cidade',
+              'bairro', 'rua', 'numero', 'complemento']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -135,22 +152,24 @@ class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
+        messages.success(self.request, 'Seu endereço foi salvo com sucesso!')
         return super().form_valid(form)
 
     def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={'pk': self.request.user.pk})
+        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
+            'pk': self.request.user.pk})
         return dashboard_url
 
 
 class ListaFuncionarios(LoginRequiredMixin, ListView):
-    template_name = 'listafuncionarios.html'
+    template_name = 'funcionario/listafuncionarios.html'
     model = Funcionario
 
     def get(self, request, *args, **kwargs):
         funcionarios = Funcionario.objects.filter(usuario=self.request.user)
         for funcionario in funcionarios:
             if funcionario.funcao.descricao != 'Gerente':
-                return HttpResponse("<h1>Sem contexto (204)</h1>")
+                return HttpResponse('error/error_204.html')
             return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -160,7 +179,7 @@ class ListaFuncionarios(LoginRequiredMixin, ListView):
 
 
 class PesquisaFuncionarios(LoginRequiredMixin, ListView):
-    template_name = "listafuncionarios.html"
+    template_name = "funcionario/listafuncionarios.html"
     model = Funcionario
 
     def get_queryset(self):
@@ -186,50 +205,78 @@ class PesquisaFuncionarios(LoginRequiredMixin, ListView):
 
 
 class VerFuncionario(LoginRequiredMixin, DetailView):
-    template_name = 'verfuncionario.html'
+    template_name = 'funcionario/verfuncionario.html'
     model = Funcionario
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
+        context['acao'] = 'visualizar'
+        return context
 
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
-    template_name = "verfuncionario.html"
+    template_name = "funcionario/verfuncionario.html"
     model = Funcionario
     fields = ['turno', 'funcao']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['endereco'] = self.object.usuario.endereco
+        context['acao'] = 'editar'
+        return context
+
     def form_valid(self, form):
         form.save()
-        success_url = reverse('usuarios:listafuncionarios') + '?mensagem=Alteração em funcionário salva com sucesso!'
+        success_url = reverse('funcionarios') + \
+                      '?mensagem=Alteração em funcionário salva com sucesso!'
+        messages.success(
+            self.request, 'Alteração em funcionário salva com sucesso!')
         return redirect(success_url)
 
     def get_success_url(self):
-        verfuncionario_url = reverse_lazy('usuarios:verfuncionario', kwargs={'pk': self.object.pk})
+        verfuncionario_url = reverse_lazy(
+            'usuarios:verfuncionario', kwargs={'pk': self.object.pk})
         return verfuncionario_url
 
 
 class DeletarFuncionario(LoginRequiredMixin, DeleteView):
-    template_name = 'deletarfuncionario.html'
+    template_name = 'containers/deletar.html'
     model = Usuario
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         funcionario_pk = Funcionario.objects.get(usuario_id=self.object.pk)
+        funcionario = Funcionario.objects.get(usuario_id=self.object.pk)
         context['funcionario_pk'] = funcionario_pk.pk
+        context['nome_deletar'] = funcionario.usuario.nome_completo
         return context
 
     def get_success_url(self):
-        return reverse('usuarios:listafuncionarios')
+        messages.success(self.request, 'Funcionário deletado com sucesso!')
+        return reverse('funcionarios')
 
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
-    template_name = "adicionarfuncionario.html"
+    template_name = "funcionario/adicionarfuncionario.html"
     form_class = CriarFuncionarioForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['acao'] = 'adicionar'
+        return context
 
     def form_valid(self, form):
         documento = form.cleaned_data['documento']
         if Usuario.objects.filter(documento=documento).exists():
-            messages.error(self.request, 'Funcionário já existe em nossa base de dados.')
+            messages.error(
+                self.request, 'Funcionário já existe em nossa base de dados.')
         else:
             form.save()
-            success_url = reverse('usuarios:listafuncionarios') + '?mensagem=Funcionário adicionado com sucesso!'
+            messages.success(
+                self.request, 'Funcionário adicionado com sucesso!')
+            success_url = reverse('funcionarios') + \
+                          '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
         return reverse('usuarios:adicionarfuncionario')
@@ -251,7 +298,8 @@ class AutenticacaoClienteView(FormView):
                     pagamento = pagamento.first()
                     return reverse('usuarios:atualizarpagamento', args=[usuario.pk])
                 except Pagamento.DoesNotExist:
-                    messages.error(self.request, 'Não há registro de pagamento para este usuário.')
+                    messages.error(
+                        self.request, 'Não há registro de pagamento para este usuário.')
         except Usuario.DoesNotExist:
             messages.error(self.request, 'Não encontramos um registro correspondente ao e-mail fornecido. '
                                          'Verifique seu endereço de e-mail e número de documento para acessar a página de documento.')
@@ -267,7 +315,8 @@ class CriarNovoPagamento(CreateView):
     def form_valid(self, form):
         user = self.kwargs['pk']
         try:
-            pagamento = Pagamento.objects.exclude(registropagamento__isnull=False)
+            pagamento = Pagamento.objects.exclude(
+                registropagamento__isnull=False)
         except Pagamento.DoesNotExist:
             return redirect('error_page')
 
@@ -287,7 +336,8 @@ class CriarNovoPagamento(CreateView):
         )
 
         registro_pagamento.save()
-        success_url = reverse('usuarios:autenticacaocliente') + '?mensagem=Pagamento efetuado com sucesso!'
+        success_url = reverse('usuarios:autenticacaocliente') + \
+                      '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
@@ -298,7 +348,7 @@ class CriarNovoPagamento(CreateView):
 
 
 class ListaPagamentos(LoginRequiredMixin, ListView):
-    template_name = "listapagamento.html"
+    template_name = "funcionario/listapagamento.html"
 
     def __init__(self):
         self.hoje = datetime.now().date()
@@ -343,9 +393,24 @@ class PesquisarPagamento(ListaPagamentos):
         return pagamento
 
 
-class DeletarCliente(LoginRequiredMixin, DeleteView):
-    template_name = 'deletarcliente.html'
+class DeletarTutor(LoginRequiredMixin, DeleteView):
+    template_name = 'funcionario/deletartutor.html'
     model = Usuario
 
+    def form_valid(self, form):
+        self.object = form.save()
+        messages.success(self.request, 'Tutor deletado com sucesso!')
+        return super().form_valid(form)
+
     def get_success_url(self):
-        return reverse('usuarios:listafuncionarios')
+        return reverse('funcionarios')
+
+
+class ListaTutor(LoginRequiredMixin, ListView):
+    model = Usuario
+    template_name = "funcionario/listatutor.html"
+
+    def get(self, request, *args, **kwargs):
+        usuarios_tutor = Usuario.objects.filter(categoria='TUTOR')
+        context = {'object_list': usuarios_tutor}
+        return render(request, self.template_name, context)

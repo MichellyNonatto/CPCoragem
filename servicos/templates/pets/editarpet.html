@@ -1,0 +1,86 @@
+{% extends "containers/mainContainer.html" %}
+{% load static %}
+{% block title %}
+    Pets
+{% endblock title %}
+{% block containerTitle %}
+    Pets/editar pet
+{% endblock containerTitle %}
+{% block container %}
+    <form method="post" enctype="multipart/form-data" class="w-full">
+        {% csrf_token %}
+        <div class="flex gap-8 w-full">
+            <div class="flex flex-col justify-end gap-4 w-full">
+                <div class="flex gap-4 h-36">
+                    <img src="
+
+                            {% if object.imagem.url %}{{ object.imagem.url }}{% else %}{% static 'img/blank-profile-pet.jpg' %}{% endif %}"
+                         alt="Imagem do pet"
+                         width="128px"
+                         height="128px"
+                         id="preview-imagem"
+                         class="h-32 w-32 rounded-full object-cover object-top"/>
+                    <div class="flex items-center gap-4">
+                        <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
+                        <label for="id_imagem"
+                               class="relative cursor-pointer bg-primaryColor hover:bg-onPrimaryFixedVariant focus:bg-primaryColor border border-primaryColor text-white rounded-md py-2 px-4 inline-flex items-center">
+                            <span>Escolher Imagem</span>
+                            <input type="file"
+                                   name="imagem"
+                                   id="id_imagem"
+                                   accept="image/*"
+                                   onchange="previewImagem(this)"
+                                   class="hidden">
+                        </label>
+                    </div>
+                </div>
+                <script>
+                    function previewImagem(input) {
+                        var preview = document.getElementById('preview-imagem');
+                        if (input.files && input.files[0]) {
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                preview.src = e.target.result;
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                </script>
+                {% for field in form %}
+                    {% if field.name in 'nome,raca,genero' %}
+                        {% if field.field.widget.input_type != 'select' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% else %}
+                            {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="flex flex-col justify-end gap-4 w-full">
+                {% include "components/input.html" with acao="visualizar" type="text" label="Nome do tutor" name="nome_tutor" id="id_nome_tutor" value=nome_tutor %}
+                {% for field in form %}
+                    {% if field.name in 'turma,descricao_medica' %}
+                        {% if field.field.widget.input_type != 'select' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% else %}
+                            {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+                        {% endif %}
+                    {% elif field.name in 'data_nascimento' %}
+                        {% with field_value=field.value|date:'Y-m-d' %}
+                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field_value erro=field.errors %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+                {% for field in form %}
+                    {% if field.name == 'castrado' %}
+                        {% include "components/checkbox.html" with label=field.label name=field.name id=field.id_for_label required=field.field.required erro=field.errors checked=field.value %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="w-full py-10 flex items-center justify-end gap-8">
+            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/button.html" with type="submit" label="Editar pet" %}
+        </div>
+    </form>
+{% endblock container %}

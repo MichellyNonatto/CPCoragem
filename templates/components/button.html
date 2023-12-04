@@ -1,0 +1,7 @@
+{% load static %}
+<button type="{{ type }}" {% if onclick %}onclick={{ onclick }}{% endif %}  class="flex gap-1 items-center justify-center rounded px-4 py-2 font-medium border {% if secondary %} border-transparent text-primaryColor hover:border-surfaceContainer hover:bg-surfaceContainer focus:bg-primaryContainer {% else %} border-primaryColor bg-primaryColor text-white hover:border-transparent hover:bg-onPrimaryFixedVariant hover:border-onPrimaryFixedVariant focus:bg-primaryColor {% endif %}">
+  {% if icon %}
+    <img src="{% static icon %}" alt="" width="24px" height="24px">
+  {% endif %}
+  {{ label }}
+</button>

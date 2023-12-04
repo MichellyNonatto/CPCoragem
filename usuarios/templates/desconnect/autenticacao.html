@@ -1,0 +1,27 @@
+{% extends "containers/authContainer.html" %}
+{% load static %}
+{% block title %}
+    Autenticação
+{% endblock title %}
+{% block containerTitle %}
+    Recuperação de conta
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Válidamos o seguinte e-mail
+    <b>{{ usuario.email }}</b>
+    <br>
+    Por favor inserir o número do documento cadastrado
+{% endblock containerSubTitle %}
+{% block container %}
+    <form method="post" class="w-full flex flex-col gap-4">
+        {% csrf_token %}
+        {% include "components/input.html" with type="text" label="Inserir documento" name="codigo" id="id_codigo" %}
+        <p class="text-primaryColor text-sm text-center">
+            Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
+        </p>
+        <div class="flex items-center justify-between">
+            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/button.html" with type="submit" label="Verificar" %}
+        </div>
+    </form>
+{% endblock container %}

@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 from django.core.management import BaseCommand
 from django.template.loader import render_to_string
 
-from servicos.models import Grade, Pet
+from servicos.models import Turma, Pet
 from usuarios.models import Usuario, Pagamento
 
 
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             observacoes = []
 
             for pet in pets_tutor:
-                grades_pet = Grade.objects.filter(pet=pet)
+                grades_pet = Turma.objects.filter(pet=pet)
                 for grade in grades_pet:
                     servico = [grade.servico.nome, grade.observacao]
                     observacoes.append(servico)
@@ -68,7 +68,7 @@ class Command(BaseCommand):
                     pets = Pet.objects.filter(tutor=cliente)
                     servicos = []
                     for pet in pets:
-                        servico_valor = Grade.objects.filter(pet=pet)
+                        servico_valor = Turma.objects.filter(pet=pet)
                         for valor in servico_valor:
                             valor_servico = {'nome': valor.servico.nome, 'valor': valor.servico.valor}
                             servicos.append(valor_servico)
