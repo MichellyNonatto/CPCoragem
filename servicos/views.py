@@ -10,6 +10,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
 
 from usuarios.forms import CriarTutorForm
 from usuarios.models import Funcionario, Usuario
+
 from .forms import EditarPetForm
 from .models import Pet, Servico, Turma, Vacinacao
 
@@ -295,11 +296,11 @@ class DesvincularServico(LoginRequiredMixin, View):
 class EditarTurma(LoginRequiredMixin, UpdateView):
     template_name = 'turmas/editarturma.html'
     model = Turma
-    fields ="__all__"
+    fields = ["nome", "servicos"]
 
     def get_success_url(self):
         messages.success(self.request, 'Turma editada com sucesso!')
-        return reverse('servicos:verpet', args=[self.object.pk])
+        return reverse('servicos:verturma', args=[self.object.pk])
 
 
 class ListaServicos(LoginRequiredMixin, ListView):
