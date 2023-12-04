@@ -36,12 +36,12 @@ class PesquisarPet(LoginRequiredMixin, ListView):
     def get_queryset(self):
         termo_pesquisa = self.request.GET.get("query")
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Pet.objects.none()
+            return Pet.objects.all()
 
         resultados_pets = Pet.objects.filter(
             Q(nome__icontains=termo_pesquisa) |
             Q(raca__nome__icontains=termo_pesquisa) |
-            Q(tutor__first_name__icontains=termo_pesquisa)
+            Q(tutor__nome_completo__icontains=termo_pesquisa)
         )
 
         return resultados_pets

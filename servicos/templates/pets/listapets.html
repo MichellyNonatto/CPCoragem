@@ -8,7 +8,9 @@
 {% endblock containerTitle %}
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
-        {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+        <form method="get" action="{% url 'servicos:pesquisarpet' %}">
+            {% include "components/search.html" with value=request.GET.query %}
+        </form>
         {% include "components/anchor.html" with href="servicos:vinculartutor" icon="img/icons/add.svg" label="Adicionar pet" %}
     </div>
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
