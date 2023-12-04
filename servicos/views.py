@@ -36,12 +36,14 @@ class PesquisarPet(LoginRequiredMixin, ListView):
     def get_queryset(self):
         termo_pesquisa = self.request.GET.get("query")
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Pet.objects.none()
+            return Pet.objects.all()
 
         resultados_pets = Pet.objects.filter(
             Q(nome__icontains=termo_pesquisa) |
+            Q(genero__icontains=termo_pesquisa) |
             Q(raca__nome__icontains=termo_pesquisa) |
-            Q(tutor__first_name__icontains=termo_pesquisa)
+            Q(turma__nome__icontains=termo_pesquisa) |
+            Q(tutor__nome_completo__icontains=termo_pesquisa)
         )
 
         return resultados_pets
@@ -219,8 +221,27 @@ class VerTurma(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         turma = Turma.objects.get(id=self.kwargs['pk'])
         pets = Pet.objects.filter(turma=turma)
+        servicos = Servico.objects.filter(turma=turma)
         context['pets'] = pets
+        context['servicos'] = servicos
         return context
+
+
+class PesquisarTurma(LoginRequiredMixin, ListView):
+    template_name = 'turmas/listaturmas.html'
+    model = Turma
+    context_object_name = 'resultados_turmas'
+
+    def get_queryset(self):
+        termo_pesquisa = self.request.GET.get("query")
+
+        if not termo_pesquisa or termo_pesquisa.isspace():
+            return Turma.objects.all()
+
+        return Turma.objects.filter(
+            Q(nome__icontains=termo_pesquisa) |
+            Q(servicos__nome__icontains=termo_pesquisa)
+        ).distinct()
 
 
 class DesvincularServico(LoginRequiredMixin, View):
@@ -258,11 +279,12 @@ class VincularServico(LoginRequiredMixin, UpdateView):
 class PesquisarServico(LoginRequiredMixin, ListView):
     template_name = 'servicos/listaservicos.html'
     model = Servico
+    context_object_name = 'resultados_servico'
 
     def get_queryset(self):
         termo_pesquisa = self.request.GET.get("query")
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Servico.objects.none()
+            return Servico.objects.all()
 
         resultados_servicos = Servico.objects.filter(
             Q(nome__icontains=termo_pesquisa)
@@ -304,7 +326,23 @@ class EditarServico(LoginRequiredMixin, UpdateView):
     template_name = 'servicos/editarservico.html'
     fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['valor_formatado'] = self.object.get_valor_formatado()
+        return context
+
     def get_success_url(self):
         messages.success(
             self.request, 'Funcionário vinculado ao serviço com sucesso!')
+        return reverse('servicos:verservicos', args=[self.object.pk])
+
+
+class AdicionarServico(LoginRequiredMixin, CreateView):
+    model = Servico
+    template_name = 'servicos/adicionarservico.html'
+    fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
+
+    def get_success_url(self):
+        messages.success(
+            self.request, 'Serviço criado com sucesso!')
         return reverse('servicos:verservicos', args=[self.object.pk])

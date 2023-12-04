@@ -9,7 +9,7 @@
 {% block container %}
     <div class="w-full flex items-center justify-end gap-4 border-spacing-x-8">
         <form method="get" action="{% url 'usuarios:pesquisafuncionarios' %}">
-            {% include "components/search.html" with placeholder="Pesquisar..." name="query" %}
+            {% include "components/search.html" with value=request.GET.query %}
         </form>
         {% include "components/anchor.html" with href="usuarios:adicionarfuncionario" icon="img/icons/add.svg" label="Novo funcionário" %}
     </div>
