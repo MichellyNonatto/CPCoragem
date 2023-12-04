@@ -14,8 +14,8 @@ from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
 
 from usuarios.forms import CriarTutorForm
 from usuarios.models import Funcionario, Pagamento, Usuario
-from .forms import EditarPetForm
 
+from .forms import EditarPetForm
 from .models import Pet, Servico, Turma, Vacinacao
 
 
@@ -243,12 +243,6 @@ class ListaServicos(LoginRequiredMixin, ListView):
     model = Servico
     template_name = 'servicos/listaservicos.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['servico_ids'] = [list(servico.dias_da_semana.values_list(
-            'id', flat=True)) for servico in context['object_list']]
-        return context
-
 
 class VincularServico(LoginRequiredMixin, UpdateView):
     model = Turma
@@ -305,10 +299,10 @@ class DesvincularFuncionario(LoginRequiredMixin, View):
         return self.desvincular_funcionario(request, servico_id, funcionario_id)
 
 
-class VincularFuncionario(LoginRequiredMixin, UpdateView):
+class EditarServico(LoginRequiredMixin, UpdateView):
     model = Servico
-    template_name = 'servicos/vincularfuncionario.html'
-    fields = ["funcionarios"]
+    template_name = 'servicos/editarservico.html'
+    fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
 
     def get_success_url(self):
         messages.success(

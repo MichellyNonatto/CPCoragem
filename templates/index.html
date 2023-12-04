@@ -34,7 +34,7 @@
     <!-- CSS Base  -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
   </head>
-  <body class="min-h-screen flex flex-col pb-10">
+  <body class="min-h-screen flex flex-col overflow-x-hidden">
     {% if user.is_authenticated %}
       {% include "header/header.html" with user_id=user.id %}
     {% endif %}
