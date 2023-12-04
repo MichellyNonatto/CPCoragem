@@ -304,6 +304,11 @@ class EditarServico(LoginRequiredMixin, UpdateView):
     template_name = 'servicos/editarservico.html'
     fields = ["nome", "valor", "funcionarios", "dias_da_semana"]
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['valor_formatado'] = self.object.get_valor_formatado()
+        return context
+
     def get_success_url(self):
         messages.success(
             self.request, 'Funcionário vinculado ao serviço com sucesso!')

@@ -30,6 +30,9 @@ class Servico(models.Model):
     def get_dias_da_semana_ids(self):
         return list(self.dias_da_semana.values_list('pk', flat=True))
 
+    def get_valor_formatado(self):
+        return str(self.valor).replace(',', '.')
+
 
 class Turma(models.Model):
     nome = models.CharField(max_length=45)
