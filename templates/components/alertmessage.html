@@ -1,0 +1,19 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="{% if message.tags == 'success' %} bg-green-200 text-green-800 {% else %} bg-red-200 text-red-800 {% endif %} w-[480px] rounded px-4 py-2 my-2"
+         role="alert">
+      <div class="flex items-center justify-center gap-4">
+        <div>
+          <svg class="fill-current h-6 w-6 {% if message.tags == 'success' %} text-green-800 {% else %} text-red-800 {% endif %} mr-4"
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 20 20">
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+          </svg>
+        </div>
+        <div>
+          <p>{{ message }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}

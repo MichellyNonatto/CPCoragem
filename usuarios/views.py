@@ -275,11 +275,11 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             form.save()
             messages.success(
                 self.request, 'Funcionário adicionado com sucesso!')
-            success_url = reverse('funcionarios') + \
+            success_url = reverse('usuarios:funcionarios') + \
                 '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
-        return reverse('usuarios:adicionarfuncionario')
+        return reverse('usuarios:funcionarios')
 
 
 class AutenticacaoClienteView(FormView):
