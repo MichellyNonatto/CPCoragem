@@ -30,6 +30,6 @@ urlpatterns = [
     path('servicos/<int:pk>', VerServicos.as_view(), name='verservicos'),
     path('servicos/<int:servico_id>/<int:funcionario_id>', DesvincularFuncionario.as_view(),
          name='desvicularfuncionario'),
-    path('dashboard/servicos/editarservico/<int:pk>', EditarServico.as_view(), name='editarservico'),
+    path('servicos/editarservico/<int:pk>', EditarServico.as_view(), name='editarservico'),
 
 ]
