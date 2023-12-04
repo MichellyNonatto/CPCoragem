@@ -185,7 +185,7 @@ class AdicionarPet(LoginRequiredMixin, CreateView):
         pet = form.save(commit=False)
         pet.tutor = tutor
         pet.save()
-        success_url = reverse('servicos:pets', args=[pet.pk]) + \
+        success_url = reverse('servicos:verpet', kwargs={'pk': pet.pk}) + \
             '?mensagem=Pet adicionado com sucesso!'
         return redirect(success_url)
 
