@@ -140,6 +140,7 @@ class EditarTutor(LoginRequiredMixin, UpdateView):
     form_class = EditarTutorForm
 
     def form_valid(self, form):
+        messages.success(self.request, 'Tutor editado com sucesso!')
         success_url = reverse('servicos:vertutor', args=[self.object.pk]) + \
             '?mensagem=Tutor editado com sucesso!'
         form.save()
@@ -172,6 +173,7 @@ class AdicionarPet(LoginRequiredMixin, CreateView):
         pet = form.save(commit=False)
         pet.tutor = tutor
         pet.save()
+        messages.success(self.request, 'Pet adicionado com sucesso!')
         success_url = reverse('servicos:verpet', kwargs={'pk': pet.pk}) + \
             '?mensagem=Pet adicionado com sucesso!'
         return redirect(success_url)
@@ -219,6 +221,7 @@ class AdicionarTutor(LoginRequiredMixin, FormView):
                 self.request, 'Tutor já existe em nossa base de dados.')
         else:
             form.save()
+            messages.success(self.request, 'Tutor adicionado com sucesso!')
             success_url = reverse('servicos:vinculartutor') + \
                 '?mensagem=Tutor adicionado com sucesso!'
             return redirect(success_url)
@@ -360,7 +363,7 @@ class EditarServico(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         messages.success(
-            self.request, 'Funcionário vinculado ao serviço com sucesso!')
+            self.request, 'Serviço editado com sucesso!')
         return reverse('servicos:verservicos', args=[self.object.pk])
 
 
@@ -371,5 +374,5 @@ class AdicionarServico(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         messages.success(
-            self.request, 'Serviço criado com sucesso!')
+            self.request, 'Serviço adicionado com sucesso!')
         return reverse('servicos:verservicos', args=[self.object.pk])
