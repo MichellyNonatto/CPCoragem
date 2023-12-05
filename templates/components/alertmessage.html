@@ -7,7 +7,12 @@
           <svg class="fill-current h-6 w-6 {% if message.tags == 'success' %} text-green-800 {% else %} text-red-800 {% endif %} mr-4"
                xmlns="http://www.w3.org/2000/svg"
                viewBox="0 0 20 20">
-            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+            {% if message.tags == 'success' %}
+              <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" />
+            {% else %}
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path d="M5.64 7.22L12 13.57l6.36-6.36a1.5 1.5 0 0 1 2.12 2.12L14.12 15l6.36 6.36a1.5 1.5 0 0 1-2.12 2.12L12 17.57l-6.36 6.36a1.5 1.5 0 0 1-2.12-2.12L9.88 15 3.52 8.64a1.5 1.5 0 0 1 2.12-2.12z" />
+            {% endif %}
           </svg>
         </div>
         <div>

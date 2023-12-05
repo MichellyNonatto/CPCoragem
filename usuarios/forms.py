@@ -1,11 +1,12 @@
 import random
-from django import forms
-from unidecode import unidecode
-from django.utils.datetime_safe import datetime
-from dateutil.relativedelta import relativedelta
-from django.contrib.auth.forms import UserCreationForm
 
-from .models import Usuario, Funcionario, Endereco, Funcao, Pagamento
+from dateutil.relativedelta import relativedelta
+from django import forms
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.utils.datetime_safe import datetime
+from unidecode import unidecode
+
+from .models import Endereco, Funcao, Funcionario, Pagamento, Usuario
 
 
 class RecuperarContaForm(forms.Form):
@@ -24,7 +25,8 @@ class AutenticacaoContaForm(forms.Form):
         try:
             usuario = Usuario.objects.get(documento=codigo, pk=self.pk)
         except Usuario.DoesNotExist:
-            raise forms.ValidationError('Documento para a autenticação fornecido é inválido.')
+            raise forms.ValidationError(
+                'Documento para a autenticação fornecido é inválido.')
         return codigo
 
 
@@ -33,8 +35,10 @@ class AtualizarSenhaForm(forms.ModelForm):
         model = Usuario
         fields = []
 
-    password1 = forms.CharField(label='Nova Senha', max_length=50, widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmar Senha', max_length=50, widget=forms.PasswordInput)
+    password1 = forms.CharField(
+        label='Nova Senha', max_length=50, widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label='Confirmar Senha', max_length=50, widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -55,8 +59,10 @@ class AtualizarSenhaForm(forms.ModelForm):
 
 class CriarUsuario(UserCreationForm):
     random_password = f'{random.randint(1000, 9999)}7b#T!pM$&W5uLqX9'
-    password1 = forms.CharField(label='password1', widget=forms.HiddenInput, initial=random_password)
-    password2 = forms.CharField(label='password2', widget=forms.HiddenInput, initial=random_password)
+    password1 = forms.CharField(
+        label='password1', widget=forms.HiddenInput, initial=random_password)
+    password2 = forms.CharField(
+        label='password2', widget=forms.HiddenInput, initial=random_password)
 
     nome_completo = forms.CharField(max_length=100, label='Nome Completo')
     cep = forms.IntegerField()
@@ -99,7 +105,8 @@ class CriarUsuario(UserCreationForm):
 class CriarFuncionarioForm(CriarUsuario):
     imagem = forms.ImageField()
     turno = forms.ChoiceField(choices=Funcionario.TURNO_CHOICES, label="Turno")
-    funcao = forms.ModelChoiceField(queryset=Funcao.objects.all(), label="Função")
+    funcao = forms.ModelChoiceField(
+        queryset=Funcao.objects.all(), label="Função")
 
     class Meta:
         model = Usuario
@@ -133,6 +140,52 @@ class CriarTutorForm(CriarUsuario):
                 total_pagamento=0,
                 dia_vencimento=datetime.now().date() + relativedelta(months=1)
             )
+            user.save()
+
+        return user
+
+
+class EnderecoForm(forms.ModelForm):
+    class Meta:
+        model = Endereco
+        fields = ['cep', 'estado', 'cidade',
+                  'bairro', 'rua', 'numero', 'complemento']
+
+
+class EditarTutorForm(UserChangeForm):
+    cep = forms.IntegerField()
+    estado = forms.CharField(max_length=45)
+    cidade = forms.CharField(max_length=45)
+    bairro = forms.CharField(max_length=45)
+    rua = forms.CharField(max_length=45)
+    numero = forms.CharField(max_length=10)
+    complemento = forms.CharField(max_length=45, required=False)
+
+    class Meta:
+        model = Usuario
+        fields = ('nome_completo', 'telefone', 'email')
+
+    def save(self, commit=True):
+        endereco_data = {
+            'cep': self.cleaned_data['cep'],
+            'estado': self.cleaned_data['estado'],
+            'cidade': self.cleaned_data['cidade'],
+            'bairro': self.cleaned_data['bairro'],
+            'rua': self.cleaned_data['rua'],
+            'numero': self.cleaned_data['numero'],
+            'complemento': self.cleaned_data['complemento'],
+        }
+
+        user = super().save(commit=False)
+
+        if commit:
+            if user.endereco:
+                Endereco.objects.filter(
+                    id=user.endereco.id).update(**endereco_data)
+            else:
+                endereco = Endereco.objects.create(**endereco_data)
+                user.endereco = endereco
+
             user.save()
 
         return user

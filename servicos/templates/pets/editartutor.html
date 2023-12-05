@@ -8,22 +8,25 @@
 {% endblock containerTitle %}
 {% block container %}
   <form method="post" enctype="multipart/form-data" class="w-full">
+    {% include "components/message.html" %}
     <fieldset>
       {% csrf_token %}
       <div class="flex gap-8 w-full">
         <div class="flex flex-col justify-end gap-4 w-full">
           {% for field in form %}
-            {% if field.name in 'nome_completo,documento,telefone,email' %}
+            {% if field.name in 'nome_completo,telefone,email' %}
               {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
             {% endif %}
           {% endfor %}
         </div>
         <div class="flex flex-col justify-end gap-4 w-full">
-          {% for field in form %}
-            {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
-              {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
-            {% endif %}
-          {% endfor %}
+          {% include "components/input.html" with type=form.cep.field.widget.input_type label=form.cep.label name=form.cep.name id=form.cep.id_for_label value=object.endereco.cep %}
+          {% include "components/input.html" with type=form.estado.field.widget.input_type label=form.estado.label name=form.estado.name id=form.estado.id_for_label value=object.endereco.estado %}
+          {% include "components/input.html" with type=form.cidade.field.widget.input_type label=form.cidade.label name=form.cidade.name id=form.cidade.id_for_label value=object.endereco.cidade %}
+          {% include "components/input.html" with type=form.bairro.field.widget.input_type label=form.bairro.label name=form.bairro.name id=form.bairro.id_for_label value=object.endereco.bairro %}
+          {% include "components/input.html" with type=form.rua.field.widget.input_type label=form.rua.label name=form.rua.name id=form.rua.id_for_label value=object.endereco.rua %}
+          {% include "components/input.html" with type=form.numero.field.widget.input_type label=form.numero.label name=form.numero.name id=form.numero.id_for_label value=object.endereco.numero %}
+          {% include "components/input.html" with type=form.complemento.field.widget.input_type label=form.complemento.label name=form.complemento.name id=form.complemento.id_for_label value=object.endereco.complemento %}
         </div>
       </div>
       <div class="w-full py-10 flex items-center justify-end gap-8">
