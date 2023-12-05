@@ -2,7 +2,7 @@
     <div class="flex justify-between">
         <div>
             <p class="text-base font-bold text-zinc-500">{{ title }}</p>
-            <h5 class="leading-none text-4xl font-bold {% if name == 'pendente' %}{% else %}blue-950{% endif %} pb-2">{{ subtitle }}</h5>
+            <h5 class="leading-none text-4xl font-bold blue-950 pb-2">{{ subtitle }}</h5>
         </div>
     </div>
     <div id="area-chart"></div>
@@ -39,8 +39,8 @@
             gradient: {
                 opacityFrom: 0.55,
                 opacityTo: 0,
-                shade: "#A155B9",
-                gradientToColors: ["#A155B900"],
+                shade: "#974067",
+                gradientToColors: ["#974067"],
             },
         },
         dataLabels: {
@@ -62,7 +62,7 @@
             {
                 name: "Pagamentos",
                 data: list_month_number,
-                color: "#A155B9",
+                color: "#974067",
             },
         ],
         legend: {

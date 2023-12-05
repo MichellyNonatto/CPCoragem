@@ -2,7 +2,6 @@
 
     <link rel="dns-prefetch" href="//unpkg.com"/>
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net"/>
-    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css">
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
 
     <style>
@@ -75,7 +74,7 @@
                                             @click="showEventModal(date)"
                                             x-text="date"
                                             class="inline-flex w-6 h-6 items-center justify-center cursor-pointer text-center leading-none rounded-full transition ease-in-out duration-100"
-                                            :class="{'bg-blue-500 text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }"
+                                            :class="{'bg-primaryColor text-white': isToday(date) == true, 'text-gray-700 hover:bg-blue-200': isToday(date) == false }"
                                     ></div>
                                     <div class="overflow-y-auto mt-1">
                                         <template

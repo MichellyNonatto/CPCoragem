@@ -4,6 +4,16 @@
     Dashboard
 {% endblock title %}
 {% block container %}
+    <div class="w-full">
+        <div>
+            <p class="text-base text-xl font-semibold text-primaryColor">{{ mensagem }}</p>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ usuario.nome_completo }}</h1>
+            <p class="mt-2 text-ms leading-8 text-gray-700">Cargo: {{ funcionario.funcao.descricao }}</p>
+        </div>
+    <div>
+
+    </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <div class="flex justify-between w-full">
         <section class="max-w-screen w-8/12">

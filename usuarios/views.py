@@ -125,6 +125,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
             previsao_lucro += pagamento.total_pagamento
 
         usuario = self.request.user
+        funcionario = Funcionario.objects.get(usuario_id=usuario.pk)
         funcionarios = Funcionario.objects.all()
         mensagem = Funcionamento.mensagem()
         pagamentos_realizados = RegistroPagamento.objects.all()
@@ -141,6 +142,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
         context['pagamentos_realizados'] = pagamentos_realizados
         context['mensagem'] = mensagem
         context['funcionarios'] = funcionarios
+        context['funcionario'] = funcionario
         return context
 
 
