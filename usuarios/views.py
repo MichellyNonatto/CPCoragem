@@ -184,9 +184,7 @@ class PesquisaFuncionarios(LoginRequiredMixin, ListView):
             return Funcionario.objects.none()
 
         resultados_funcionarios = Funcionario.objects.filter(
-            Q(usuario__first_name__icontains=termo_pesquisa) |
-            Q(usuario__last_name__icontains=termo_pesquisa) |
-            Q(usuario__documento__icontains=termo_pesquisa) |
+            Q(usuario__nome_completo__icontains=termo_pesquisa) |
             Q(funcao__descricao__icontains=termo_pesquisa)
         )
 
