@@ -252,27 +252,20 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
     template_name = "funcionario/editarfuncionario.html"
-    model = Funcionario
+    model = Usuario
     form_class = EditarFuncionarioForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['endereco'] = self.object.usuario.endereco
-        context['acao'] = 'editar'
+        context['funcionario'] = Funcionario.objects.get(usuario_id=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
+        messages.success(self.request, 'Funcionário editado com sucesso!')
+        funcionario = Funcionario.objects.get(usuario_id=self.kwargs['pk'])
+        success_url = reverse('usuarios:verfuncionario', args=[funcionario.id]) + '?mensagem=Funcionários editado com sucesso!'
         form.save()
-        success_url = reverse('usuarios:funcionarios') + \
-            '?mensagem=Alteração em funcionário salva com sucesso!'
-        messages.success(
-            self.request, 'Alteração em funcionário salva com sucesso!')
         return redirect(success_url)
-
-    def get_success_url(self):
-        verfuncionario_url = reverse_lazy(
-            'usuarios:verfuncionario', kwargs={'pk': self.object.pk})
-        return verfuncionario_url
 
 
 class DeletarFuncionario(LoginRequiredMixin, DeleteView):

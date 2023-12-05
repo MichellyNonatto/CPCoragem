@@ -45,7 +45,7 @@
                             <a href={% url 'usuarios:verfuncionario' pk=funcionario.pk %}>Ver funcionário</a>
                         </td>
                         <td class="font-medium text-primaryColor px-6">
-                            <a href={% url 'usuarios:editarfuncionario' pk=funcionario.pk %}>Editar</a>
+                            <a href={% url 'usuarios:editarfuncionario' pk=funcionario.usuario_id %}>Editar</a>
                         </td>
                         <td class="font-medium text-red-600 px-6">
                             <a href="{% url 'usuarios:deletarfuncionario' pk=funcionario.usuario_id %}">Excluir</a>

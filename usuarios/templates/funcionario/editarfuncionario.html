@@ -9,11 +9,10 @@
 {% block container %}
     <form method="post" enctype="multipart/form-data" class="w-full">
         {% csrf_token %}
-        {% include 'components/message.html' %}
         <div class="flex gap-8 w-full">
             <div class="flex flex-col justify-end gap-4 w-full">
                 <div class="flex gap-4 h-36">
-                    <img src="{% if imagem %}{{ imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
+                    <img src="{% if funcionario.imagem.url %}{{ funcionario.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
                          alt="Imagem do funcionário"
                          width="128px"
                          height="128px"
@@ -25,29 +24,27 @@
                             <input type="file"
                                    name="imagem"
                                    id="id_imagem"
-                                   accept="{{ imagem }}"
+                                   accept="image/*"
                                    onchange="previewImagem(this)"
-                                   class="hidden"
-                                   value="{{ imagem }}">
+                                   class="hidden">
                         </label>
                     </div>
                 </div>
-                <label for="{{ form.nomecompleto.id_for_label }}">{{ form.nome_completo.label }}:</label>
-                {% include "components/input.html" with type=form.nome_completo.field.widget.input_type label=form.nome_completo.label name=form.nome_completo.name id=form.nome_completo.id_for_label value=form.nome_completo.value %}
-                {% include "components/input.html" with acao='disabled' type='text' label='Documento' name='id_documento' value=object.get_documento_formatado.1 %}
-                {% include "components/input.html" with acao='disabled' type='text' label='E-mail' name=object.email value=object.email %}
-                {% include "components/input.html" with type=form.telefone.field.widget.input_type label=form.telefone.label name=form.telefone.name id=form.telefone.id_for_label value=form.telefone.value %}
-                {% include "components/oneselect.html" with label=form.funcao.label name=form.funcao.name id=form.funcao.id_for_label options=form.funcao.field.choices text=cargo %}
-                {% include "components/oneselect.html" with label=form.turno.label name=form.turno.name id=form.turno.id_for_label options=form.turno.field.choices text=turno %}
+                {% include "components/input.html" with type=form.nome_completo.field.widget.input_type  label=form.nome_completo.label name=form.nome_completo.name id=form.nome_completo.id_for_label value=object.nome_completo erro=form.nome_completo.errors %}
+                {% include "components/input.html"  with acao='disabled' type="text"  label="Documento" name='documento' id="documento_id" value=object.get_documento_formatado.1 %}
+                {% include "components/input.html" with acao='disabled' type="text"  label="E-mail" name='email' id="email_id"  value=object.email %}
+                {% include "components/input.html" with type=form.telefone.field.widget.input_type  label=form.telefone.label name=form.telefone.name id=form.telefone.id_for_label value=object.telefone %}
+                {% include "components/select.html" with name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
+                {% include "components/select.html" with name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
-                {% include "components/input.html" with type=form.cep.field.widget.input_type label=form.cep.label name=form.cep.name id=form.cep.id_for_label value=object.endereco.cep %}
-                {% include "components/input.html" with type=form.estado.field.widget.input_type label=form.estado.label name=form.estado.name id=form.estado.id_for_label value=object.endereco.estado %}
-                {% include "components/input.html" with type=form.cidade.field.widget.input_type label=form.cidade.label name=form.cidade.name id=form.cidade.id_for_label value=object.endereco.cidade %}
-                {% include "components/input.html" with type=form.bairro.field.widget.input_type label=form.bairro.label name=form.bairro.name id=form.bairro.id_for_label value=object.endereco.bairro %}
-                {% include "components/input.html" with type=form.rua.field.widget.input_type label=form.rua.label name=form.rua.name id=form.rua.id_for_label value=object.endereco.rua %}
-                {% include "components/input.html" with type=form.numero.field.widget.input_type label=form.numero.label name=form.numero.name id=form.numero.id_for_label value=object.endereco.numero %}
-                {% include "components/input.html" with type=form.complemento.field.widget.input_type label=form.complemento.label name=form.complemento.name id=form.complemento.id_for_label value=object.endereco.complemento %}
+                {% include "components/input.html" with type=form.cep.field.widget.input_type label=form.cep.label name=form.cep.name id=form.cep.id_for_label value=object.endereco.cep erro=form.cep.errors%}
+                {% include "components/input.html" with type=form.estado.field.widget.input_type label=form.estado.label name=form.estado.name id=form.estado.id_for_label value=object.endereco.estado erro=form.endereco.errors%}
+                {% include "components/input.html" with type=form.cidade.field.widget.input_type label=form.cidade.label name=form.cidade.name id=form.cidade.id_for_label value=object.endereco.cidade erro=form.cidade.errors%}
+                {% include "components/input.html" with type=form.bairro.field.widget.input_type label=form.bairro.label name=form.bairro.name id=form.bairro.id_for_label value=object.endereco.bairro erro=form.bairro.errors%}
+                {% include "components/input.html" with type=form.rua.field.widget.input_type label=form.rua.label name=form.rua.name id=form.rua.id_for_label value=object.endereco.rua erro=form.rua.errors%}
+                {% include "components/input.html" with type=form.numero.field.widget.input_type label=form.numero.label name=form.numero.name id=form.numero.id_for_label value=object.endereco.numero erro=form.numero.errors%}
+                {% include "components/input.html" with type=form.complemento.field.widget.input_type label=form.complemento.label name=form.complemento.name id=form.complemento.id_for_label value=object.endereco.complemento erro=form.complemento.errors%}
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">

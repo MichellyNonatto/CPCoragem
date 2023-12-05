@@ -183,11 +183,16 @@ class EditarUsuarioForm(UserChangeForm):
 
         return user
 
+
 class EditarFuncionarioForm(EditarUsuarioForm):
-    imagem = forms.ImageField()
+    imagem = forms.ImageField(required=False)
     turno = forms.ChoiceField(choices=Funcionario.TURNO_CHOICES, label="Turno")
     funcao = forms.ModelChoiceField(
         queryset=Funcao.objects.all(), label="Função")
+
+    class Meta:
+        model = Usuario
+        fields = ('nome_completo', 'telefone')
 
     def save(self, commit=True):
         funcionario_data = {
@@ -199,13 +204,18 @@ class EditarFuncionarioForm(EditarUsuarioForm):
         user = super().save(commit=False)
 
         if commit:
-            funcionario = Funcionario.objects.get(usuario_id=user.pk)
-            if funcionario:
-                funcionario.update(**funcionario_data)
-                funcionario.save()
+            funcionario = Funcionario.objects.get(usuario_id=user.id)
+            if not funcionario_data['imagem']:
+                funcionario_data['imagem'] = funcionario.imagem
+            funcionario.imagem = funcionario_data['imagem']
+            funcionario.turno = funcionario_data['turno']
+            funcionario.funcao = funcionario_data['funcao']
+            print(f'Rota da imagem 1:\t{funcionario.imagem}')
+            funcionario.save()
+            print(f'Rota da imagem 2:\t{funcionario.imagem}')
             user.save()
+            return funcionario
 
-        return user
 
 class AutenticacaoClienteForm(forms.Form):
     email = forms.EmailField(max_length=255)
