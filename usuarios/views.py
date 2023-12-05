@@ -169,7 +169,7 @@ class ListaFuncionarios(LoginRequiredMixin, ListView):
         funcionarios = Funcionario.objects.filter(usuario=self.request.user)
         for funcionario in funcionarios:
             if funcionario.funcao.descricao != 'Gerente':
-                return HttpResponse('error/error_204.html')
+                return render(request, 'error/error_403.html')
             return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
