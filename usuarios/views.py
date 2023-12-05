@@ -11,10 +11,10 @@ from django.utils.datetime_safe import datetime
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, UpdateView)
 
-from servicos.models import Pet, Turma, Servico
+from servicos.models import Pet, Servico, Turma
 from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
                             AutenticacaoContaForm, CriarFuncionarioForm,
-                            RecuperarContaForm, EditarFuncionarioForm)
+                            EditarFuncionarioForm, RecuperarContaForm)
 from usuarios.models import (Endereco, Funcionario, Pagamento,
                              RegistroPagamento, Usuario)
 from usuarios.regra import Acesso, Funcionamento
@@ -217,13 +217,15 @@ class EditarFuncionario(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['funcionario'] = Funcionario.objects.get(usuario_id=self.kwargs['pk'])
+        context['funcionario'] = Funcionario.objects.get(
+            usuario_id=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
         messages.success(self.request, 'Funcionário editado com sucesso!')
         funcionario = Funcionario.objects.get(usuario_id=self.kwargs['pk'])
-        success_url = reverse('usuarios:verfuncionario', args=[funcionario.id]) + '?mensagem=Funcionários editado com sucesso!'
+        success_url = reverse('usuarios:verfuncionario', args=[
+                              funcionario.id]) + '?mensagem=Funcionários editado com sucesso!'
         form.save()
         return redirect(success_url)
 
@@ -366,7 +368,7 @@ class PesquisarPagamento(ListaPagamentos):
         termo_pesquisa = self.request.GET.get("query")
 
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Pagamento.objects.none()
+            return Pagamento.objects.all()
 
         resultados_tutores = Pagamento.objects.filter(
             Q(cliente__nome_completo__icontains=termo_pesquisa) |

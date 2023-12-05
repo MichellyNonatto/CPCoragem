@@ -185,7 +185,7 @@ class PesquisarTutor(LoginRequiredMixin, ListView):
     def get_queryset(self):
         termo_pesquisa = self.request.GET.get("query")
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Usuario.objects.none()
+            return Usuario.objects.all()
 
         resultados_tutores = Usuario.objects.filter(
             Q(nome_completo__icontains=termo_pesquisa) |
