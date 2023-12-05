@@ -6,33 +6,30 @@
 {% block container %}
     <div class="w-full">
         <div>
-            <p class="text-base text-xl font-semibold text-primaryColor">{{ mensagem }}</p>
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ usuario.nome_completo }}</h1>
+            <h1 class="text-2xl font-semibold text-gray-900">
+                {{ mensagem }}, <span class="text-primaryColor">{{ usuario.nome_completo }}!</span>
+            </h1>
             <p class="mt-2 text-ms leading-8 text-gray-700">Cargo: {{ funcionario.funcao.descricao }}</p>
         </div>
-    <div>
-
-    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <div class="flex justify-between w-full">
-        <section class="max-w-screen w-8/12">
-            <div class="flex justify-between gap-8">
+    <div class="flex justify-center gap-8 w-full">
+        <section class="flex flex-col max-w-screen w-full gap-8">
+            <div class="flex justify-center gap-8">
                 {% include "graphics/areachart.html" with title="Faturamento Previsto" subtitle=previsao_lucro object_chart=pagamentos %}
                 <div class="w-full">
-                    {% include "graphics/card.html" with title="Faturamento Mensal" subtitle=lucro color='green' %}
-                    {% include "graphics/card.html" with title="Perca Monetária" subtitle=perca color='red' %}
+                    {% include "graphics/card.html" with title="Faturamento Mensal" subtitle=lucro color="green" %}
+                    {% include "graphics/card.html" with title="Perca Monetária" subtitle=perca color="red" %}
                 </div>
-        </div>
-            {% include "graphics/columnchart.html" with title="Pets cadastrados" data=pets.count subtitle="até o momento" object_chart=pets name='pets' %}
-    </section>
+            </div>
+            {% include "graphics/columnchart.html" with title="Pets cadastrados" data=pets.count subtitle="até o momento" object_chart=pets name="pets" %}
+        </section>
         <aside class="max-w-sm w-full">
             <div class="w-full">
-                {% include "graphics/calendar.html"%}
+                {% include "graphics/calendar.html" %}
                 {% include "graphics/card.html" with title="Colaboradores Coragem" subtitle=funcionarios.count color=False %}
                 {% include "graphics/card.html" with title="Clientes Coragem" subtitle=clientes.count color=False %}
             </div>
         </aside>
     </div>
 {% endblock container %}
-
