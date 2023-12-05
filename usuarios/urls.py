@@ -27,6 +27,10 @@ urlpatterns = [
     path('funcionarios/deletar_funcionario/<int:pk>', DeletarFuncionario.as_view(), name='deletarfuncionario'),
     path('funcionarios/adicionar_funcionario', AdicionarFuncionario.as_view(), name='adicionarfuncionario'),
 
+    path('financeiro/', ListaPagamentos.as_view(), name='financeiro'),
+    path('financeiro/pesquisa', PesquisarPagamento.as_view(template_name='funcionario/listapagamento.html'), name='pesquisarfinanceiro'),
+    path('financeiro/<int:pk>', DeletarTutor.as_view(), name='deletarcliente'),
+
     path('cliente_coragem/verificacao', AutenticacaoClienteView.as_view(), name='autenticacaocliente'),
     path('cliente_coragem/pagamento/<int:pk>', CriarNovoPagamento.as_view(), name='atualizarpagamento'),
 
