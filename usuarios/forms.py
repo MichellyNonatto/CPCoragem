@@ -145,8 +145,7 @@ class CriarTutorForm(CriarUsuario):
         return user
 
 
-
-class EditarTutorForm(UserChangeForm):
+class EditarUsuarioForm(UserChangeForm):
     cep = forms.IntegerField()
     estado = forms.CharField(max_length=45)
     cidade = forms.CharField(max_length=45)

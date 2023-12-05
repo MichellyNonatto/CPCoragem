@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, UpdateView)
 
-from usuarios.forms import CriarTutorForm, EditarTutorForm
+from usuarios.forms import CriarTutorForm, EditarUsuarioForm
 from usuarios.models import Funcionario, Usuario
 
 from .forms import EditarPetForm
@@ -137,7 +137,7 @@ class VerTutor(LoginRequiredMixin, DetailView):
 class EditarTutor(LoginRequiredMixin, UpdateView):
     template_name = 'pets/editartutor.html'
     model = Usuario
-    form_class = EditarTutorForm
+    form_class = EditarUsuarioForm
 
     def form_valid(self, form):
         messages.success(self.request, 'Tutor editado com sucesso!')
