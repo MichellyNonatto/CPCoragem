@@ -58,6 +58,7 @@ class Raca(models.Model):
 
 
 class Pet(models.Model):
+    date_joined = models.DateTimeField(auto_now_add=True)
     imagem = models.ImageField(upload_to='imagens_pet/')
     nome = models.CharField(max_length=45)
     data_nascimento = models.DateField()

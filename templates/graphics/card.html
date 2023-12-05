@@ -1,0 +1,9 @@
+<div class="w-full max-w-x bg-white rounded-lg p-4 md:p-6 drop-shadow-md mb-4">
+    <div class="flex justify-between">
+        <div>
+            <p class="text-base font-bold text-zinc-500">{{ title }}</p>
+            <h5 class="leading-none text-4xl font-bold {% if color %}text-{{ color }}-700{% else %}blue-950{% endif %} pb-2">{{ subtitle }}</h5>
+        </div>
+    </div>
+    <div id="area-chart"></div>
+</div>

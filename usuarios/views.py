@@ -4,7 +4,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -12,6 +11,7 @@ from django.utils.datetime_safe import datetime
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, UpdateView)
 
+from servicos.models import Pet, Turma, Servico
 from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
                             AutenticacaoContaForm, CriarFuncionarioForm,
                             RecuperarContaForm)
@@ -103,11 +103,44 @@ class Dashboard(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        clientes = Usuario.objects.filter(categoria='TUTOR')
+        pets = Pet.objects.all()
+        turmas = Turma.objects.all()
+        servicos = Servico.objects.all()
+        pagamentos = Pagamento.objects.filter(registropagamento__isnull=True)
+        previsao_lucro = 0
+        perca = 0
+        lucro = 0
+        pendentes = []
+        hoje = datetime.now()
+
+        for pagamento in Pagamento.objects.filter(registropagamento__isnull=False):
+            if pagamento.dia_vencimento <= hoje.date():
+                lucro += pagamento.total_pagamento
+
+        for pagamento in pagamentos:
+            if pagamento.dia_vencimento <= hoje.date():
+                pendentes.append(pagamento)
+                perca += pagamento.total_pagamento
+            previsao_lucro += pagamento.total_pagamento
+
         usuario = self.request.user
-        funcionario = Funcionario.objects.get(usuario=usuario)
+        funcionarios = Funcionario.objects.all()
         mensagem = Funcionamento.mensagem()
+        pagamentos_realizados = RegistroPagamento.objects.all()
+
+        context['clientes'] = clientes
+        context['pets'] = pets
+        context['turmas'] = turmas
+        context['servicos'] = servicos
+        context['pagamentos'] = pagamentos
+        context['previsao_lucro'] = f"R$ {previsao_lucro}"
+        context['lucro'] = f"+ R$ {lucro - perca}"
+        context['perca'] = f"- R$ {perca}"
+        context['pendentes'] = len(pendentes)
+        context['pagamentos_realizados'] = pagamentos_realizados
         context['mensagem'] = mensagem
-        context['funcionario'] = funcionario
+        context['funcionarios'] = funcionarios
         return context
 
 

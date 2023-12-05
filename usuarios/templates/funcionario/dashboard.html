@@ -1,21 +1,28 @@
-{% extends 'index.html' %}
+{% extends "containers/mainContainer.html" %}
 {% load static %}
-
 {% block title %}
     Dashboard
-{% endblock %}
-
-{% block content %}
-    <h1>Dashboard</h1>
-    <section>
-        <ol>
-            <li>{{ mensagem }} {{ funcionario.usuario.nome_completo }}</li>
-             <li>E-mail: {{ funcionario.usuario.email }}</li>
-            <li>Cargo: {{ funcionario.funcao }}</li>
-        </ol>
-        <div>
-            <a href="{% url 'usuarios:logout' %}">Logout</a>
-            <a href="{% url 'usuarios:editarperfil' pk=object.pk %}">Editar Perfil</a>
+{% endblock title %}
+{% block container %}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <div class="flex justify-between w-full">
+        <section class="max-w-screen w-8/12">
+            <div class="flex justify-between gap-8">
+                {% include "graphics/areachart.html" with title="Faturamento Previsto" subtitle=previsao_lucro object_chart=pagamentos %}
+                <div class="w-full">
+                    {% include "graphics/card.html" with title="Faturamento Mensal" subtitle=lucro color='green' %}
+                    {% include "graphics/card.html" with title="Perca Monetária" subtitle=perca color='red' %}
+                </div>
         </div>
+            {% include "graphics/columnchart.html" with title="Pets cadastrados" data=pets.count subtitle="até o momento" object_chart=pets name='pets' %}
     </section>
-{% endblock %}
+        <aside class="max-w-sm w-full">
+            <div class="w-full">
+                {% include "graphics/calendar.html"%}
+                {% include "graphics/card.html" with title="Colaboradores Coragem" subtitle=funcionarios.count color=False %}
+                {% include "graphics/card.html" with title="Clientes Coragem" subtitle=clientes.count color=False %}
+            </div>
+        </aside>
+    </div>
+{% endblock container %}
+
