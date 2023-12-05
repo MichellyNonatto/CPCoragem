@@ -92,6 +92,8 @@ class AtualizarSenha(UpdateView):
         messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
 
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse('usuarios:login')
 

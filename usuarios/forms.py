@@ -46,6 +46,8 @@ class AtualizarSenhaForm(forms.ModelForm):
         password2 = cleaned_data.get("password2")
 
         if password1 and password2 and password1 != password2:
+            self.add_error(
+                'password2', 'As senhas não coincidem. Por favor, tente novamente.')
             raise forms.ValidationError("As senhas estão diferentes.")
 
     def save(self, commit=True):
