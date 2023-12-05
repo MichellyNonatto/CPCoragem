@@ -145,12 +145,6 @@ class CriarTutorForm(CriarUsuario):
         return user
 
 
-class EnderecoForm(forms.ModelForm):
-    class Meta:
-        model = Endereco
-        fields = ['cep', 'estado', 'cidade',
-                  'bairro', 'rua', 'numero', 'complemento']
-
 
 class EditarTutorForm(UserChangeForm):
     cep = forms.IntegerField()
