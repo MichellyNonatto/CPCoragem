@@ -15,12 +15,12 @@
 {% block container %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-        {% include "components/input.html" with type="text" label="Inserir documento" name="codigo" id="id_codigo" %}
+        {% include "components/input.html" with type="text" label="Inserir documento" name="codigo" id="id_codigo" required=form.codigo.required erro=form.codigo.errors noautocomplete=True %}
         <p class="text-primaryColor text-sm text-center">
             Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
         </p>
         <div class="flex items-center justify-between">
-            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/anchor.html" with secondary=True href="usuarios:login" label="Cancelar" %}
             {% include "components/button.html" with type="submit" label="Verificar" %}
         </div>
     </form>

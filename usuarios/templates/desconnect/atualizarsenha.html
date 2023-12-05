@@ -9,8 +9,8 @@
 {% block container %}
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-        {% include "components/input.html" with type="password" label="Criar nova senha" name="password1" id="id_password1" %}
-        {% include "components/input.html" with type="password" label="Confirmar" name="password2" id="id_password2" %}
+        {% include "components/input.html" with type="password" label="Criar nova senha" name="password1" id="id_password1" required=form.password1.required value=form.password1.value erro=form.password1.errors %}
+        {% include "components/input.html" with type="password" label="Confirmar" name="password2" id="id_password1" required=form.password2.required value=form.password2.value erro=form.password2.errors %}
         <p class="text-primaryColor text-sm text-center">
             Entre em contato com o <b>gerente</b> ou <b>suporte</b> em caso de problemas.
         </p>

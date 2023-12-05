@@ -27,25 +27,35 @@ class CustomLoginView(LoginView):
         else:
             return super().dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        conta = Acesso()
-        if not conta.get_acesso_conta(self.request.user):
-            logout(self.request)
-            return messages.error(self.request,
-                                  "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
-        return response
+    def form_invalid(self, form):
+        messages.error(
+            self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
+        return super().form_invalid(form)
 
     def get_success_url(self):
         if self.request.user.is_authenticated:
             dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                'pk': self.request.user.pk})
+                                         'pk': self.request.user.pk})
             return dashboard_url
 
 
 class RecuperarConta(FormView):
     template_name = 'desconnect/recuperarconta.html'
     form_class = RecuperarContaForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        usuarios = Usuario.objects.filter(email=email)
+
+        if usuarios:
+            usuario = usuarios.first()
+            if usuario.categoria == 'FUNCIONARIO':
+                return super().form_valid(form)
+
+        form.add_error('email', 'Não encontramos um registro correspondente ao e-mail fornecido. '
+                                'Verifique se você digitou corretamente ou entre em contato com o suporte.')
+
+        return self.form_invalid(form)
 
     def get_success_url(self):
         email = self.request.POST.get("email")
@@ -54,8 +64,7 @@ class RecuperarConta(FormView):
             usuario = usuarios.first()
             if usuario.categoria == 'FUNCIONARIO':
                 return reverse('usuarios:autenticacao', args=[usuario.pk])
-        messages.error(self.request, 'Não encontramos um registro correspondente ao e-mail fornecido. '
-                                     'Verifique se você digitou corretamente ou entre em contato com o suporte.')
+
         return reverse('usuarios:recuperarconta')
 
 
@@ -91,6 +100,8 @@ class AtualizarSenha(UpdateView):
         user.save()
         messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
+
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('usuarios:login')
