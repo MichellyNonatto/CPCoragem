@@ -3,7 +3,7 @@
         <input type="{{ type }}"
                name="{{ name }}"
                id="{{ id }}"
-               {% if acao == 'visualizar' or acao == 'disabled' %}disabled{% endif %}
+               {% if acao == 'visualizar' or disabled %}disabled{% endif %}
                {% if noautocomplete %}autocomplete="off"{% endif %}
                {% if required %}required{% endif %}
                {% if value %}value="{{ value }}"{% endif %}
