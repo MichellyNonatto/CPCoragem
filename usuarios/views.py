@@ -14,7 +14,7 @@ from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
 from servicos.models import Pet, Turma, Servico
 from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
                             AutenticacaoContaForm, CriarFuncionarioForm,
-                            RecuperarContaForm)
+                            RecuperarContaForm, EditarFuncionarioForm)
 from usuarios.models import (Endereco, Funcionario, Pagamento,
                              RegistroPagamento, Usuario)
 from usuarios.regra import Acesso, Funcionamento
@@ -251,9 +251,9 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
 
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/verfuncionario.html"
+    template_name = "funcionario/editarfuncionario.html"
     model = Funcionario
-    fields = ['turno', 'funcao']
+    form_class = EditarFuncionarioForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

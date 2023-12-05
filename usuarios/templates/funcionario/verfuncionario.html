@@ -4,18 +4,9 @@
     Funcionários
 {% endblock title %}
 {% block containerTitle %}
-    Funcionários/
-    {% if acao == 'visualizar' %}
-        detalhes
-    {% elif acao == 'editar' %}
-        edição
-    {% endif %}
+    Funcionários/detalhes
 {% endblock containerTitle %}
 {% block container %}
-    {% if acao != 'visualizar' %}
-        <form method="post" enctype="multipart/form-data" class="w-full">
-            {% csrf_token %}
-        {% endif %}
         <div class="flex gap-8 w-full">
             <div class="flex flex-col justify-end gap-4 w-full">
                 <div class="flex gap-4 h-36">
@@ -53,36 +44,25 @@
                     }
                 }
                 </script>
-                {% include "components/input.html" with acao=acao type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
-                {% include "components/input.html" with acao=acao type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
-                {% include "components/input.html" with acao=acao type="text" label="Email" name="email" id="email" value=object.usuario.email %}
-                {% include "components/input.html" with acao=acao type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
-                {% if acao == 'visualizar' %}
-                    {% include "components/input.html" with acao=acao type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
-                    {% include "components/input.html" with acao=acao type="text" label="Turno" name="turno" id="id_turno" value=object.get_turno_display %}
-                {% else %}
-                    {% include "components/select.html" with name=form.funcao.name selected_value=form.funcao.value id=form.funcao.id_for_label label="Função" options=form.funcao.field.choices %}
-                    {% include "components/select.html" with name=form.turno.name selected_value=form.turno.value id=form.turno.id_for_label label="Turno" options=form.turno.field.choices %}
-                {% endif %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Email" name="email" id="email" value=object.usuario.email %}
+                {% include "components/input.html" with acao='disabled' type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Turno" name="turno" id="id_turno" value=object.get_turno_display %}
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
-                {% include "components/input.html" with acao=acao type="text" label="CEP" name="cep" id="id_cep" value=endereco.cep %}
-                {% include "components/input.html" with acao=acao type="text" label="Estado" name="estado" id="id_estado" value=endereco.estado %}
-                {% include "components/input.html" with acao=acao type="text" label="Cidade" name="cidade" id="id_cidade" value=endereco.cidade %}
-                {% include "components/input.html" with acao=acao type="text" label="Bairro" name="bairro" id="id_bairro" value=endereco.bairro %}
-                {% include "components/input.html" with acao=acao type="text" label="Rua" name="rua" id="id_rua" value=endereco.rua %}
-                {% include "components/input.html" with acao=acao type="text" label="Número" name="numero" id="id_numero" value=endereco.numero %}
-                {% include "components/input.html" with acao=acao type="text" label="Complemento" name="complemento" id="id_complemento" value=endereco.complemento %}
+                {% include "components/input.html" with acao='disabled' type="text" label="CEP" name="cep" id="id_cep" value=endereco.cep %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Estado" name="estado" id="id_estado" value=endereco.estado %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Cidade" name="cidade" id="id_cidade" value=endereco.cidade %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Bairro" name="bairro" id="id_bairro" value=endereco.bairro %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Rua" name="rua" id="id_rua" value=endereco.rua %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Número" name="numero" id="id_numero" value=endereco.numero %}
+                {% include "components/input.html" with acao='disabled' type="text" label="Complemento" name="complemento" id="id_complemento" value=endereco.complemento %}
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% if acao == 'visualizar' %}
-                {% include "components/anchor.html" with secondary=True href="usuarios:editarfuncionario" pk=funcionario.pk label="Editar Funcionário" %}
-                {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
-            {% else %}
-                {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
-                {% include "components/button.html" with type="submit" label="Salvar edição" %}
-            {% endif %}
+            {% include "components/anchor.html" with secondary=True href="usuarios:editarfuncionario" pk=funcionario.usuario_id label="Editar Funcionário" %}
+            {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
         </div>
-        {% if acao != 'visualizar' %}</form>{% endif %}
 {% endblock container %}

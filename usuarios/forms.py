@@ -183,6 +183,29 @@ class EditarUsuarioForm(UserChangeForm):
 
         return user
 
+class EditarFuncionarioForm(EditarUsuarioForm):
+    imagem = forms.ImageField()
+    turno = forms.ChoiceField(choices=Funcionario.TURNO_CHOICES, label="Turno")
+    funcao = forms.ModelChoiceField(
+        queryset=Funcao.objects.all(), label="Função")
+
+    def save(self, commit=True):
+        funcionario_data = {
+            'imagem': self.cleaned_data['imagem'],
+            'turno': self.cleaned_data['turno'],
+            'funcao': self.cleaned_data['funcao']
+        }
+
+        user = super().save(commit=False)
+
+        if commit:
+            funcionario = Funcionario.objects.get(usuario_id=user.pk)
+            if funcionario:
+                funcionario.update(**funcionario_data)
+                funcionario.save()
+            user.save()
+
+        return user
 
 class AutenticacaoClienteForm(forms.Form):
     email = forms.EmailField(max_length=255)
