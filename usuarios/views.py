@@ -156,57 +156,6 @@ class Dashboard(LoginRequiredMixin, DetailView):
         context['funcionario'] = funcionario
         return context
 
-
-class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/editarperfil.html"
-    model = Usuario
-    fields = ['nome_completo', 'telefone']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-        usuario = Usuario.objects.get(pk=user.pk)
-        context['usuario'] = usuario.pk
-        context['endereco'] = usuario.endereco.pk
-        return context
-
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(
-            self.request, 'Seu perfil foi atualizado com sucesso!')
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-            'pk': self.request.user.pk})
-        return dashboard_url
-
-
-class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/editarperfil.html"
-    model = Endereco
-    fields = ['cep', 'estado', 'cidade',
-              'bairro', 'rua', 'numero', 'complemento']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        endereco_pk = self.kwargs['pk']
-        usuario = Usuario.objects.get(endereco_id=endereco_pk)
-        context['usuario'] = usuario.pk
-        context['endereco'] = endereco_pk
-        return context
-
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, 'Seu endereço foi salvo com sucesso!')
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-            'pk': self.request.user.pk})
-        return dashboard_url
-
-
 class ListaFuncionarios(LoginRequiredMixin, ListView):
     template_name = 'funcionario/listafuncionarios.html'
     model = Funcionario
@@ -433,8 +382,13 @@ class PesquisarPagamento(ListaPagamentos):
 
 
 class DeletarTutor(LoginRequiredMixin, DeleteView):
-    template_name = 'funcionario/deletartutor.html'
+    template_name = 'containers/deletar.html'
     model = Usuario
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_deletar'] = self.object.nome_completo
+        return context
 
     def form_valid(self, form):
         self.object = form.save()

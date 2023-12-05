@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="w-full py-10 flex items-center justify-end gap-8">
-        {% include "components/anchor.html" with secondary=True href="servicos:editarpet" pk=object.pk label="Editar Pet" %}
-        {% include "components/anchor.html" with href="servicos:deletarpet" pk=object.pk label="Excluir Pet" %}
+        {% include "components/anchor.html" with secondary=True href="servicos:deletarpet" pk=object.pk label="Excluir Pet" %}
+        {% include "components/anchor.html" with href="servicos:editarpet" pk=object.pk label="Editar Pet" %}
     </div>
 {% endblock container %}

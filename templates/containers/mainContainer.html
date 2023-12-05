@@ -5,6 +5,7 @@
     <div class="flex w-full gap-3 items-center justify-start pb-10">
         {% for name, url in urls_context %}
             {% if request.resolver_match.url_name != 'dashboard' %}
+
                 {% if url_pai == name|lower or name|lower == request.resolver_match.url_name %}
                     <a href="{% url url %}">
                         <img src="{% static 'img/icons/arrow_left.svg' %}"

@@ -4,7 +4,11 @@
     Funcionários
 {% endblock title %}
 {% block containerTitle %}
-    Funcionários/detalhes
+    {% if funcionario_context.pk == object.pk %}
+        Perfil
+    {% else %}
+        Funcionário/detalhes
+    {% endif %}
 {% endblock containerTitle %}
 {% block container %}
         <div class="flex gap-8 w-full">
@@ -44,25 +48,29 @@
                     }
                 }
                 </script>
-                {% include "components/input.html" with acao='disabled' type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Email" name="email" id="email" value=object.usuario.email %}
-                {% include "components/input.html" with acao='disabled' type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Turno" name="turno" id="id_turno" value=object.get_turno_display %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Nome completo" name="nome_completo" id="id_nome_completo" value=object.usuario.nome_completo %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Documento" name="documento" id="id_documento" value=object.usuario.get_documento_formatado.1 %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Email" name="email" id="email" value=object.usuario.email %}
+                {% include "components/input.html" with  disabled='True' type="number" label="Telefone" name="telefone" id="id_telefone" value=object.usuario.telefone %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Função" name="funcao" id="id_funcao" value=object.funcao %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Turno" name="turno" id="id_turno" value=object.get_turno_display %}
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
-                {% include "components/input.html" with acao='disabled' type="text" label="CEP" name="cep" id="id_cep" value=endereco.cep %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Estado" name="estado" id="id_estado" value=endereco.estado %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Cidade" name="cidade" id="id_cidade" value=endereco.cidade %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Bairro" name="bairro" id="id_bairro" value=endereco.bairro %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Rua" name="rua" id="id_rua" value=endereco.rua %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Número" name="numero" id="id_numero" value=endereco.numero %}
-                {% include "components/input.html" with acao='disabled' type="text" label="Complemento" name="complemento" id="id_complemento" value=endereco.complemento %}
+                {% include "components/input.html" with  disabled='True' type="text" label="CEP" name="cep" id="id_cep" value=endereco.cep %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Estado" name="estado" id="id_estado" value=endereco.estado %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Cidade" name="cidade" id="id_cidade" value=endereco.cidade %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Bairro" name="bairro" id="id_bairro" value=endereco.bairro %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Rua" name="rua" id="id_rua" value=endereco.rua %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Número" name="numero" id="id_numero" value=endereco.numero %}
+                {% include "components/input.html" with  disabled='True' type="text" label="Complemento" name="complemento" id="id_complemento" value=endereco.complemento %}
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% include "components/anchor.html" with secondary=True href="usuarios:editarfuncionario" pk=funcionario.usuario_id label="Editar Funcionário" %}
-            {% include "components/anchor.html" with href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
+            {% if funcionario_context.pk == object.pk %}
+                {% include "components/anchor.html" with href="usuarios:editarfuncionario" pk=funcionario.usuario_id label="Editar Perfil" %}
+            {% else %}
+                {% include "components/anchor.html" with secondary=True href="usuarios:deletarfuncionario" pk=funcionario.usuario_id label="Excluir Funcionário" %}
+                {% include "components/anchor.html" with href="usuarios:editarfuncionario" pk=funcionario.usuario_id label="Editar Funcionário" %}
+            {% endif %}
         </div>
 {% endblock container %}

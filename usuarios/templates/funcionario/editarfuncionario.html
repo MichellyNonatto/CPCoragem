@@ -4,7 +4,11 @@
     Funcionários
 {% endblock title %}
 {% block containerTitle %}
-    Funcionários/detalhes
+    {% if funcionario_context.pk == object.pk %}
+        Perfil/editar
+    {% else %}
+        Funcionário/editar
+    {% endif %}
 {% endblock containerTitle %}
 {% block container %}
     <form method="post" enctype="multipart/form-data" class="w-full">
@@ -31,8 +35,8 @@
                     </div>
                 </div>
                 {% include "components/input.html" with type=form.nome_completo.field.widget.input_type  label=form.nome_completo.label name=form.nome_completo.name id=form.nome_completo.id_for_label value=object.nome_completo erro=form.nome_completo.errors %}
-                {% include "components/input.html"  with acao='disabled' type="text"  label="Documento" name='documento' id="documento_id" value=object.get_documento_formatado.1 %}
-                {% include "components/input.html" with acao='disabled' type="text"  label="E-mail" name='email' id="email_id"  value=object.email %}
+                {% include "components/input.html"  with disabled='True' type="text"  label="Documento" name='documento' id="documento_id" value=object.get_documento_formatado.1 %}
+                {% include "components/input.html" with disabled='True' type="text"  label="E-mail" name='email' id="email_id"  value=object.email %}
                 {% include "components/input.html" with type=form.telefone.field.widget.input_type  label=form.telefone.label name=form.telefone.name id=form.telefone.id_for_label value=object.telefone %}
                 {% include "components/select.html" with name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
                 {% include "components/select.html" with name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
@@ -49,7 +53,12 @@
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
             {% include "components/anchor.html" with secondary='True' href="usuarios:verfuncionario" pk=object.id label="Cancelar" %}
-            {% include "components/button.html" with  type='submit' label="Editar Funcionário" %}
+            {% if funcionario_context.pk == object.pk %}
+                {% include "components/button.html" with  type='submit' label="Editar Perfil" %}
+            {% else %}
+                {% include "components/button.html" with  type='submit' label="Editar Funcionário" %}
+            {% endif %}
+
         </div>
     </form>
 
