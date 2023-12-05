@@ -4,7 +4,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models import Q
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -12,9 +11,10 @@ from django.utils.datetime_safe import datetime
 from django.views.generic import (CreateView, DeleteView, DetailView, FormView,
                                   ListView, UpdateView)
 
+from servicos.models import Pet, Servico, Turma
 from usuarios.forms import (AtualizarSenhaForm, AutenticacaoClienteForm,
                             AutenticacaoContaForm, CriarFuncionarioForm,
-                            RecuperarContaForm)
+                            EditarFuncionarioForm, RecuperarContaForm)
 from usuarios.models import (Endereco, Funcionario, Pagamento,
                              RegistroPagamento, Usuario)
 from usuarios.regra import Acesso, Funcionamento
@@ -27,25 +27,35 @@ class CustomLoginView(LoginView):
         else:
             return super().dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        conta = Acesso()
-        if not conta.get_acesso_conta(self.request.user):
-            logout(self.request)
-            return messages.error(self.request,
-                                  "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
-        return response
+    def form_invalid(self, form):
+        messages.error(
+            self.request, "E-mail ou senha inválidos. Por favor, verifique suas informações de login.")
+        return super().form_invalid(form)
 
     def get_success_url(self):
         if self.request.user.is_authenticated:
             dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-                'pk': self.request.user.pk})
+                                         'pk': self.request.user.pk})
             return dashboard_url
 
 
 class RecuperarConta(FormView):
     template_name = 'desconnect/recuperarconta.html'
     form_class = RecuperarContaForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        usuarios = Usuario.objects.filter(email=email)
+
+        if usuarios:
+            usuario = usuarios.first()
+            if usuario.categoria == 'FUNCIONARIO':
+                return super().form_valid(form)
+
+        form.add_error('email', 'Não encontramos um registro correspondente ao e-mail fornecido. '
+                                'Verifique se você digitou corretamente ou entre em contato com o suporte.')
+
+        return self.form_invalid(form)
 
     def get_success_url(self):
         email = self.request.POST.get("email")
@@ -54,8 +64,7 @@ class RecuperarConta(FormView):
             usuario = usuarios.first()
             if usuario.categoria == 'FUNCIONARIO':
                 return reverse('usuarios:autenticacao', args=[usuario.pk])
-        messages.error(self.request, 'Não encontramos um registro correspondente ao e-mail fornecido. '
-                                     'Verifique se você digitou corretamente ou entre em contato com o suporte.')
+
         return reverse('usuarios:recuperarconta')
 
 
@@ -92,6 +101,8 @@ class AtualizarSenha(UpdateView):
         messages.success(self.request, 'Senha atualizada com sucesso.')
         return super().form_valid(form)
 
+        return super().form_invalid(form)
+
     def get_success_url(self):
         return reverse('usuarios:login')
 
@@ -103,63 +114,47 @@ class Dashboard(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        clientes = Usuario.objects.filter(categoria='TUTOR')
+        pets = Pet.objects.all()
+        turmas = Turma.objects.all()
+        servicos = Servico.objects.all()
+        pagamentos = Pagamento.objects.filter(registropagamento__isnull=True)
+        previsao_lucro = 0
+        perca = 0
+        lucro = 0
+        pendentes = []
+        hoje = datetime.now()
+
+        for pagamento in Pagamento.objects.filter(registropagamento__isnull=False):
+            if pagamento.dia_vencimento <= hoje.date():
+                lucro += pagamento.total_pagamento
+
+        for pagamento in pagamentos:
+            if pagamento.dia_vencimento <= hoje.date():
+                pendentes.append(pagamento)
+                perca += pagamento.total_pagamento
+            previsao_lucro += pagamento.total_pagamento
+
         usuario = self.request.user
-        funcionario = Funcionario.objects.get(usuario=usuario)
+        funcionario = Funcionario.objects.get(usuario_id=usuario.pk)
+        funcionarios = Funcionario.objects.all()
         mensagem = Funcionamento.mensagem()
+        pagamentos_realizados = RegistroPagamento.objects.all()
+
+        context['clientes'] = clientes
+        context['pets'] = pets
+        context['turmas'] = turmas
+        context['servicos'] = servicos
+        context['pagamentos'] = pagamentos
+        context['previsao_lucro'] = f"R$ {previsao_lucro}"
+        context['lucro'] = f"+ R$ {lucro - perca}"
+        context['perca'] = f"- R$ {perca}"
+        context['pendentes'] = len(pendentes)
+        context['pagamentos_realizados'] = pagamentos_realizados
         context['mensagem'] = mensagem
+        context['funcionarios'] = funcionarios
         context['funcionario'] = funcionario
         return context
-
-
-class EditarPerfilUsuario(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/editarperfil.html"
-    model = Usuario
-    fields = ['nome_completo', 'telefone']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-        usuario = Usuario.objects.get(pk=user.pk)
-        context['usuario'] = usuario.pk
-        context['endereco'] = usuario.endereco.pk
-        return context
-
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(
-            self.request, 'Seu perfil foi atualizado com sucesso!')
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-            'pk': self.request.user.pk})
-        return dashboard_url
-
-
-class EditarPerfilEndereco(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/editarperfil.html"
-    model = Endereco
-    fields = ['cep', 'estado', 'cidade',
-              'bairro', 'rua', 'numero', 'complemento']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        endereco_pk = self.kwargs['pk']
-        usuario = Usuario.objects.get(endereco_id=endereco_pk)
-        context['usuario'] = usuario.pk
-        context['endereco'] = endereco_pk
-        return context
-
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, 'Seu endereço foi salvo com sucesso!')
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        dashboard_url = reverse_lazy('usuarios:dashboard', kwargs={
-            'pk': self.request.user.pk})
-        return dashboard_url
-
 
 class ListaFuncionarios(LoginRequiredMixin, ListView):
     template_name = 'funcionario/listafuncionarios.html'
@@ -169,7 +164,7 @@ class ListaFuncionarios(LoginRequiredMixin, ListView):
         funcionarios = Funcionario.objects.filter(usuario=self.request.user)
         for funcionario in funcionarios:
             if funcionario.funcao.descricao != 'Gerente':
-                return HttpResponse('error/error_204.html')
+                return render(request, 'error/error_403.html')
             return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -216,28 +211,23 @@ class VerFuncionario(LoginRequiredMixin, DetailView):
 
 
 class EditarFuncionario(LoginRequiredMixin, UpdateView):
-    template_name = "funcionario/verfuncionario.html"
-    model = Funcionario
-    fields = ['turno', 'funcao']
+    template_name = "funcionario/editarfuncionario.html"
+    model = Usuario
+    form_class = EditarFuncionarioForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['endereco'] = self.object.usuario.endereco
-        context['acao'] = 'editar'
+        context['funcionario'] = Funcionario.objects.get(
+            usuario_id=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
+        messages.success(self.request, 'Funcionário editado com sucesso!')
+        funcionario = Funcionario.objects.get(usuario_id=self.kwargs['pk'])
+        success_url = reverse('usuarios:verfuncionario', args=[
+                              funcionario.id]) + '?mensagem=Funcionários editado com sucesso!'
         form.save()
-        success_url = reverse('funcionarios') + \
-                      '?mensagem=Alteração em funcionário salva com sucesso!'
-        messages.success(
-            self.request, 'Alteração em funcionário salva com sucesso!')
         return redirect(success_url)
-
-    def get_success_url(self):
-        verfuncionario_url = reverse_lazy(
-            'usuarios:verfuncionario', kwargs={'pk': self.object.pk})
-        return verfuncionario_url
 
 
 class DeletarFuncionario(LoginRequiredMixin, DeleteView):
@@ -254,7 +244,7 @@ class DeletarFuncionario(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, 'Funcionário deletado com sucesso!')
-        return reverse('funcionarios')
+        return reverse('usuarios:funcionarios')
 
 
 class AdicionarFuncionario(LoginRequiredMixin, FormView):
@@ -275,11 +265,11 @@ class AdicionarFuncionario(LoginRequiredMixin, FormView):
             form.save()
             messages.success(
                 self.request, 'Funcionário adicionado com sucesso!')
-            success_url = reverse('funcionarios') + \
-                          '?mensagem=Funcionário adicionado com sucesso!'
+            success_url = reverse('usuarios:funcionarios') + \
+                '?mensagem=Funcionário adicionado com sucesso!'
             return redirect(success_url)
 
-        return reverse('usuarios:adicionarfuncionario')
+        return reverse('usuarios:funcionarios')
 
 
 class AutenticacaoClienteView(FormView):
@@ -337,7 +327,7 @@ class CriarNovoPagamento(CreateView):
 
         registro_pagamento.save()
         success_url = reverse('usuarios:autenticacaocliente') + \
-                      '?mensagem=Pagamento efetuado com sucesso!'
+            '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
@@ -378,7 +368,7 @@ class PesquisarPagamento(ListaPagamentos):
         termo_pesquisa = self.request.GET.get("query")
 
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Pagamento.objects.none()
+            return Pagamento.objects.all()
 
         resultados_tutores = Pagamento.objects.filter(
             Q(cliente__nome_completo__icontains=termo_pesquisa) |
@@ -394,8 +384,13 @@ class PesquisarPagamento(ListaPagamentos):
 
 
 class DeletarTutor(LoginRequiredMixin, DeleteView):
-    template_name = 'funcionario/deletartutor.html'
+    template_name = 'containers/deletar.html'
     model = Usuario
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['nome_deletar'] = self.object.nome_completo
+        return context
 
     def form_valid(self, form):
         self.object = form.save()

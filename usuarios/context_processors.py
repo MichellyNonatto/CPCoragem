@@ -17,7 +17,7 @@ def funcionario(request):
             if funcionario.funcao.descricao == 'Gerente':
                 urls = {
                     'Dashboard': 'usuarios:dashboard',
-                    'Funcionários': 'usuarios:funcionarios',
+                    'Funcionarios': 'usuarios:funcionarios',
                     'Financeiro': 'usuarios:financeiro',
                 }
                 urls_context = urls.items()

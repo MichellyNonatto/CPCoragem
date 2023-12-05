@@ -1,0 +1,121 @@
+<div class="w-full bg-white rounded-lg shadow p-4 md:p-6 drop-shadow-md mb-4">
+    <div class="flex justify-between pb-4 mb-4 border-b border-gray-200">
+        <div class="flex items-center">
+            <div>
+                <p class="text-base font-bold text-zinc-500">{{ title }}</p>
+                <h5 class="leading-none text-4xl font-bold text-blue-950 pb-2">{{ data }}</h5>
+                <p class="text-base font-bold text-zinc-500">{{ subtitle }}</p>
+            </div>
+        </div>
+    </div>
+    <div id="column-chart"></div>
+</div>
+
+<script>
+        const list_number = [];
+        const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        {% for pet in object_chart %}
+            list_number.push({{ pet.date_joined.month }});
+        {% endfor %}
+        const ocorrenciasPorMes = {};
+        meses.forEach(mes => {
+            ocorrenciasPorMes[mes] = 0;
+        });
+
+        list_number.forEach(numero => {
+            const nomeDoMes = meses[numero - 1];
+            ocorrenciasPorMes[nomeDoMes]++;
+        });
+        const dadosParaGrafico = Object.keys(ocorrenciasPorMes).map(mes => ({ x: mes, y: ocorrenciasPorMes[mes] }));
+
+        window.addEventListener("load", function () {
+            const options = {
+                colors: ["#1A56DB", "#FDBA8C"],
+                series: [
+                    {
+                        name: "Cadastros",
+                        color: "#974067",
+                        data: dadosParaGrafico,
+                    },
+                ],
+                chart: {
+                    type: "bar",
+                    height: "320px",
+                    fontFamily: "Inter, sans-serif",
+                    toolbar: {
+                        show: false,
+                    },
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: "70%",
+                        borderRadiusApplication: "end",
+                        borderRadius: 8,
+                    },
+                },
+                tooltip: {
+                    shared: true,
+                    intersect: false,
+                    style: {
+                        fontFamily: "Inter, sans-serif",
+                    },
+                },
+                states: {
+                    hover: {
+                        filter: {
+                            type: "darken",
+                            value: 1,
+                        },
+                    },
+                },
+                stroke: {
+                    show: true,
+                    width: 0,
+                    colors: ["transparent"],
+                },
+                grid: {
+                    show: false,
+                    strokeDashArray: 4,
+                    padding: {
+                        left: 2,
+                        right: 2,
+                        top: -14
+                    },
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: false,
+                },
+                xaxis: {
+                    floating: false,
+                    labels: {
+                        show: true,
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            cssClass: 'w-14 h-3.5 text-center text-neutral-600 text-xs font-bold'
+                        }
+                    },
+                    axisBorder: {
+                        show: false,
+                    },
+                    axisTicks: {
+                        show: false,
+                    },
+                },
+                yaxis: {
+                    show: false,
+                },
+                fill: {
+                    opacity: 1,
+                },
+            }
+
+            if (document.getElementById("column-chart") && typeof ApexCharts !== 'undefined') {
+                const chart = new ApexCharts(document.getElementById("column-chart"), options);
+                chart.render();
+            }
+        });
+    </script>

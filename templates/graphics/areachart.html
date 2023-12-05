@@ -1,0 +1,99 @@
+<div class="w-full max-w-xl bg-white rounded-lg p-4 md:p-6 drop-shadow-md">
+    <div class="flex justify-between">
+        <div>
+            <p class="text-base font-bold text-zinc-500">{{ title }}</p>
+            <h5 class="leading-none text-4xl font-bold blue-950 pb-2">{{ subtitle }}</h5>
+        </div>
+    </div>
+    <div id="area-chart"></div>
+</div>
+<script>
+    var list_month_number = [];
+    var list_month_name = [];
+    {% for pagamento in object_chart %}
+        list_month_number.push({{ pagamento.dia_vencimento.month }});
+        list_month_name.push('{{ pagamento.dia_vencimento|date:'F' }}');
+    {% endfor %}
+    let options = {
+        chart: {
+            height: "100%",
+            maxWidth: "100%",
+            type: "area",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+                enabled: false,
+            },
+            toolbar: {
+                show: false,
+            },
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+                show: false,
+            },
+        },
+        fill: {
+            type: "gradient",
+            gradient: {
+                opacityFrom: 0.55,
+                opacityTo: 0,
+                shade: "#974067",
+                gradientToColors: ["#974067"],
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 6,
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 4,
+            padding: {
+                left: 2,
+                right: 2,
+                top: -26,
+            },
+        },
+        series: [
+            {
+                name: "Pagamentos",
+                data: list_month_number,
+                color: "#974067",
+            },
+        ],
+        legend: {
+            show: false,
+        },
+        stroke: {
+            curve: 'smooth',
+        },
+        xaxis: {
+            categories: list_month_name,
+            labels: {
+                show: true,
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400',
+                },
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    show: false,
+                },
+            },
+        },
+        yaxis: {
+            show: false,
+        },
+    };
+
+    if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("area-chart"), options);
+        chart.render();
+    }
+
+</script>

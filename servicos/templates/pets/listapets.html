@@ -22,6 +22,8 @@
                 <th class="px-6">Turma</th>
                 <th class="px-6">Gênero</th>
                 <th class="px-6">Raça</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody class="bg-background">
@@ -35,10 +37,18 @@
                     <td class="px-6">
                         <a href="{% url 'servicos:verpet' pk=pet.pk %}">{{ pet.nome }}</a>
                     </td>
-                    <td class="px-6">{{ pet.tutor.nome_completo }}</td>
+                    <td class="px-6">
+                        <a href="{% url 'servicos:vertutor' pk=pet.tutor.pk %}">{{ pet.tutor.nome_completo }}</a>
+                    </td>
                     <td class="px-6">{{ pet.turma }}</td>
                     <td class="px-6">{{ pet.get_genero_display }}</td>
                     <td class="px-6">{{ pet.raca }}</td>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href={% url 'servicos:verpet' pk=pet.pk %}>Ver pet</a>
+                    </td>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href={% url 'servicos:vertutor' pk=pet.tutor.pk %}>Ver tutor</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

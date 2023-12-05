@@ -60,7 +60,11 @@
                 {% for field in form %}
                     {% if field.name in 'data_nascimento,turma,descricao_medica' %}
                         {% if field.field.widget.input_type != 'select' %}
-                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            {% if field.name == "data_nascimento" %}
+                                {% include "components/input.html" with type="date" required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            {% else %}
+                                {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            {% endif %}
                         {% else %}
                             {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
                         {% endif %}

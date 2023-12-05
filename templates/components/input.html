@@ -3,7 +3,8 @@
         <input type="{{ type }}"
                name="{{ name }}"
                id="{{ id }}"
-               {% if acao == 'visualizar' or acao == 'disabled' %}disabled{% endif %}
+               {% if acao == 'visualizar' or disabled %}disabled{% endif %}
+               {% if noautocomplete %}autocomplete="off"{% endif %}
                {% if required %}required{% endif %}
                {% if value %}value="{{ value }}"{% endif %}
                autofocus
@@ -13,12 +14,12 @@
                class="absolute left-[9px] top-px text-sm {% if erro %}text-red-500{% else %}text-gray-500{% endif %} transition-all duration-300 px-1 transform -translate-y-1/2 pointer-events-none peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-xl group-focus-within:!top-px group-focus-within:!text-sm group-focus-within:!text-primaryColor">
             {{ label }}
         </label>
-        <fieldset class="inset-0 absolute border rounded pointer-events-none mt-[-9px] {% if erro %}border-red-500{% else %}border-gray-400{% endif %} invisible peer-placeholder-shown:visible group-focus-within:!border-primaryColor group-focus-within:border-2 group-hover:border-gray-700">
+        <fieldset class="inset-0 absolute border rounded pointer-events-none mt-[-9px] {% if erro %}border-red-500{% else %}border-gray-400 group-focus-within:!border-primaryColor group-hover:border-gray-700{% endif %} invisible peer-placeholder-shown:visible group-focus-within:border-2">
             <legend class="ml-2 px-0 text-sm transition-all duration-300 invisible max-w-[0.01px] group-focus-within:max-w-full group-focus-within:px-1 whitespace-nowrap">
                 {{ label }}
             </legend>
         </fieldset>
-        <fieldset class="inset-0 absolute border rounded pointer-events-none mt-[-9px] {% if erro %}border-red-500{% else %}border-gray-400{% endif %} visible peer-placeholder-shown:invisible group-focus-within:border-2 group-focus-within:!border-primaryColor group-hover:border-gray-700">
+        <fieldset class="inset-0 absolute border rounded pointer-events-none mt-[-9px] {% if erro %}border-red-500{% else %}border-gray-400 group-focus-within:!border-primaryColor group-hover:border-gray-700{% endif %} visible peer-placeholder-shown:invisible group-focus-within:border-2">
             <legend class="ml-2 text-sm invisible px-1 max-w-full whitespace-nowrap {% if erro %}text-red-500{% endif %}">
                 {{ label }}
             </legend>

@@ -17,7 +17,6 @@
         <thead>
             <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
                 <th className="w-24 px-6"></th>
-                <th class="px-6">ID</th>
                 <th class="px-6">Nome</th>
                 <th class="px-6">Cargo</th>
                 <th class="px-6">Turno</th>
@@ -25,6 +24,7 @@
                 <th class="px-6">E-mail</th>
                 <th class="px-6"></th>
                 <th class="px-6"></th>
+                <th></th>
             </tr>
         </thead>
         <tbody class="bg-background">
@@ -34,7 +34,6 @@
                         <td class="text-center w-24 px-6">
                             <img src={{ funcionario.imagem.url }} alt="perfil" width="48px" height="48px" class="h-12 w-12 object-cover object-top rounded-full">
                         </td>
-                        <td class="px-6">{{ funcionario.pk }}</td>
                         <td class="px-6">
                             <a href="{% url 'usuarios:verfuncionario' pk=funcionario.pk %}">{{ funcionario.usuario.nome_completo }}</a>
                         </td>
@@ -43,7 +42,10 @@
                         <td class="px-6">{{ funcionario.usuario.telefone }}</td>
                         <td class="px-6">{{ funcionario.usuario.email }}</td>
                         <td class="font-medium text-primaryColor px-6">
-                            <a href={% url 'usuarios:editarfuncionario' pk=funcionario.pk %}>Editar</a>
+                            <a href={% url 'usuarios:verfuncionario' pk=funcionario.pk %}>Ver funcionário</a>
+                        </td>
+                        <td class="font-medium text-primaryColor px-6">
+                            <a href={% url 'usuarios:editarfuncionario' pk=funcionario.usuario_id %}>Editar</a>
                         </td>
                         <td class="font-medium text-red-600 px-6">
                             <a href="{% url 'usuarios:deletarfuncionario' pk=funcionario.usuario_id %}">Excluir</a>

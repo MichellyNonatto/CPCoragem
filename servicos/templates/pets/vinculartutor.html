@@ -21,9 +21,8 @@
                 <th class="px-6">Documento</th>
                 <th class="px-6">E-mail</th>
                 <th class="px-6">Telefone</th>
-                <th class="px-6">Endereco</th>
-                <th class="px-6">CEP</th>
-                <th class="px-6">Número</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody class="bg-background">
@@ -36,9 +35,12 @@
                         <td class="px-6">{{ tutor.get_documento_formatado.0 }} {{ tutor.get_documento_formatado.1 }}</td>
                         <td class="px-6">{{ tutor.email }}</td>
                         <td class="px-6">{{ tutor.telefone }}</td>
-                        <td class="px-6">{{ tutor.endereco }}</td>
-                        <td class="px-6">{{ tutor.endereco.cep }}</td>
-                        <td class="px-6">{{ tutor.endereco.numero }}</td>
+                        <td class="font-medium text-primaryColor px-6">
+                            <a href={% url 'servicos:vertutor' pk=tutor.pk %}>Ver tutor</a>
+                        </td>
+                        <td class="font-medium text-primaryColor px-6">
+                            <a href={% url 'servicos:adicionarpet' pk=tutor.pk %}>Vincular pet</a>
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}

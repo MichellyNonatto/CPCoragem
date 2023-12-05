@@ -43,30 +43,3 @@
         </fieldset>
     </form>
 {% endblock container %}
-{% comment %} {% extends 'index.html' %}
-{% load static %}
-{% block title %}Adicionar Tutor{% endblock %}
-{% block content %}
-    <nav>
-        <ul>
-            <li>
-                <a href="{% url 'servicos:listapets' %}">Pets</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
-        <form method="post" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Adicionar Tutor</legend>
-                {% csrf_token %}
-                {{ form.as_p }}
-            </fieldset>
-            <div>
-                <button type="submit">Salvar</button>
-                <a href="{% url 'servicos:vinculartutor' %}">
-                    <button type="button">Cancelar</button>
-                </a>
-            </div>
-        </form>
-    </main>
-{% endblock %} {% endcomment %}

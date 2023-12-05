@@ -1,7 +1,7 @@
-from django.db import models
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.db import models
 from django.utils import timezone
 
 
@@ -25,17 +25,19 @@ def validar_tamanho_documento(value):
 
 class Usuario(AbstractUser, PermissionsMixin):
     nome_completo = models.CharField(max_length=100)
-    telefone = models.IntegerField(null=True)
+    telefone = models.CharField(max_length=15)
     documento = models.CharField(
         max_length=15, unique=True,
-        validators=[MinLengthValidator(7), MaxLengthValidator(14), validar_tamanho_documento]
+        validators=[MinLengthValidator(7), MaxLengthValidator(
+            14), validar_tamanho_documento]
     )
 
     CATEGORIA_CHOICES = [
         ("FUNCIONARIO", "Funcionário"),
         ("TUTOR", "Tutor"),
     ]
-    categoria = models.CharField(max_length=12, choices=CATEGORIA_CHOICES, null=True)
+    categoria = models.CharField(
+        max_length=12, choices=CATEGORIA_CHOICES, null=True)
     endereco = models.ForeignKey(Endereco, on_delete=models.CASCADE, null=True)
     email = models.EmailField(max_length=254, unique=True)
 
@@ -73,15 +75,18 @@ class Funcionario(models.Model):
         ("SEGUNDO_TURNO", "2º Turno"),
     ]
     turno = models.CharField(max_length=40, choices=TURNO_CHOICES)
-    funcao = models.ForeignKey(Funcao, related_name="funcao", on_delete=models.CASCADE)
-    usuario = models.ForeignKey(Usuario, related_name="funcionarios", on_delete=models.CASCADE)
+    funcao = models.ForeignKey(
+        Funcao, related_name="funcao", on_delete=models.CASCADE)
+    usuario = models.ForeignKey(
+        Usuario, related_name="funcionarios", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.usuario.nome_completo
 
     def clean(self):
         if self.usuario.categoria != "FUNCIONARIO":
-            raise ValidationError("O usuário deve ter a categoria 'Funcionário' para ser associado a um funcionário.")
+            raise ValidationError(
+                "O usuário deve ter a categoria 'Funcionário' para ser associado a um funcionário.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -95,7 +100,8 @@ class Pagamento(models.Model):
 
     def clean(self):
         if self.cliente.categoria != "TUTOR":
-            raise ValidationError("O usuário deve ter a categoria 'Tutor' para ser associado a um pagamento.")
+            raise ValidationError(
+                "O usuário deve ter a categoria 'Tutor' para ser associado a um pagamento.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -115,4 +121,5 @@ class RegistroPagamento(models.Model):
     ]
     tipo = models.CharField(max_length=8, choices=CHOICES_TIPO)
     total_pago = models.DecimalField(max_digits=10, decimal_places=2)
-    pagamento = models.ForeignKey(Pagamento, on_delete=models.SET_NULL, null=True)
+    pagamento = models.ForeignKey(
+        Pagamento, on_delete=models.SET_NULL, null=True)
