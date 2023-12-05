@@ -181,7 +181,7 @@ class PesquisaFuncionarios(LoginRequiredMixin, ListView):
         termo_pesquisa = self.request.GET.get("query")
 
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Funcionario.objects.none()
+            return Funcionario.objects.all()
 
         resultados_funcionarios = Funcionario.objects.filter(
             Q(usuario__nome_completo__icontains=termo_pesquisa) |
