@@ -118,16 +118,16 @@ class Dashboard(LoginRequiredMixin, DetailView):
         pets = Pet.objects.all()
         turmas = Turma.objects.all()
         servicos = Servico.objects.all()
-        pagamentos = Pagamento.objects.filter(registropagamento__isnull=True)
+        pagamentos = Pagamento.objects.all().exclude(registropagamento__isnull=True)
         previsao_lucro = 0
         perca = 0
         lucro = 0
         pendentes = []
         hoje = datetime.now()
 
-        for pagamento in Pagamento.objects.filter(registropagamento__isnull=False):
-            if pagamento.dia_vencimento <= hoje.date():
-                lucro += pagamento.total_pagamento
+        for pagamento in RegistroPagamento.objects.all():
+            if pagamento.data_pagamento <= hoje.date():
+                lucro += pagamento.total_pago
 
         for pagamento in pagamentos:
             if pagamento.dia_vencimento <= hoje.date():
@@ -147,7 +147,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
         context['servicos'] = servicos
         context['pagamentos'] = pagamentos
         context['previsao_lucro'] = f"R$ {previsao_lucro}"
-        context['lucro'] = f"+ R$ {lucro - perca}"
+        context['lucro'] = f"+ R$ {lucro}"
         context['perca'] = f"- R$ {perca}"
         context['pendentes'] = len(pendentes)
         context['pagamentos_realizados'] = pagamentos_realizados
