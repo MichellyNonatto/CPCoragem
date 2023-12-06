@@ -15,27 +15,35 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
             <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
+                <th class="px-6"></th>
                 <th class="px-6">Nome</th>
+                <th class="px-6">Documento</th>
                 <th class="px-6">Telefone</th>
                 <th class="px-6">E-mail</th>
                 <th class="px-6"></th>
+               {% if funcionario_context.funcao.descricao == 'Gerente' %}
                 <th class="px-6"></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody class="bg-background">
             {% for tutor in object_list %}
                     <tr class="text-base h-20 border-b border-b-primaryContainer">
+                        <td class="px-6"></td>
                         <td class="px-6">
-                            <a href="{% url 'usuarios:verfuncionario' pk=tutor.pk %}">{{ tutor.nome_completo }}</a>
+                            <a href="{% url 'servicos:vertutor' pk=tutor.pk %}">{{ tutor.nome_completo }}</a>
                         </td>
+                        <td class="px-6">{{ tutor.get_documento_formatado.1 }}</td>
                         <td class="px-6">{{ tutor.telefone }}</td>
                         <td class="px-6">{{ tutor.email }}</td>
                         <td class="font-medium text-primaryColor px-6">
-                            <a href={% url 'servicos:editartutor' pk=tutor.pk %}>Editar</a>
+                            <a href={% url 'servicos:vertutor' pk=tutor.pk %}>Ver cliente</a>
                         </td>
-                        <td class="font-medium text-red-600 px-6">
-                            <a href={% url 'usuarios:deletarcliente' pk=tutor.pk %}>Excluir</a>
-                        </td>
+                        {% if funcionario_context.funcao.descricao == 'Gerente' %}
+                            <td class="font-medium text-red-600 px-6">
+                                <a href={% url 'usuarios:deletarcliente' pk=tutor.pk %}>Excluir</a>
+                            </td>
+                        {% endif %}
                     </tr>
             {% endfor %}
         </tbody>

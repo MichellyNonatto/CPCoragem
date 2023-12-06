@@ -28,6 +28,7 @@ def funcionario(request):
                     'Pets': 'servicos:pets',
                     'Servicos': 'servicos:servicos',
                     'Turmas': 'servicos:turmas',
+                    'Clientes': 'usuarios:listatutor'
                 }
                 urls_context = urls.items()
 
