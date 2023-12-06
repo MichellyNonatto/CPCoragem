@@ -332,7 +332,7 @@ class CriarNovoPagamento(CreateView):
         tipo_formulario = 'pagamento'
         dados_pagamentos = Pagamento.objects.filter(cliente_id=self.kwargs['pk']).exclude(registropagamento__isnull=False)
         context['tipo'] = tipo_formulario
-        context['dados_pagamentos'] = dados_pagamentos
+        context['dados_pagamentos'] = dados_pagamentos.order_by('-id')[:1]
         return context
 
 

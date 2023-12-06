@@ -2,12 +2,14 @@
 <body>
 <main>
     <h1>Detalhes Pagamento</h1>
-    <h2>Olá {{ nome_cliente }},</h2>
+    <h2>Prezado(a) {{ nome_cliente }},</h2>
     <section>
-        <p>Aqui estão os detalhes dos serviços prestados durande o mês de {{ data_validade }}:</p>
+        <p>Esperamos que esta mensagem o(a) encontre bem.<br> Gostaríamos de informar que está programada uma cobrança automática referente ao pagamento do mês de dezembro. </p>
+        <p>Por favor, assegure-se de que os fundos necessários estejam disponíveis em sua conta para evitar qualquer interrupção no serviço. <br> Caso já tenha efetuado o pagamento, pedimos desculpas pela inconveniência e agradecemos pela sua pontualidade.</p>
 
+    <h3>Pagamento do mês de {{ data_validade }}:</h3>
         <ul>
-            {% for servico in servicos %}
+            {% for servico in servicos_realizados %}
                 <li>
                     <b>{{ servico.0 }}</b> R$ {{ servico.1 }}
                 </li>
@@ -17,12 +19,12 @@
     <section>
         <h3>Valor total:</h3>
         <p><b>R$ {{ valor_total }}</b> BRL</p>
-        <a href="#">Realizar Pagamento</a>
+        <a href="https://web-production-0a25.up.railway.app/cliente_coragem/verificacao" target="_blank">Realizar Pagamento</a>
         <p>Qualquer dúvida acesse nossos portais de comunicação.</p>
     </section>
     <footer>
         <h5>Obrigado por escolher nosso serviços!</h5>
-        <p>Atenciosamente <b>&copy; Coragem</b></p>
+        <p>Atenciosamente, <br> Equipe <b>&copy; Coragem</b></p>
     </footer>
 </main>
 </body>

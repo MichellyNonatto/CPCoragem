@@ -150,25 +150,3 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'crechepet.coragem@gmail.com'
 EMAIL_HOST_PASSWORD = 'pjijuurmqrgdnkko'
-
-# Agendar comandos internos de enviar e-mail automáticamente
-
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = 'America/Sao_Paulo'
-
-# Configurações do Celery Beat
-
-CELERY_BEAT_SCHEDULE = {
-    'enviar-observacoes': {
-        'task': 'turmas.management.commands.emailautomatico.enviar_observacoes',
-        'schedule': timedelta(days=30),
-    },
-    'enviar-pagamento': {
-        'task': 'turmas.management.commands.emailautomatico.enviar_pagamento',
-        'schedule': timedelta(days=30),
-    }
-}

@@ -7,7 +7,7 @@ venv/
 db.sqlite3
 *.log
 node_modules/*
-media
+
 migrations/
 
 package-lock.json
