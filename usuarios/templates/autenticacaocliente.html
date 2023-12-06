@@ -1,17 +1,20 @@
-{% extends 'index.html' %}
+{% extends "containers/authContainer.html" %}
 {% load static %}
-
 {% block title %}
-    Autenticação para pagamento
-{% endblock %}
-
-{% block content %}
-    <form method="post">
+    Login
+{% endblock title %}
+{% block containerTitle %}
+    Seja bem-vindo!
+{% endblock containerTitle %}
+{% block containerSubTitle %}
+    Para a realização do <b>pagamento</b> confirme os dados a seguir
+{% endblock containerSubTitle %}
+{% block container %}
+    <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
-    <fieldset>
-        <legend>Autenticação</legend>
-        {{ form.as_p }}
-    </fieldset>
+        {% for field in form %}
+            {% include "components/input.html" with type=field.field.widget.input_type label=field.label name=field.name id=field.id_for_label %}
+        {% endfor %}
         {% if tipo == 'pagamento' %}
             <button type="submit">Confirmar Pagamento</button>
         {% else %}
@@ -19,8 +22,4 @@
         {% endif %}
     </form>
 
-    <script>
-    const codigo = '{{ codigo }}'
-        console.log(codigo)
-    </script>
 {% endblock %}
