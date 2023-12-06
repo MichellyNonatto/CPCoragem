@@ -387,7 +387,7 @@ class DeletarTutor(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, 'Tutor deletado com sucesso!')
-        return reverse('usuarios:funcionarios')
+        return reverse('usuarios:listatutor')
 
 
 class ListaTutor(LoginRequiredMixin, ListView):
