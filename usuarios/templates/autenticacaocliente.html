@@ -1,10 +1,16 @@
 {% extends "containers/authContainer.html" %}
 {% load static %}
 {% block title %}
-    Login
+    Realizar Pagamento
 {% endblock title %}
 {% block containerTitle %}
-    Seja bem-vindo!
+    {% if tipo == 'pagamento' %}
+        {% for pagamento in dados_pagamentos %}
+            {{ pagamento.cliente.nome_completo }}
+        {% endfor %}
+    {% else %}
+        Seja Bem-vindo!
+    {% endif %}
 {% endblock containerTitle %}
 {% block containerSubTitle %}
     Para a realização do <b>pagamento</b> confirme os dados a seguir
@@ -13,13 +19,29 @@
     <form method="post" class="w-full flex flex-col gap-4">
         {% csrf_token %}
         {% for field in form %}
-            {% include "components/input.html" with type=field.field.widget.input_type label=field.label name=field.name id=field.id_for_label %}
+            {% if tipo == 'pagamento' %}
+                <div class="text-sm w-full text-center m-2">
+                    <p><b class="text-primaryColor">Data Vencimento:</b>
+                        {% for pagamento in dados_pagamentos %}{{ pagamento.dia_vencimento }}{% endfor %}</p>
+                    <p><b class="text-primaryColor fon">Total:</b> R$
+                        {% for pagamento in dados_pagamentos %}{{ pagamento.total_pagamento }}{% endfor %}</p>
+                </div>
+                {% include "components/select.html" with name=field.name id=field.id_for_label label=field.label options=field.field.choices erro=field.errors %}
+            {% else %}
+                {% include "components/input.html" with required=True type=field.field.widget.input_type label=field.label name=field.name id=field.id_for_label erro=field.errors %}
+            {% endif %}
         {% endfor %}
-        {% if tipo == 'pagamento' %}
-            <button type="submit">Confirmar Pagamento</button>
-        {% else %}
-            <button type="submit">Verificar</button>
-        {% endif %}
+        <p class="text-primaryColor text-sm text-center">
+            Em caso de dúvidas durante o pagemento, entre em contato com os portais de ajuda do <b>estabelecimento</b>.
+        </p>
+        <div class="flex items-center justify-between">
+            {% if tipo == 'pagamento' %}
+                {% include "components/anchor.html" with secondary=True href="usuarios:autenticacaocliente" label="Cancelar" %}
+                {% include "components/button.html" with type="submit" label="Confirmar Pagamento" %}
+            {% else %}
+                {% include "components/button.html" with type="submit" label="Verificar" %}
+            {% endif %}
+        </div>
     </form>
 
 {% endblock %}

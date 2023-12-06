@@ -303,8 +303,7 @@ class CriarNovoPagamento(CreateView):
     def form_valid(self, form):
         user = self.kwargs['pk']
         try:
-            pagamento = Pagamento.objects.exclude(
-                registropagamento__isnull=False)
+            pagamento = Pagamento.objects.exclude(registropagamento__isnull=False)
         except Pagamento.DoesNotExist:
             return redirect('error_page')
 
@@ -324,14 +323,16 @@ class CriarNovoPagamento(CreateView):
         )
 
         registro_pagamento.save()
-        success_url = reverse('usuarios:autenticacaocliente') + \
-            '?mensagem=Pagamento efetuado com sucesso!'
+        messages.success(self.request, 'Pagamento efetuado com sucesso!')
+        success_url = reverse('usuarios:autenticacaocliente') + '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tipo_formulario = 'pagamento'
+        dados_pagamentos = Pagamento.objects.filter(cliente_id=self.kwargs['pk']).exclude(registropagamento__isnull=False)
         context['tipo'] = tipo_formulario
+        context['dados_pagamentos'] = dados_pagamentos
         return context
 
 
