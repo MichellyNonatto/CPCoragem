@@ -19,6 +19,7 @@ def funcionario(request):
                     'Dashboard': 'usuarios:dashboard',
                     'Funcionarios': 'usuarios:funcionarios',
                     'Financeiro': 'usuarios:financeiro',
+                    'Clientes': 'usuarios:listatutor'
                 }
                 urls_context = urls.items()
             else:
