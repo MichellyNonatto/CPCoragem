@@ -369,13 +369,7 @@ class PesquisarPagamento(ListaPagamentos):
             return Pagamento.objects.all()
 
         resultados_tutores = Pagamento.objects.filter(
-            Q(cliente__nome_completo__icontains=termo_pesquisa) |
-            Q(cliente__documento__icontains=termo_pesquisa) |
-            Q(cliente__endereco__cidade__icontains=termo_pesquisa) |
-            Q(cliente__endereco__cep__icontains=termo_pesquisa) |
-            Q(cliente__email__icontains=termo_pesquisa) |
-            Q(cliente__telefone__icontains=termo_pesquisa)
-
+            Q(cliente__nome_completo__icontains=termo_pesquisa)
         )
         pagamento = resultados_tutores.exclude(registropagamento__isnull=False)
         return pagamento
