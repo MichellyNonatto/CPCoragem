@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% include "components/anchor.html" with secondary='True' href="usuarios:verfuncionario" pk=object.id label="Cancelar" %}
+            {% include "components/anchor.html" with secondary='True' href="usuarios:verfuncionario" pk=funcionario.usuario_id label="Cancelar" %}
             {% if funcionario_context.pk == object.pk %}
                 {% include "components/button.html" with  type='submit' label="Editar Perfil" %}
             {% else %}
