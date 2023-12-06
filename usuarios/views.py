@@ -385,13 +385,9 @@ class DeletarTutor(LoginRequiredMixin, DeleteView):
         context['nome_deletar'] = self.object.nome_completo
         return context
 
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, 'Tutor deletado com sucesso!')
-        return super().form_valid(form)
-
     def get_success_url(self):
-        return reverse('funcionarios')
+        messages.success(self.request, 'Tutor deletado com sucesso!')
+        return reverse('usuarios:funcionarios')
 
 
 class ListaTutor(LoginRequiredMixin, ListView):
