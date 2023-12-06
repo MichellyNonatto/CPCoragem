@@ -15,8 +15,6 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-800">
         <thead>
             <tr class="text-lg h-16 bg-surfaceContainer border-b border-b-primaryColor">
-                <th className="w-24 px-6"></th>
-                <th class="px-6">ID</th>
                 <th class="px-6">Nome</th>
                 <th class="px-6">Telefone</th>
                 <th class="px-6">E-mail</th>
@@ -26,22 +24,19 @@
         </thead>
         <tbody class="bg-background">
             {% for tutor in object_list %}
-                {% if tutor.usuario_id != usuario_atual.pk %}
                     <tr class="text-base h-20 border-b border-b-primaryContainer">
-                        <td class="px-6">{{ tutor.pk }}</td>
                         <td class="px-6">
                             <a href="{% url 'usuarios:verfuncionario' pk=tutor.pk %}">{{ tutor.nome_completo }}</a>
                         </td>
                         <td class="px-6">{{ tutor.telefone }}</td>
                         <td class="px-6">{{ tutor.email }}</td>
                         <td class="font-medium text-primaryColor px-6">
-                            <a href={% url 'usuarios:editartutor' pk=tutor.pk %}>Editar</a>
+                            <a href={% url 'servicos:editartutor' pk=tutor.pk %}>Editar</a>
                         </td>
                         <td class="font-medium text-red-600 px-6">
-                            <a href={% url 'usuarios:deletartutor' pk=tutor_id %}>Excluir</a>
+                            <a href={% url 'usuarios:deletarcliente' pk=tutor.pk %}>Excluir</a>
                         </td>
                     </tr>
-                {% endif %}
             {% endfor %}
         </tbody>
     </table>
