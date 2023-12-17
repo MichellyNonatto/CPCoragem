@@ -33,9 +33,9 @@
         {% for field in form %}
             {% if field.name != 'dias_da_semana' %}
                 {% if field.field.widget.input_type != 'select' and field.field.widget.input_type != 'number' %}
-                    {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                    {% include "components/input.html" with type=field.field.widget.input_type label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                 {% elif field.field.widget.input_type == 'number' %}
-                    {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=valor_formatado erro=field.errors step="0.01" %}
+                    {% include "components/input.html" with type=field.field.widget.input_type label=field.label name=field.name id=field.id_for_label value=valor_formatado erro=field.errors step="0.01" %}
                 {% else %}
                     {% include "components/multipleselect.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
                 {% endif %}
@@ -43,7 +43,7 @@
         {% endfor %}
         <div class="w-full py-10 flex items-center justify-end gap-8">
             {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
-            {% include "components/button.html" with type="submit" label="Editar serviço" %}
+            {% include "components/button.html" with type="submit" label="Salvar Edição" %}
         </div>
     </form>
 {% endblock container %}

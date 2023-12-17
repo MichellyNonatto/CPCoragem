@@ -38,8 +38,14 @@
                 {% include "components/input.html"  with disabled='True' type="text"  label="Documento" name='documento' id="documento_id" value=object.get_documento_formatado.1 %}
                 {% include "components/input.html" with disabled='True' type="text"  label="E-mail" name='email' id="email_id"  value=object.email %}
                 {% include "components/input.html" with type=form.telefone.field.widget.input_type  label=form.telefone.label name=form.telefone.name id=form.telefone.id_for_label value=object.telefone %}
-                {% include "components/select.html" with name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
-                {% include "components/select.html" with name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
+                {% if funcionario_context.usuario.pk == object.pk %}
+                    {% include "components/select.html" with disabled='True' name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
+                    {% include "components/select.html" with disabled='True' name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
+                {% else %}
+                    {% include "components/select.html" with name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
+                    {% include "components/select.html" with name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
+
+                {% endif %}
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
                 {% include "components/input.html" with type=form.cep.field.widget.input_type label=form.cep.label name=form.cep.name id=form.cep.id_for_label value=object.endereco.cep erro=form.cep.errors%}
@@ -52,13 +58,8 @@
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% include "components/anchor.html" with secondary='True' href="usuarios:verfuncionario" pk=funcionario.usuario_id label="Cancelar" %}
-            {% if funcionario_context.pk == object.pk %}
-                {% include "components/button.html" with  type='submit' label="Editar Perfil" %}
-            {% else %}
-                {% include "components/button.html" with  type='submit' label="Editar Funcionário" %}
-            {% endif %}
-
+            {% include "components/anchor.html" with secondary='True' href="usuarios:verfuncionario" pk=funcionario.pk label="Cancelar" %}
+            {% include "components/button.html" with  type='submit' label="Salvar Edição" %}
         </div>
     </form>
 

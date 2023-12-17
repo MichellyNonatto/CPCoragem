@@ -29,13 +29,14 @@
                          id="preview-imagem"
                          class="h-32 w-32 rounded-full object-cover object-top" />
                     <div class="flex items-center gap-4">
-                        <p class="text-primaryColor font-medium">Fazer upload de imagem</p>
+                        <p class="text-primaryColor font-medium">Fazer upload de imagem <strong
+                                class="text-red-500 text-sm">*</strong></p>
                         <label for="id_imagem"
                                class="relative cursor-pointer bg-primaryColor hover:bg-onPrimaryFixedVariant focus:bg-primaryColor border border-primaryColor text-white rounded-md py-2 px-4 inline-flex items-center">
                             <span>Escolher Imagem</span>
-                            <input type="file"
-                                   name="imagem"
-                                   id="id_imagem"
+                            <input type="{{ form.imagem.field.widget.input_type }}"
+                                   name="{{ form.imagem.name }}"
+                                   id="{{ form.imagem.id_for_label }}"
                                    accept="image/*"
                                    required
                                    onchange="previewImagem(this)"
@@ -54,13 +55,14 @@
                         reader.readAsDataURL(input.files[0]);
                     }
                 }
+
                 </script>
                 {% for field in form %}
                     {% if field.name in 'nome_completo,documento,telefone,turno,funcao' %}
                         {% if field.field.widget.input_type != 'select' %}
                             {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         {% else %}
-                            {% include "components/select.html" with type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
+                            {% include "components/select.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
                         {% endif %}
                     {% endif %}
                 {% endfor %}
