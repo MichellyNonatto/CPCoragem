@@ -60,7 +60,7 @@
                 {% for field in form %}
                     {% if field.name in 'nome_completo,documento,telefone,turno,funcao' %}
                         {% if field.field.widget.input_type != 'select' %}
-                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         {% else %}
                             {% include "components/select.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
                         {% endif %}
@@ -70,13 +70,13 @@
             <div class="flex flex-col justify-end gap-4 w-full">
                 {% for field in form %}
                     {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
-                        {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/anchor.html" with secondary='True' href="usuarios:funcionarios" label="Cancelar" %}
             {% include "components/button.html" with type="submit" label="Cadastrar funcionário" %}
         </div>
     </form>

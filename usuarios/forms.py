@@ -67,8 +67,8 @@ class CriarUsuario(UserCreationForm):
         label='password2', widget=forms.HiddenInput, initial=random_password)
 
     nome_completo = forms.CharField(max_length=100, label='Nome Completo')
-    cep = forms.IntegerField()
-    estado = forms.CharField(max_length=45)
+    cep = forms.IntegerField(max_value=99999999)
+    estado = forms.CharField(max_length=2)
     cidade = forms.CharField(max_length=45)
     bairro = forms.CharField(max_length=45)
     rua = forms.CharField(max_length=45)
@@ -148,8 +148,8 @@ class CriarTutorForm(CriarUsuario):
 
 
 class EditarUsuarioForm(UserChangeForm):
-    cep = forms.IntegerField()
-    estado = forms.CharField(max_length=45)
+    cep = forms.IntegerField(max_value=99999999)
+    estado = forms.CharField(max_length=2)
     cidade = forms.CharField(max_length=45)
     bairro = forms.CharField(max_length=45)
     rua = forms.CharField(max_length=45)

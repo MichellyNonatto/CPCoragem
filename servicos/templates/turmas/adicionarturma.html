@@ -11,7 +11,7 @@
     {% csrf_token %}
     {% for field in form %}
       {% if field.field.widget.input_type != 'select' %}
-        {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+        {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
       {% else %}
         {% include "components/multipleselect.html" with required=True type=field.field.widget.input_type label=field.label name=field.name selected_value=field.value options=field.field.choices erro=field.errors %}
       {% endif %}

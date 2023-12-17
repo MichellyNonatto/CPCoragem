@@ -31,7 +31,7 @@
                 <div class="flex flex-col justify-end gap-4 w-full">
                     {% for field in form %}
                         {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
-                            {% include "components/input.html" with type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         {% endif %}
                     {% endfor %}
                 </div>

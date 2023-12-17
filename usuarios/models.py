@@ -6,13 +6,13 @@ from django.utils import timezone
 
 
 class Endereco(models.Model):
-    cep = models.IntegerField()
+    cep = models.CharField(max_length=8)
     estado = models.CharField(max_length=2, blank=True)
     cidade = models.CharField(max_length=45, blank=True)
     bairro = models.CharField(max_length=45)
     rua = models.CharField(max_length=45)
     numero = models.CharField(max_length=10, blank=True)
-    complemento = models.CharField(max_length=45, blank=True)
+    complemento = models.CharField(max_length=45, blank=True, default='N/A')
 
     def __str__(self):
         return f'Cidade de {self.cidade}, {self.estado}'
