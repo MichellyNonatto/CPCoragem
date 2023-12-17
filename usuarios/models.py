@@ -68,7 +68,7 @@ class Funcao(models.Model):
 
 
 class Funcionario(models.Model):
-    imagem = models.ImageField(upload_to='imagens_funcionario/')
+    imagem = models.ImageField(upload_to='imagens_funcionario/', default='blank-profile.webp')
 
     TURNO_CHOICES = [
         ("PRIMEIRO_TURNO", "1º Turno"),

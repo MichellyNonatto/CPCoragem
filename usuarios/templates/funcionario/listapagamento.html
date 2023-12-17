@@ -20,6 +20,8 @@
                 <th class="px-6">Data Vencimento</th>
                 <th class="px-6">Dias corridos</th>
                 <th class="px-6">Opções</th>
+                <th class="px-6"></th>
+                <th class="px-6"></th>
             </tr>
         </thead>
         <tbody class="bg-background">
@@ -31,8 +33,11 @@
                     {% for dia_corrido in dias_corridos %}
                         {% if dia_corrido.id == pagamento.pk %}<td class="px-6">{{ dia_corrido.dias }} dias</td>{% endif %}
                     {% endfor %}
-                    <td class="px-6">
-                        <a href="{% url 'usuarios:deletarcliente' pk=pagamento.cliente.pk %}">Desligar cliente do serviço</a>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href={% url 'servicos:vertutor' pk=pagamento.cliente.pk %}>Ver Cliente</a>
+                    </td>
+                    <td class="font-medium text-primaryColor px-6">
+                        <a href="{% url 'usuarios:deletarcliente' pk=pagamento.cliente.pk %}" class="text-red-600">Excluir</a>
                     </td>
                 </tr>
             {% endfor %}

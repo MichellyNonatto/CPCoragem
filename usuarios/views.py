@@ -118,16 +118,16 @@ class Dashboard(LoginRequiredMixin, DetailView):
         pets = Pet.objects.all()
         turmas = Turma.objects.all()
         servicos = Servico.objects.all()
-        pagamentos = Pagamento.objects.filter(registropagamento__isnull=True)
+        pagamentos = Pagamento.objects.all().exclude(registropagamento__isnull=True)
         previsao_lucro = 0
         perca = 0
         lucro = 0
         pendentes = []
         hoje = datetime.now()
 
-        for pagamento in Pagamento.objects.filter(registropagamento__isnull=False):
-            if pagamento.dia_vencimento <= hoje.date():
-                lucro += pagamento.total_pagamento
+        for pagamento in RegistroPagamento.objects.all():
+            if pagamento.data_pagamento <= hoje.date():
+                lucro += pagamento.total_pago
 
         for pagamento in pagamentos:
             if pagamento.dia_vencimento <= hoje.date():
@@ -147,7 +147,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
         context['servicos'] = servicos
         context['pagamentos'] = pagamentos
         context['previsao_lucro'] = f"R$ {previsao_lucro}"
-        context['lucro'] = f"+ R$ {lucro - perca}"
+        context['lucro'] = f"+ R$ {lucro}"
         context['perca'] = f"- R$ {perca}"
         context['pendentes'] = len(pendentes)
         context['pagamentos_realizados'] = pagamentos_realizados
@@ -181,7 +181,7 @@ class PesquisaFuncionarios(LoginRequiredMixin, ListView):
         termo_pesquisa = self.request.GET.get("query")
 
         if not termo_pesquisa or termo_pesquisa.isspace():
-            return Funcionario.objects.none()
+            return Funcionario.objects.all()
 
         resultados_funcionarios = Funcionario.objects.filter(
             Q(usuario__nome_completo__icontains=termo_pesquisa) |
@@ -303,8 +303,7 @@ class CriarNovoPagamento(CreateView):
     def form_valid(self, form):
         user = self.kwargs['pk']
         try:
-            pagamento = Pagamento.objects.exclude(
-                registropagamento__isnull=False)
+            pagamento = Pagamento.objects.exclude(registropagamento__isnull=False)
         except Pagamento.DoesNotExist:
             return redirect('error_page')
 
@@ -324,14 +323,16 @@ class CriarNovoPagamento(CreateView):
         )
 
         registro_pagamento.save()
-        success_url = reverse('usuarios:autenticacaocliente') + \
-            '?mensagem=Pagamento efetuado com sucesso!'
+        messages.success(self.request, 'Pagamento efetuado com sucesso!')
+        success_url = reverse('usuarios:autenticacaocliente') + '?mensagem=Pagamento efetuado com sucesso!'
         return redirect(success_url)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tipo_formulario = 'pagamento'
+        dados_pagamentos = Pagamento.objects.filter(cliente_id=self.kwargs['pk']).exclude(registropagamento__isnull=False)
         context['tipo'] = tipo_formulario
+        context['dados_pagamentos'] = dados_pagamentos.order_by('-id')[:1]
         return context
 
 
@@ -369,13 +370,7 @@ class PesquisarPagamento(ListaPagamentos):
             return Pagamento.objects.all()
 
         resultados_tutores = Pagamento.objects.filter(
-            Q(cliente__nome_completo__icontains=termo_pesquisa) |
-            Q(cliente__documento__icontains=termo_pesquisa) |
-            Q(cliente__endereco__cidade__icontains=termo_pesquisa) |
-            Q(cliente__endereco__cep__icontains=termo_pesquisa) |
-            Q(cliente__email__icontains=termo_pesquisa) |
-            Q(cliente__telefone__icontains=termo_pesquisa)
-
+            Q(cliente__nome_completo__icontains=termo_pesquisa)
         )
         pagamento = resultados_tutores.exclude(registropagamento__isnull=False)
         return pagamento
@@ -390,13 +385,9 @@ class DeletarTutor(LoginRequiredMixin, DeleteView):
         context['nome_deletar'] = self.object.nome_completo
         return context
 
-    def form_valid(self, form):
-        self.object = form.save()
-        messages.success(self.request, 'Tutor deletado com sucesso!')
-        return super().form_valid(form)
-
     def get_success_url(self):
-        return reverse('funcionarios')
+        messages.success(self.request, 'Tutor deletado com sucesso!')
+        return reverse('usuarios:listatutor')
 
 
 class ListaTutor(LoginRequiredMixin, ListView):

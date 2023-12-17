@@ -25,8 +25,6 @@ urlpatterns = [
         template_name='pets/vinculartutor.html'), name='pesquisartutor'),
     path('pets/vincular_tutor/adicionar_tutor',
          AdicionarTutor.as_view(), name='adicionartutor'),
-    path('pets/ver_tutor/<int:pk>',
-         VerTutor.as_view(), name='vertutor'),
     path('pets/editar_tutor/<int:pk>',
          EditarTutor.as_view(), name='editartutor'),
 
@@ -46,6 +44,7 @@ urlpatterns = [
     path('servicos/<int:pk>', VerServicos.as_view(), name='verservicos'),
     path('servicos/<int:servico_id>/<int:funcionario_id>',
          DesvincularFuncionario.as_view(), name='desvicularfuncionario'),
-    path('servicos/editarservico/<int:pk>',
-         EditarServico.as_view(), name='editarservico'),
+    path('servicos/editarservico/<int:pk>', EditarServico.as_view(), name='editarservico'),
+
+    path('clientes/vercliente/<int:pk>',  VerTutor.as_view(), name='vertutor'),
 ]
