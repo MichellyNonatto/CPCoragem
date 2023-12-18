@@ -131,3 +131,5 @@ class RegistroPagamento(models.Model):
     total_pago = models.DecimalField(max_digits=10, decimal_places=2)
     pagamento = models.ForeignKey(
         Pagamento, on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return f'Pagamento: {self.pagamento.cliente.nome_completo} - {self.data_pagamento}'
