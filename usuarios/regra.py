@@ -18,10 +18,8 @@ class Funcionamento:
                        datetime.now().day) in br_holiday
         hora = datetime.now().time()
         semana = datetime.now().weekday()
-        return True
 
-    # return self._inicio <= hora <= self._fim and semana <= 4 and not feriado
-        return True
+        return self._inicio <= hora <= self._fim and semana <= 4 and not feriado
 
     @staticmethod
     def mensagem(now=None):
