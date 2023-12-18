@@ -30,8 +30,13 @@
                 </div>
                 <div class="flex flex-col justify-end gap-4 w-full">
                     {% for field in form %}
-                        {% if field.name in 'cep,estado,cidade,bairro,rua,numero,complemento' %}
+                        {% if field.name in 'cep, numero,complemento' %}
                             {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        {% elif field.name in 'estado,cidade,bairro,rua' %}
+                            <div class="hidden">
+                                {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                            </div>
+                            {% include "components/input.html" with disabled=True caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -42,4 +47,5 @@
             </div>
         </fieldset>
     </form>
+    <script src="{% static 'js/getCep.js' %}"></script>
 {% endblock container %}
