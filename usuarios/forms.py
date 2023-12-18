@@ -1,6 +1,4 @@
 import random
-
-import requests
 from dateutil.relativedelta import relativedelta
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm

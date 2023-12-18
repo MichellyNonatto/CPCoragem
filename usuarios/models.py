@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.core.exceptions import ValidationError
-from django.core.validators import MaxLengthValidator, MinLengthValidator
+from django.core.validators import MaxLengthValidator, MinLengthValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
 
@@ -27,9 +27,17 @@ class Usuario(AbstractUser, PermissionsMixin):
     nome_completo = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
     documento = models.CharField(
-        max_length=15, unique=True,
-        validators=[MinLengthValidator(7), MaxLengthValidator(
-            14), validar_tamanho_documento]
+        max_length=15,
+        validators=[
+            MinLengthValidator(7),
+            MaxLengthValidator(14),
+            validar_tamanho_documento,
+            RegexValidator(
+                regex=r'^\d+$',
+                message='O número do documento deve conter apenas números.',
+                code='invalid_documento'
+            )
+        ]
     )
 
     CATEGORIA_CHOICES = [
