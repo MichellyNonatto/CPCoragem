@@ -14,3 +14,4 @@ package-lock.json
 package.json
 
 coragem/.env
+coragem/settings.py

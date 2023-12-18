@@ -12,7 +12,7 @@ class Endereco(models.Model):
     bairro = models.CharField(max_length=45)
     rua = models.CharField(max_length=45)
     numero = models.CharField(max_length=10, blank=True)
-    complemento = models.CharField(max_length=45, blank=True, default='N/A')
+    complemento = models.CharField(max_length=45, blank=True)
 
     def __str__(self):
         return f'Cidade de {self.cidade}, {self.estado}'
@@ -25,7 +25,7 @@ def validar_tamanho_documento(value):
 
 class Usuario(AbstractUser, PermissionsMixin):
     nome_completo = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=15)
+    telefone = models.CharField(max_length=15, default="+55 11")
     documento = models.CharField(
         max_length=15,
         validators=[

@@ -66,12 +66,12 @@ class CriarUsuario(UserCreationForm):
         label='password2', widget=forms.HiddenInput, initial=random_password)
 
     nome_completo = forms.CharField(max_length=100, label='Nome Completo')
-    cep = forms.IntegerField(max_value=99999999)
+    cep = forms.IntegerField(max_value=99999999, label='CEP')
     estado = forms.CharField(max_length=2)
     cidade = forms.CharField(max_length=45)
     bairro = forms.CharField(max_length=45)
     rua = forms.CharField(max_length=45)
-    numero = forms.CharField(max_length=10)
+    numero = forms.CharField(max_length=10, label='Número')
     complemento = forms.CharField(max_length=45, required=False)
 
     def save(self, commit=True):
