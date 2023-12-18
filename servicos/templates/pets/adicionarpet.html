@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="w-full py-10 flex items-center justify-end gap-8">
-            {% include "components/button.html" with secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+            {% include "components/anchor.html" with secondary='True' href="servicos:vinculartutor" label="Cancelar" %}
             {% include "components/button.html" with type="submit" label="Cadastrar pet" %}
         </div>
     </form>

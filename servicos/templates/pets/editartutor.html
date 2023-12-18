@@ -26,6 +26,7 @@
                   {% include "components/input.html" with caracters=form.rua.field.max_length type=form.rua.field.widget.input_type label=form.rua.label name=form.rua.name id=form.rua.id_for_label value=object.endereco.rua erro=form.rua.errors %}
               </div>
               {% include "components/input.html" with caracters=form.cep.field.max_length type=form.cep.field.widget.input_type label=form.cep.label name=form.cep.name id=form.cep.id_for_label value=object.endereco.cep erro=form.cep.errors %}
+              <div id="error-message" style="margin: 0px; padding: 0px;" class="text-red-500 ml-2 text-sm px-1 max-w-full whitespace-nowrap"></div>
               {% include "components/input.html" with disabled=True caracters=form.estado.field.max_length type=form.estado.field.widget.input_type label=form.estado.label name=form.estado.name id=form.estado.id_for_label value=object.endereco.estado erro=form.endereco.errors %}
               {% include "components/input.html" with disabled=True caracters=form.cidade.field.max_length type=form.cidade.field.widget.input_type label=form.cidade.label name=form.cidade.name id=form.cidade.id_for_label value=object.endereco.cidade erro=form.cidade.errors %}
               {% include "components/input.html" with disabled=True caracters=form.bairro.field.max_length type=form.bairro.field.widget.input_type label=form.bairro.label name=form.bairro.name id=form.bairro.id_for_label value=object.endereco.bairro erro=form.bairro.errors %}
@@ -35,7 +36,7 @@
           </div>
       </div>
       <div class="w-full py-10 flex items-center justify-end gap-8">
-          {% include "components/button.html" with type="button" secondary=True onclick="javascript:history.go(-1);" label="Cancelar" %}
+          {% include "components/anchor.html" with secondary='True' href="servicos:vertutor" pk=object.pk label="Cancelar" %}
           {% include "components/button.html" with type="submit" label="Salvar Edição" %}
       </div>
     </fieldset>

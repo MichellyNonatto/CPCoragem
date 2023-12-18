@@ -1,6 +1,14 @@
 'use strict';
+const exibirErro = (message) => {
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.textContent = message;
+}
 
+const limparErro = () => {
+    exibirErro('');
+}
 const preencherFormulario = (endereco) => {
+    limparErro();
     const ruas = document.querySelectorAll('[name="rua"]');
     const bairros = document.querySelectorAll('[name="bairro"]');
     const cidades = document.querySelectorAll('[name="cidade"]');
@@ -27,7 +35,7 @@ const pesquisarCep = async () => {
     const cep = document.getElementById('id_cep').value;
 
     if (!cep || cep.length !== 8) {
-        console.error('Por favor, informe um CEP válido.');
+        exibirErro("Por favor, informe um CEP válido.");
         return;
     }
 
@@ -37,18 +45,18 @@ const pesquisarCep = async () => {
         const resposta = await fetch(url);
 
         if (!resposta.ok) {
-            console.error('Erro na requisição:', resposta.status);
+            exibirErro("Erro na requisição: " + resposta.status);
             return;
         }
 
         const endereco = await resposta.json();
         if (endereco.erro) {
-            console.error('Por favor, informe um CEP válido.');
+            exibirErro("Por favor, informe um CEP válido.");
             return;
         }
         preencherFormulario(endereco);
     } catch (erro) {
-        console.error('Erro na requisição:', erro.message);
+        exibirErro('Erro na requisição: ' + erro.message);
     }
 }
 

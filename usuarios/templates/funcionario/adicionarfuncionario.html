@@ -69,13 +69,16 @@
             </div>
             <div class="flex flex-col justify-end gap-4 w-full">
                 {% for field in form %}
-                    {% if field.name in 'cep,numero,complemento' %}
+                    {% if field.name in 'numero,complemento' %}
                         {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                     {% elif field.name in 'estado,cidade,bairro,rua,' %}
                         <div class="hidden">
                             {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
                         </div>
                         {% include "components/input.html" with disabled=True caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                    {% elif field.name in 'cep' %}
+                        {% include "components/input.html" with caracters=field.field.max_length type=field.field.widget.input_type required=field.field.required label=field.label name=field.name id=field.id_for_label value=field.value erro=field.errors %}
+                        <div id="error-message" style="margin: 0px; padding: 0px;" class="text-red-500 ml-2 text-sm px-1 max-w-full whitespace-nowrap"></div>
                     {% endif %}
                 {% endfor %}
             </div>
