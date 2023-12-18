@@ -89,7 +89,7 @@ class Funcionario(models.Model):
         Usuario, related_name="funcionarios", on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.usuario.nome_completo
+        return f"{self.usuario.nome_completo} - {self.funcao.descricao}"
 
     def clean(self):
         if self.usuario.categoria != "FUNCIONARIO":
