@@ -26,7 +26,7 @@
          width="56px"
          height="56px"
          class="h-14 w-14 justify-self-center">
-    <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group">
+    <div class="absolute flex flex-col items-end gap-3 top-6 end-10 group hover:bg-background p-2 ">
         <button type="button" class="rounded-full w-14 h-14">
             <img src="{% if funcionario_context.imagem.url %}{{ funcionario_context.imagem.url }}{% else %}{% static 'img/blank-profile.webp' %}{% endif %}"
                  alt="perfil"
