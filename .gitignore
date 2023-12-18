@@ -12,3 +12,5 @@ migrations/
 
 package-lock.json
 package.json
+
+coragem/.env
