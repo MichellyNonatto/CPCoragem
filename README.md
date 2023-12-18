@@ -109,20 +109,20 @@
 
 ```
 projeto/
-├── coragem/                # Aplicação principal
-│   ├── migrations/        # Migrações do banco de dados
-│   ├── static/            # Arquivos estáticos específicos do aplicativo
-│   ├── templates/         # Modelos HTML específicos do aplicativo
+├── coragem/               # Aplicação principal
+│   ├── migrations/       # Migrações do banco de dados
+│   ├── static/           # Arquivos estáticos específicos do aplicativo
+│   ├── templates/        # Modelos HTML específicos do aplicativo
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
 │   ├── models.py
 │   ├── tests.py
 │   └── views.py
-├── media/                  # Uploads de mídia
-├── static/                 # Arquivos estáticos comuns a várias aplicações
-├── servicos/               # Possíveis serviços do projeto
-├── usuarios/               # Aplicação de usuários
+├── media/                 # Uploads de mídia
+├── static/                # Arquivos estáticos comuns a várias aplicações
+├── servicos/              # Possíveis serviços do projeto
+├── usuarios/              # Aplicação de usuários
 │   ├── migrations/
 │   ├── static/
 │   ├── templates/
@@ -132,14 +132,15 @@ projeto/
 │   ├── models.py
 │   ├── tests.py
 │   └── views.py
-├── celerybeat-schedule.bak # Extensão para agendar tarefas periódicas em uma aplicação Django.
-├── celerybeat-schedule.dat
-├── celerybeat-schedule.dir
-├── manage.py               # Script de gerenciamento do Django
-├── Procfile                # Arquivo de configuração para ambientes de implantação
-├── README.md               # Documentação do projeto
-├── requirements.txt        # Dependências do projeto
-├── runtime.txt             # Especificação da versão do Python a ser usada
+├── manage.py              # Script de gerenciamento do Django
+├── Procfile               # Arquivo de configuração para ambientes de implantação
+├── README.md              # Documentação do projeto
+├── requirements.txt       # Dependências do projeto
+├── runtime.txt            # Especificação da versão do Python a ser usada
+├── .gitignore             # Arquivo de configuração Gitignore
+├── .idea/                 # Pasta de configuração do IDE (pode ser gerada pelo IDE)
+└── tailwind.config.js     # Configuração do Tailwind CSS
+
 ```
 
 ---
