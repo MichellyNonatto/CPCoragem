@@ -38,7 +38,7 @@
                 {% include "components/input.html"  with disabled='True' type="text"  label="Documento" name='documento' id="documento_id" value=object.get_documento_formatado.1 %}
                 {% include "components/input.html" with disabled='True' type="text"  label="E-mail" name='email' id="email_id"  value=object.email %}
                 {% include "components/input.html" with caracters=form.telefone.field.max_length type=form.telefone.field.widget.input_type  label=form.telefone.label name=form.telefone.name id=form.telefone.id_for_label value=object.telefone %}
-                {% if funcionario_context.usuario.pk == object.pk %}
+                {% if funcionario_context.funcao.descricao != "Gerente" %}
                     <div class="hidden">
                         {% include "components/select.html" with name="funcao" selected_value=funcionario.funcao.id id="funcao" label="Função" options=form.funcao.field.choices %}
                         {% include "components/select.html" with name="turno" selected_value=funcionario.turno id="id_turno" label="Turno" options=form.turno.field.choices %}
