@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
 ALLOWED_HOSTS = [os.environ.get("HOST_URL"), '*']
-CSRF_TRUSTED_ORIGINS = [os.environ.get("CSRF_URL")]
+CSRF_TRUSTED_ORIGINS = ['https://web-production-0a25.up.railway.app']
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 INSTALLED_APPS = [
