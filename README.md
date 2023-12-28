@@ -1,5 +1,8 @@
 # Creche Pet | Coragem
 
+![image](https://github.com/MichellyNonatto/CPCoragem/assets/101263547/6bdca090-380f-410b-a9e2-5d88e0ec11ad)
+
+
 > Desenvolvimento de um Sistema de Administração de Serviços especializado para atender às necessidades específicas da área de creche pet.
 > Este projeto visa otimizar a gestão operacional e administrativa de estabelecimentos dedicados ao cuidado de animais de estimação, proporcionando uma solução eficiente e personalizada. Com funcionalidades adaptadas às demandas únicas de uma creche pet, o sistema abrange desde o controle de agendamentos e registros de atividades diárias até a gestão financeira, garantindo uma operação organizada e centrada no bem-estar dos animais. Esta iniciativa busca melhorar a eficiência operacional e a experiência do cliente em estabelecimentos que oferecem serviços de creche para pets, elevando a qualidade dos cuidados prestados e impulsionando o sucesso do negócio.
 
