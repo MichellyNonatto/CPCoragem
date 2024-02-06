@@ -129,7 +129,7 @@ class Dashboard(LoginRequiredMixin, DetailView):
             if pagamento.data_pagamento <= hoje.date():
                 lucro += pagamento.total_pago
 
-         for pagamento in pagamentos:
+        for pagamento in pagamentos:
             if pagamento.dia_vencimento >= hoje.date():
                 pendentes.append(pagamento)
                 perca += pagamento.total_pagamento
