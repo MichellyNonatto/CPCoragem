@@ -129,11 +129,11 @@ class Dashboard(LoginRequiredMixin, DetailView):
             if pagamento.data_pagamento <= hoje.date():
                 lucro += pagamento.total_pago
 
-        for pagamento in pagamentos:
-            if pagamento.dia_vencimento <= hoje.date():
+         for pagamento in pagamentos:
+            if pagamento.dia_vencimento >= hoje.date():
                 pendentes.append(pagamento)
                 perca += pagamento.total_pagamento
-            previsao_lucro += pagamento.total_pagamento
+            previsao_lucro -= pagamento.total_pagamento
 
         usuario = self.request.user
         funcionario = Funcionario.objects.get(usuario_id=usuario.pk)
